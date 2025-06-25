@@ -14,10 +14,11 @@ export const baseUrl = "https://api.painreliefusa.com";
 
 const instance = axios.create({
   baseURL: baseUrl,
-  // headers: {
-  //   devicemodel: await getDeviceFingerprint(),
-  //   deviceuniqueid: await getDeviceFingerprint(),
-  // },
+  headers: {
+    devicemodel: 123,
+    deviceuniqueid:123
+    // deviceuniqueid: await getDeviceFingerprint(),
+  },
   timeout: 10000, // 10 seconds timeout
 });
 
