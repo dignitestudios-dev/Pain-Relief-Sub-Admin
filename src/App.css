@@ -1,0 +1,19 @@
+/* All the Global CSS code goes here *//* app.css */
+body, #root {
+  background-color: #FAFAFA; /* Light gray background */
+  min-height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove default margin */
+}
+
+
+/* src/styles/global.css */
+@font-face {
+  font-family: 'General Sans';
+  src: url('/assets/fonts/GeneralSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'General Sans', sans-serif;
+}
