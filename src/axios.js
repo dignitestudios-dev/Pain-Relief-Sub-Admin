@@ -5,19 +5,19 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 export const baseUrl = "https://api.painreliefusa.com";
 
-async function getDeviceFingerprint() {
-  const fp = await FingerprintJS.load();
-  const result = await fp.get();
-  console.log(result.visitorId); // Unique device ID
-  return result.visitorId;
-}
+// async function getDeviceFingerprint() {
+//   const fp = await FingerprintJS.load();
+//   const result = await fp.get();
+//   console.log(result.visitorId); // Unique device ID
+//   return result.visitorId;
+// }
 
 const instance = axios.create({
   baseURL: baseUrl,
-  headers: {
-    devicemodel: await getDeviceFingerprint(),
-    deviceuniqueid: await getDeviceFingerprint(),
-  },
+  // headers: {
+  //   devicemodel: await getDeviceFingerprint(),
+  //   deviceuniqueid: await getDeviceFingerprint(),
+  // },
   timeout: 10000, // 10 seconds timeout
 });
 
