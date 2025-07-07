@@ -14,6 +14,7 @@ import Service from "../../pages/app/AdminDashboard/Service";
 import SubAdmin from "../../pages/app/AdminDashboard/SubAdmin";
 import Profile from "../../pages/app/SubAdminDashboard/Profile";
 import UniqueReferral from "../../pages/app/AdminDashboard/UniqueReferral";
+import Appointments from "../../pages/app/AdminDashboard/Appointments";
 
 export const AdminDashboardRoutes = [
   {
@@ -84,5 +85,9 @@ export const AdminDashboardRoutes = [
   {
     url: "employee-detail/:id",
     page: <EmployeeDetails />,
+  },
+  {
+    url: "appointment",
+    page: <Appointments />,
   },
 ];
