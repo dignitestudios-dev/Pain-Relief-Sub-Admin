@@ -5,7 +5,6 @@ import MemberDetails from "../../components/app/AdminDashboard/member/MemberDeta
 import DetailPage from "../../components/app/AdminDashboard/service/DetailPage";
 import SubAdminDetail from "../../components/app/AdminDashboard/subadmin/SubAdminDetail";
 import AdminDashboard from "../../pages/app/AdminDashboard/AdminDashboard";
-import Appointments from "../../pages/app/AdminDashboard/Appointments";
 import CompanyManagement from "../../pages/app/AdminDashboard/CompanyManagement";
 import Member from "../../pages/app/AdminDashboard/Member";
 import MemberPlans from "../../pages/app/AdminDashboard/MemberPlans";
@@ -53,8 +52,6 @@ export const AdminDashboardRoutes = [
   {
     url: "profile",
     page: <Profile />,
-    url: "appointment",
-    page: <Appointments />,
   },
   {
     url: "appoitmentDetail/:id",
