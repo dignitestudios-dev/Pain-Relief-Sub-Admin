@@ -13,11 +13,8 @@ import ReportIssue from "../../pages/app/AdminDashboard/ReportIssue";
 import Revenue from "../../pages/app/AdminDashboard/Revenue";
 import Service from "../../pages/app/AdminDashboard/Service";
 import SubAdmin from "../../pages/app/AdminDashboard/SubAdmin";
-<<<<<<< HEAD
 import Profile from "../../pages/app/SubAdminDashboard/Profile";
-=======
 import UniqueReferral from "../../pages/app/AdminDashboard/UniqueReferral";
->>>>>>> 6c208b7124c55a21cf13e3ab61234c19f0cf6e9a
 
 export const AdminDashboardRoutes = [
   {
