@@ -2,23 +2,15 @@ import { useState } from "react";
 import Button from "../../../global/Button";
 import BasicInfo from "./BasicInfo";
 import MedicalLicense from "./MedicalLicense";
-
-const provider = {
-  name: "John Alex",
-  email: "john.alex@gmail.com",
-  avatar: "https://i.pravatar.cc/100?img=5",
-  fullName: "Clinic Title",
-  phone: "+000 0000 000",
-  age: "25",
-  gender: "Male",
-  location: "Dallas, TX – 802 PainEase Plaza",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-};
+import { useParams } from "react-router";
+import { useFetchById } from "../../../../hooks/api/Get";
 
 const DetailPage = () => {
   const [activeTab, setActiveTab] = useState("Basic Info");
+  const { id } = useParams();
+  const { data, loading } = useFetchById(`/admin/get-provider/${id}`);
 
+  console.log("🚀 ~ DetailPage ~ data:", data);
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
       <h2 className="text-[32px] font-[600] text-[#212121] mb-4">
@@ -28,14 +20,14 @@ const DetailPage = () => {
       <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">
         <div className="flex items-center  mb-4">
           <img
-            src={provider.avatar}
+            src={data?.profilePicture ?? "https://i.pravatar.cc/100?img=5"}
             alt="avatar"
             className="w-[116px] h-[116px] rounded-full border border-[#63CFAC] mr-6 p-0.5"
           />
           <div>
-            <h3 className="text-[32px] font-[600]">{provider.name}</h3>
+            <h3 className="text-[32px] font-[600]">{data.name}</h3>
             <p className="text-[#565656] text-[16px] font-[500] ">
-              {provider.email}
+              {data.email}
             </p>
           </div>
         </div>
@@ -67,10 +59,8 @@ const DetailPage = () => {
         ))}
       </div>
 
-      {activeTab === "Basic Info" && <BasicInfo provider={provider} />}
-      {activeTab === "Medical License" && (
-        <MedicalLicense provider={provider} />
-      )}
+      {activeTab === "Basic Info" && <BasicInfo provider={data} />}
+      {activeTab === "Medical License" && <MedicalLicense provider={data} />}
 
       {/* {activeTab === "Family Members" && <FamilyMember />}
 

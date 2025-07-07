@@ -1,44 +1,11 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
 import { useNavigate } from "react-router";
-const staticUsers = [
-  {
-    id: 1,
-    name: "Alice Johnson",
-    clinicTitle: "Downtown Clinic",
-    email: "alice@example.com",
-    phone: "+123 456 7890",
-    clinicLocation: "New York, NY – 123 Main St",
-    avatar: "https://i.pravatar.cc/40?img=1",
-  },
-  {
-    id: 2,
-    name: "Bob Smith",
-    clinicTitle: "Healthy Life Clinic",
-    email: "bob@example.com",
-    phone: "+987 654 3210",
-    clinicLocation: "Los Angeles, CA – 456 Sunset Blvd",
-    avatar: "https://i.pravatar.cc/40?img=2",
-  },
-  {
-    id: 3,
-    name: "Carla Davis",
-    clinicTitle: "WellCare Clinic",
-    email: "carla@example.com",
-    phone: "+111 222 3333",
-    clinicLocation: "Chicago, IL – 789 Lake Shore Dr",
-    avatar: "https://i.pravatar.cc/40?img=3",
-  },
-];
 
-const ServiceList = ({ search, setSearch }) => {
-  const navigate = useNavigate(); // ✅ initialize navigation
-
-  const filteredData = staticUsers.filter((user) =>
-    user.name?.toLowerCase().includes(search?.toLowerCase())
-  );
+const ServiceList = ({ data }) => {
+  const navigate = useNavigate();
 
   const handleViewDetail = (userId) => {
-    navigate(`/app/service-provider-detail/${userId}`); // or `/app/user-details?id=${userId}` if using query params
+    navigate(`/app/service-provider-detail/${userId}`);
   };
 
   return (
@@ -63,29 +30,31 @@ const ServiceList = ({ search, setSearch }) => {
 
         {/* Rows */}
         <div className="divide-y">
-          {filteredData.length > 0 ? (
-            filteredData.map((user, index) => (
+          {data?.length > 0 ? (
+            data?.map((user, index) => (
               <div
-                key={user.id}
+                key={user._id}
                 className="grid grid-cols-[40px_1.2fr_1fr_1.3fr_1fr_2fr_0.8fr_1fr] gap-4 px-4 py-6 items-center text-sm hover:bg-gray-50"
               >
                 <div>{index + 1}</div>
                 <div className="flex items-center gap-2">
                   <img
-                    src={user.avatar}
+                    src={
+                      user.profilePicture ?? "https://i.pravatar.cc/40?img=1"
+                    }
                     alt="avatar"
                     className="w-10 h-10 rounded-full border border-[#63CFAC]  p-0.5"
                   />
                   <span>{user.name}</span>
                 </div>
-                <div>{user.clinicTitle}</div>
+                <div>{user.clinicName}</div>
                 <div>{user.email}</div>
                 <div>{user.phone}</div>
-                <div>{user.clinicLocation}</div>
-                <div>Pending</div>
+                <div>{user?.address?.address ?? "- -"}</div>
+                <div className="capitalize">{user?.profileStatus}</div>
                 <div
                   className="font-medium underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
-                  onClick={() => handleViewDetail(user.id)} // ✅ click handler here
+                  onClick={() => handleViewDetail(user._id)}
                 >
                   View Detail
                 </div>

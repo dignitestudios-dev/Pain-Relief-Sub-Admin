@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 
@@ -6,10 +6,21 @@ import ServiceList from "../../../components/app/AdminDashboard/service/ServiceL
 import Button from "../../../components/global/Button";
 import PainReleifList from "../../../components/app/AdminDashboard/service/PainReleifList";
 import CreateModal from "../../../components/app/AdminDashboard/service/CreateModal";
+import { useFetchData } from "../../../hooks/api/Get";
+import TableLoader from "../../../components/global/TableLoader";
 const Service = () => {
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("network");
+  const [isPainRelief, setIsPainRelief] = useState(false);
   const [createModal, setCreateModal] = useState(false);
+  const [status, setStatus] = useState("");
+
+  const { data, loading } = useFetchData(
+    `admin/get-providers`,
+    { isPainReliefCoach: isPainRelief, status: status },
+    1
+  );
+
   return (
     <div>
       <div className="flex  justify-between items-center mb-4">
@@ -29,7 +40,10 @@ const Service = () => {
 
         <div className="flex items-center border border-gray-300 rounded-md py-1 gap-2 w-[400px] h-[39px] shadow-sm">
           <button
-            onClick={() => setActiveTab("network")}
+            onClick={() => {
+              setActiveTab("network");
+              setIsPainRelief(false);
+            }}
             className={`rounded-[8px] w-full font-[500] text-[16px] h-[39px] transition-all duration-200
       ${
         activeTab === "network"
@@ -41,7 +55,10 @@ const Service = () => {
           </button>
 
           <button
-            onClick={() => setActiveTab("coach")}
+            onClick={() => {
+              setActiveTab("coach");
+              setIsPainRelief(true);
+            }}
             className={`rounded-[8px] w-full font-[500] text-[16px] h-[39px] transition-all duration-200
       ${
         activeTab === "coach"
@@ -63,23 +80,59 @@ const Service = () => {
       </div>
       <div>
         <div className="flex ml-5  gap-4 mt-2">
-          <button className="bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent font-[500]">
+          <button
+            onClick={() => setStatus("")}
+            className={`${
+              status === ""
+                ? "bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-transparent"
+                : "text-[#565656]"
+            }  bg-clip-text  font-[500]`}
+          >
             All
           </button>
-          <button className="text-[#565656] font-[500]">Pending</button>
-          <button className="text-[#565656] font-[500]">Accepted</button>
+          <button
+            onClick={() => setStatus("pending")}
+            className={`${
+              status === "pending"
+                ? "bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-transparent"
+                : "text-[#565656]"
+            }  bg-clip-text  font-[500]`}
+          >
+            Pending
+          </button>
+          <button
+            onClick={() => setStatus("approved")}
+            className={`${
+              status === "approved"
+                ? "bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-transparent"
+                : "text-[#565656]"
+            }  bg-clip-text  font-[500]`}
+          >
+            Approved
+          </button>
           {activeTab === "network" && (
-            <button className="text-[#565656] font-[500]">Rejected</button>
+            <button
+              onClick={() => setStatus("rejected")}
+              className={`${
+                status === "rejected"
+                  ? "bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-transparent"
+                  : "text-[#565656]"
+              }  bg-clip-text  font-[500]`}
+            >
+              Rejected
+            </button>
           )}
         </div>
       </div>
-      {activeTab === "network" && (
-        <ServiceList search={search} setSearch={setSearch} />
+      {loading ? (
+        <TableLoader />
+      ) : (
+        <>
+          {activeTab === "network" && <ServiceList data={data} />}
+          {activeTab === "coach" && <PainReleifList data={data} />}
+          {createModal && <CreateModal onCLose={() => setCreateModal(false)} />}
+        </>
       )}
-      {activeTab === "coach" && (
-        <PainReleifList search={search} setSearch={setSearch} />
-      )}
-      {createModal && <CreateModal onCLose={() => setCreateModal(false)} />}
     </div>
   );
 };

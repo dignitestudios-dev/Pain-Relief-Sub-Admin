@@ -1,26 +1,11 @@
-import { useState } from "react";
-import { membersData } from "../../../../static/Static";
+/* eslint-disable react/prop-types */
+
 import { useNavigate } from "react-router";
 
-const MemberTable = () => {
+const MemberTable = ({ data, handleTab, activeTab, search, handleSearch }) => {
+  console.log("🚀 ~ MemberTable ~ data:", data);
   const navigate = useNavigate();
   const tabs = ["All", "Subscribed", "Unsubscribed"];
-  const [activeTab, setActiveTab] = useState("All");
-  const [search, setSearch] = useState("");
-
-  // Filter members by tab
-  const filteredMembers = membersData
-    .filter((m) => {
-      if (activeTab === "All") return true;
-      return m.status === activeTab;
-    })
-    .filter(
-      (m) =>
-        m.name.toLowerCase().includes(search.toLowerCase()) ||
-        m.email.toLowerCase().includes(search.toLowerCase()) ||
-        m.phone.includes(search) ||
-        m.location.toLowerCase().includes(search.toLowerCase())
-    );
 
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -35,7 +20,7 @@ const MemberTable = () => {
             {tabs.map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => handleTab(tab)}
                 className={`relative pb-1 ${
                   activeTab === tab
                     ? "bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-[2px] after:bg-[#63CFAC] after:rounded"
@@ -53,7 +38,7 @@ const MemberTable = () => {
             type="search"
             placeholder="Search"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="w-48 border border-gray-300 rounded-md py-2 px-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -74,31 +59,36 @@ const MemberTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredMembers.length > 0 ? (
-              filteredMembers.map((member, index) => (
-                <tr className="border-b last:border-0 hover:bg-gray-50">
+            {data.length > 0 ? (
+              data?.map((member, index) => (
+                <tr
+                  key={index}
+                  className="border-b last:border-0 hover:bg-gray-50"
+                >
                   <td className="py-3 px-2 text-center text-gray-600">
                     {index + 1}
                   </td>
                   <td className="flex items-center gap-3 py-3 px-2">
                     <img
-                      src={member.img}
-                      alt={member.name}
+                      src={member?.profilePicture}
+                      alt={member?.firstName}
                       className="w-8 h-8 rounded-full object-cover"
                     />
                     <span className="text-gray-900 font-medium">
-                      {member.name}
+                      {member?.firstName} {member?.lastName}
                     </span>
                   </td>
                   <td className="py-3 px-2 text-gray-600">{member.email}</td>
                   <td className="py-3 px-2 text-gray-600">{member.phone}</td>
-                  <td className="py-3 px-2 text-gray-600">{member.location}</td>
+                  <td className="py-3 px-2 text-gray-600">
+                    {member.country}, {member.state}
+                  </td>
                   <td className="py-3 px-2 text-gray-900 font-semibold">
-                    {member.status}
+                    {member.isSubscribed ? "Subscribed" : "Un Subscribed"}
                   </td>
                   <td
                     onClick={() =>
-                      navigate(`/app/member-details/${member?.id}`)
+                      navigate(`/app/member-details/${member?._id}`)
                     }
                     className="py-3 px-2  bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent cursor-pointer hover:border-b-[#63CFAC]"
                   >

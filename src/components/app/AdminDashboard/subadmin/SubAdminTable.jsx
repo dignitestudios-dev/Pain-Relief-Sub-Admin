@@ -1,36 +1,16 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import Button from "../../../global/Button";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
-const staticUsers = [
-  {
-    id: 1,
-    name: "Alice Johnson",
-    email: "alice@example.com",
-    phone: "+123 456 7890",
-    avatar: "https://i.pravatar.cc/40?img=1",
-  },
-  {
-    id: 2,
-    name: "Bob Smith",
-    email: "bob@example.com",
-    phone: "+987 654 3210",
-    avatar: "https://i.pravatar.cc/40?img=2",
-  },
-  {
-    id: 3,
-    name: "Carla Davis",
-    email: "carla@example.com",
-    phone: "+111 222 3333",
-    avatar: "https://i.pravatar.cc/40?img=3",
-  },
-];
-const SubAdminTable = ({ setSubAdminModal }) => {
+
+const SubAdminTable = ({ setSubAdminModal, data }) => {
+  console.log("🚀 ~ SubAdminTable ~ data:", data);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const handleViewDetail = (userId) => {
-    navigate(`/app/sub-admin-detail/${userId}`);
+  const handleViewDetail = (user) => {
+    navigate(`/app/sub-admin-detail/${user?._id}`, { state: { user } });
   };
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -76,26 +56,28 @@ const SubAdminTable = ({ setSubAdminModal }) => {
 
         {/* Rows */}
         <div className="divide-y">
-          {staticUsers.length > 0 ? (
-            staticUsers.map((user, index) => (
+          {data?.length > 0 ? (
+            data?.map((user, index) => (
               <div
-                key={user.id}
+                key={user._id}
                 className="grid grid-cols-[40px_1.5fr_2fr_1.5fr_1fr] gap-4 px-4 py-6 items-center text-sm hover:bg-gray-50"
               >
                 <div>{index + 1}</div>
                 <div className="flex items-center gap-2">
                   <img
-                    src={user.avatar}
+                    src={user?.profilePicture}
                     alt="avatar"
                     className="w-10 h-10 rounded-full border border-[#63CFAC]  p-0.5"
                   />
-                  <span>{user.name}</span>
+                  <span>
+                    {user.firstName} {user.firstName}
+                  </span>
                 </div>
                 <div>{user.email}</div>
                 <div>{user.phone}</div>
                 <div
                   className="font-medium underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
-                  onClick={() => handleViewDetail(user?.id)}
+                  onClick={() => handleViewDetail(user)}
                 >
                   View Detail
                 </div>

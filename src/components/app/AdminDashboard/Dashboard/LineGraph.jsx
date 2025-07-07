@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
   LineController,
@@ -9,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import Calender from "../../../global/DatePicker";
+import YearPicker from "../../../global/YearPicker";
 // import { DateIcon } from "../../../assets/export";
 
 // Register necessary Chart.js components
@@ -23,14 +24,13 @@ ChartJS.register(
   Legend
 );
 
-const SubscriptionSalesChart = () => {
+const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
+  console.log("🚀 ~ SubscriptionSalesChart ~ graphData:", graphData);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
-    if (chartRef.current) {
+    if (chartRef.current && graphData?.length > 0) {
       if (chartInstance.current) {
         chartInstance.current.destroy();
         chartInstance.current = null;
@@ -41,27 +41,11 @@ const SubscriptionSalesChart = () => {
       chartInstance.current = new ChartJS(ctx, {
         type: "line",
         data: {
-          labels: [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC",
-          ],
+          labels: Object.keys(graphData[0].months),
           datasets: [
             {
               label: "Standard Plan",
-              data: [
-                2000, 8000, 18000, 16000, 14000, 4000, 6000, 8000, 54000, 52000,
-                3000, 12000,
-              ],
+              data: Object.values(graphData[0].months),
               borderColor: "#3B82F6",
               backgroundColor: "#3B82F6",
               borderWidth: 3,
@@ -75,10 +59,7 @@ const SubscriptionSalesChart = () => {
             },
             {
               label: "Premium Plan",
-              data: [
-                1000, 2000, 4000, 3000, 2000, 8000, 12000, 14000, 1000, 11000,
-                10000, 13000,
-              ],
+              data: Object.values(graphData[1].months),
               borderColor: "#EF4444",
               backgroundColor: "#EF4444",
               borderWidth: 3,
@@ -216,7 +197,7 @@ const SubscriptionSalesChart = () => {
         chartInstance.current = null;
       }
     };
-  }, []);
+  }, [graphData]);
 
   return (
     <div className="bg-[#FAFAFA] mt-5 p-8 rounded-[16px] shadow-sm">
@@ -226,25 +207,24 @@ const SubscriptionSalesChart = () => {
         </h2>
         <div className="flex  gap-3">
           <div className="w-[200px]">
-            <Calender
-              endDate={true}
-              startDate={startDate ? startDate.toISOString().split("T")[0] : ""}
-              setStartDate={setStartDate}
-              text={"DD/MM/YY"}
-              isStyle={true}
-              label={"End Date"}
+            <YearPicker
+              selectedYear={year}
+              setSelectedYear={setYear}
+              label="Year of Experience"
+              minYear={new Date(2024, 0)}
+              maxYear={new Date()}
             />
           </div>
-          <div className="w-[200px]">
+          {/* <div className="w-[200px]">
             <Calender
               endDate={true}
               startDate={endDate ? endDate.toISOString().split("T")[0] : ""}
-              setStartDate={setEndDate}
+              setStartDate={handleEndDateChange}
               text={"DD/MM/YY"}
               isStyle={true}
               label={"End Date"}
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <hr className="border-[#2121211C]" />

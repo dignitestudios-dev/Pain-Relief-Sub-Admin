@@ -13,11 +13,11 @@ export const SubAdminDashboard = [
     page: <UniqueReferral />,
   },
   {
-    url: "unique-referral",
+    url: "user-details",
     page: <UserDetails />,
   },
   {
-    url: "unique-referral",
+    url: "profile",
     page: <Profile />,
   },
 ];

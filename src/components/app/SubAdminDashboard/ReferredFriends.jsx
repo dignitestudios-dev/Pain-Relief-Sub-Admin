@@ -4,7 +4,7 @@ import { useLocation } from "react-router"; // Use to access URL params
 import { ErrorToast } from "../../global/Toaster";
 import { ClipLoader } from "react-spinners";
 import RefferalQrCodeModal from "../referalCode/RefferalQrCodeModal";
-import { useUsers } from "../../../hooks/api/Get";
+import { useFetchData } from "../../../hooks/api/Get";
 
 const ReferredFriends = () => {
   const [referrals, setReferrals] = useState([]);
@@ -14,7 +14,7 @@ const ReferredFriends = () => {
   const [voucherModal, setVoucherModal] = useState(false);
   const location = useLocation();
   const providerId = new URLSearchParams(location.search).get("id"); // Extract providerId from URL query params
-  const { data: ReferralCode, loading: referralCodeLoader } = useUsers(
+  const { data: ReferralCode, loading: referralCodeLoader } = useFetchData(
     "/provider/generate-refferal-link"
   );
   useEffect(() => {

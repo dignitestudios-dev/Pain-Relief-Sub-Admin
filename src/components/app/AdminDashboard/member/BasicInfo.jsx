@@ -1,20 +1,26 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 
 const BasicInfo = ({ provider }) => {
   return (
     <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-6">
       <p className="text-[24px] font-[600] ">Members Details</p>
       <span className="w-full border border-b flex"></span>
-      <InfoRow label="Full Name" value={provider.fullName} />
-      <InfoRow label="Email Address" value={provider.email} />
-      <InfoRow label="Mobile Number" value={provider.phone} />
-      <InfoRow label="Age" value={provider.age + "yrs old"} />
-      <InfoRow label="Gender" value={provider.gender} />
-      <InfoRow label="Location" value={provider.location} multi />
+      <InfoRow
+        label="Full Name"
+        value={(provider.firstName ?? "--") + " " + (provider.lastName ?? "--")}
+      />
+      <InfoRow label="Email Address" value={provider.email ?? "--"} />
+      <InfoRow label="Mobile Number" value={provider.phone ?? "--"} />
+      <InfoRow
+        label="Age"
+        value={provider?.age ? provider?.age + "yrs old" : "NotAvailable"}
+      />
+      <InfoRow label="Gender" value={provider.gender ?? "--"} />
+      <InfoRow label="Location" value={provider.location ?? "--"} multi />
       <div>
         <p className="font-medium mb-1">Description</p>
         <p className="text-gray-600 whitespace-pre-line">
-          {provider.description}
+          {provider.description ?? "--"}
         </p>
       </div>
     </div>

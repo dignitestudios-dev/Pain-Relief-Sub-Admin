@@ -5,6 +5,7 @@ import AdminDashboard from "../../pages/app/AdminDashboard/AdminDashboard";
 import Member from "../../pages/app/AdminDashboard/Member";
 import Service from "../../pages/app/AdminDashboard/Service";
 import SubAdmin from "../../pages/app/AdminDashboard/SubAdmin";
+import Profile from "../../pages/app/SubAdminDashboard/Profile";
 
 export const AdminDashboardRoutes = [
   {
@@ -39,5 +40,9 @@ export const AdminDashboardRoutes = [
   {
     url: "sub-admin-detail/:id",
     page: <SubAdminDetail />,
+  },
+  {
+    url: "profile",
+    page: <Profile />,
   },
 ];

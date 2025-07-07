@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import BrochureSection from "./BrochureSection";
 import QrCode from "./QrCode";
-import { useUsers } from "../../../hooks/api/Get";
 
 const RefferalQrCodeModal = ({ onClick, referralCode }) => {
   const [tabActive, setTabActive] = useState("Brochure");
   const tabs = ["Brochure", "QR Code"];
- 
+
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-0 z-50 flex items-center justify-center">
       <div className="bg-[#fefefe] rounded-[26px] shadow-md p-8 w-[470px] h-[700px] overflow-auto ">

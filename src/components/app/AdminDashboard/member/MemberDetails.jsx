@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useParams } from "react-router";
 import Button from "../../../global/Button";
 import ReferalTable from "./ReferalTable";
 import FamilyMember from "./FamilyMember";
 import BasicInfo from "./BasicInfo";
+import { useFetchById } from "../../../../hooks/api/Get";
 
 const provider = {
   name: "John Alex",
@@ -19,7 +21,11 @@ const provider = {
 
 const MemberDetails = () => {
   const [activeTab, setActiveTab] = useState("Basic Info");
+  const { id } = useParams();
+  const { data, loading } = useFetchById(`/admin/get-member/${id}`);
 
+  console.log("🚀 ~ MemberDetails ~ loading:", loading);
+  console.log("🚀 ~ MemberDetails ~ data:", data);
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
       <h2 className="text-[32px] font-[600] text-[#212121] mb-4">
@@ -29,14 +35,16 @@ const MemberDetails = () => {
       <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">
         <div className="flex items-center  mb-4">
           <img
-            src={provider.avatar}
+            src={data?.profilePicture ?? "https://i.pravatar.cc/100?img=5"}
             alt="avatar"
             className="w-[116px] h-[116px] rounded-full border border-[#63CFAC] mr-6 p-0.5"
           />
           <div>
-            <h3 className="text-[32px] font-[600]">{provider.name}</h3>
+            <h3 className="text-[32px] font-[600]">
+              {data?.firstName} {data?.lastName}
+            </h3>
             <p className="text-[#565656] text-[16px] font-[500] ">
-              {provider.email}
+              {data?.email}
             </p>
           </div>
         </div>
@@ -46,7 +54,7 @@ const MemberDetails = () => {
               Current Plan
             </span>
             <h3 className="font-[600] text-[24px] text-[#000000]">
-              Standard Plan
+              {data?.currentPlan ?? "Unsubscribed"}
             </h3>
           </div>
           <div className="w-[184px]">
@@ -71,7 +79,7 @@ const MemberDetails = () => {
         ))}
       </div>
 
-      {activeTab === "Basic Info" && <BasicInfo provider={provider} />}
+      {activeTab === "Basic Info" && <BasicInfo provider={data} />}
 
       {activeTab === "Family Members" && <FamilyMember />}
 
