@@ -1,23 +1,32 @@
 /* eslint-disable react/prop-types */
 
 const BasicInfo = ({ provider }) => {
+  console.log(provider, "provider==>");
   return (
     <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-6">
       <p className="text-[24px] font-[600] ">Members Details</p>
       <span className="w-full border border-b flex"></span>
-      <InfoRow label="Full Name" value={provider.name} />
-      <InfoRow label="Email Address" value={provider.email} />
-      <InfoRow label="Mobile Number" value={provider.phone} />
+      <InfoRow label="Full Name" value={provider?.name} />
+      <InfoRow label="Email Address" value={provider?.email} />
+      <InfoRow label="Mobile Number" value={provider?.phone} />
       <InfoRow
         label="Age"
-        value={provider.age != null ? `${provider.age} yrs old` : "--"}
+        value={provider?.age != null ? `${provider?.age} yrs old` : "--"}
       />
-      <InfoRow label="Gender" value={provider.gender ?? "- -"} />
-      <InfoRow label="Location" value={provider.addresses[0]?.address} multi />
+      <InfoRow label="Gender" value={provider?.gender ?? "- -"} />
+      <InfoRow
+        label="Location"
+        value={
+          Array.isArray(provider?.addresses) && provider.addresses.length > 0
+            ? provider.addresses[0].address
+            : "--"
+        }
+      />
+
       <div>
         <p className="font-medium mb-1">Description</p>
         <p className="text-gray-600 whitespace-pre-line">
-          {provider.description}
+          {provider?.description}
         </p>
       </div>
     </div>
