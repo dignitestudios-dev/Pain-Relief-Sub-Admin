@@ -4,8 +4,8 @@ const SkeletonLoader = ({ type }) => {
   // Base skeleton styles
   const skeletonStyle = {
     backgroundColor: "#e0e0e0", // Light gray background
-    borderRadius: "4px",         // Rounded corners
-    marginBottom: "10px",        // Space between skeleton elements
+    borderRadius: "4px", // Rounded corners
+    marginBottom: "10px", // Space between skeleton elements
     animation: "shimmer 1.5s infinite linear", // Animation for shimmer effect
   };
 
@@ -36,11 +36,7 @@ const SkeletonLoader = ({ type }) => {
   `;
 
   // Create a style tag for the shimmer animation if it's inline
-  const styleTag = (
-    <style>
-      {shimmerKeyframes}
-    </style>
-  );
+  const styleTag = <style>{shimmerKeyframes}</style>;
 
   return (
     <>

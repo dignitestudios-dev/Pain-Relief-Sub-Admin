@@ -2,7 +2,13 @@
 
 import { useNavigate } from "react-router";
 
-const MemberTable = ({ data, handleTab, activeTab, search, handleSearch }) => {
+const MemberTable = ({
+  data,
+  handleTab,
+  activeTab,
+  typeValue,
+  handleSearch,
+}) => {
   console.log("🚀 ~ MemberTable ~ data:", data);
   const navigate = useNavigate();
   const tabs = ["All", "Subscribed", "Unsubscribed"];
@@ -37,7 +43,7 @@ const MemberTable = ({ data, handleTab, activeTab, search, handleSearch }) => {
           <input
             type="search"
             placeholder="Search"
-            value={search}
+            value={typeValue}
             onChange={(e) => handleSearch(e.target.value)}
             className="w-48 border border-gray-300 rounded-md py-2 px-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />

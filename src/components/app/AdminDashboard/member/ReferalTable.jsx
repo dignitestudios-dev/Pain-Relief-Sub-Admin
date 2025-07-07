@@ -1,7 +1,6 @@
-import React from "react";
-import { ReferalstaticData } from "../../../../static/Static";
+/* eslint-disable react/prop-types */
 
-const ReferalTable = () => {
+const ReferalTable = ({ referralData }) => {
   return (
     <div className="p-3 bg-[#FAFAFA] rounded-lg shadow">
       <div className="text-blue-500 cursor-pointer mb-4">
@@ -22,9 +21,9 @@ const ReferalTable = () => {
         </div>
 
         {/* Static rows */}
-        {ReferalstaticData.map((user, index) => (
+        {referralData?.map((user, index) => (
           <div
-            key={user.referralId}
+            key={index}
             className="grid grid-cols-[40px_1.2fr_1.5fr_1.5fr_1.3fr_1fr] gap-4 px-4 py-6 items-center text-sm hover:bg-gray-50 border-b last:border-none"
           >
             <div>{index + 1}</div>

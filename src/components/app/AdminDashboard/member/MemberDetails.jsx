@@ -6,26 +6,15 @@ import FamilyMember from "./FamilyMember";
 import BasicInfo from "./BasicInfo";
 import { useFetchById } from "../../../../hooks/api/Get";
 
-const provider = {
-  name: "John Alex",
-  email: "john.alex@gmail.com",
-  avatar: "https://i.pravatar.cc/100?img=5",
-  fullName: "Clinic Title",
-  phone: "+000 0000 000",
-  age: "25",
-  gender: "Male",
-  location: "Dallas, TX – 802 PainEase Plaza",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-};
-
 const MemberDetails = () => {
   const [activeTab, setActiveTab] = useState("Basic Info");
   const { id } = useParams();
   const { data, loading } = useFetchById(`/admin/get-member/${id}`);
+  const { data: referralData, loading: loader } = useFetchById(
+    `/admin/get-member-referral?userId=${id}`
+  );
+  console.log("🚀 ~ MemberDetails ~ referralData:", referralData);
 
-  console.log("🚀 ~ MemberDetails ~ loading:", loading);
-  console.log("🚀 ~ MemberDetails ~ data:", data);
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
       <h2 className="text-[32px] font-[600] text-[#212121] mb-4">
@@ -81,9 +70,13 @@ const MemberDetails = () => {
 
       {activeTab === "Basic Info" && <BasicInfo provider={data} />}
 
-      {activeTab === "Family Members" && <FamilyMember />}
+      {activeTab === "Family Members" && (
+        <FamilyMember provider={data?.familyMembers} />
+      )}
 
-      {activeTab === "Referral Friends" && <ReferalTable />}
+      {activeTab === "Referral Friends" && (
+        <ReferalTable referralData={referralData} loader={loader} />
+      )}
     </div>
   );
 };
