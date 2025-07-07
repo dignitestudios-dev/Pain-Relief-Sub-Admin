@@ -13,11 +13,17 @@ const AuthInput = ({
   onBlur,
   error,
   touched,
+  label,
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
   return (
     <div className="flex flex-col gap-1 justify-start items-start space-y-2 ">
+      {label && (
+        <span htmlFor={name} className="text-[15px] text-[#212121] font-[400] ">
+          {label}
+        </span>
+      )}
       <div
         className={`relative w-full h-[48px] border-[1px]   
           ${

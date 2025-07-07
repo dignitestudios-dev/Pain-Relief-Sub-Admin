@@ -1,6 +1,6 @@
-import ReferralBarChart from "../../../components/app/AdminDashboard/Dashboard/BarGraph";
-import SubscriptionSalesChart from "../../../components/app/AdminDashboard/Dashboard/LineGraph";
-import Stats from "../../../components/app/AdminDashboard/Dashboard/Stats";
+import ReferralBarChart from "../../../components/app/AdminDashboard/dashboard/BarGraph";
+import SubscriptionSalesChart from "../../../components/app/AdminDashboard/dashboard/LineGraph";
+import Stats from "../../../components/app/AdminDashboard/dashboard/Stats";
 
 const AdminDashboard = () => {
   return (

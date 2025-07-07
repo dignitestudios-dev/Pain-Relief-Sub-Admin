@@ -40,10 +40,26 @@ import Tickblue from "./tickblue.png";
 import DesktopLogo from "./DesktopLogo.png";
 import ChartImg from "./chart.png";
 import CrossImag from "./crossImag.png";
+import MapImg from "./MapImg.png";
+import Profile from "./person1.png";
+import checkBoxOne from "./checkBoxOne.png";
+import checkBoxTwo from "./checkBoxTwo.png";
+import ProfileAdd from "./profileAdd.png";
+import CompanyProfile from "./companyProfile.png";
+import TickSign from "./tickSign.png";
+import DustbinIcon from "./dustbinIcon.png";
 
 export {
   Brochure,
   Logo,
+  DustbinIcon,
+  TickSign,
+  CompanyProfile,
+  checkBoxOne,
+  ProfileAdd,
+  checkBoxTwo,
+  Profile,
+  MapImg,
   CrossImag,
   ChartImg,
   Tickblue,
