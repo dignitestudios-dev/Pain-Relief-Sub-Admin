@@ -61,5 +61,17 @@ const ReferalstaticData = [
   },
   // Add more static entries as needed
 ];
+const AppointmentData = [
+  {
+    appoitmentId: "BK54154",
+    date: "26 Feb, 2025",
+    time: "08:00pm",
+    scheduledImg: "https://i.pravatar.cc/40?img=4",
+    scheduledname: "John Doe",
+    chiropractorImg: "https://i.pravatar.cc/40?img=4",
+    chiropractorname: "John Doe",
+    status: "Pending",
+  },
+];
 
-export { membersData, familyData, ReferalstaticData };
+export { membersData, familyData, ReferalstaticData, AppointmentData };

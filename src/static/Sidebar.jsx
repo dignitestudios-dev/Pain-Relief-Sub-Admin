@@ -1,21 +1,45 @@
 // Import images
 
-import { admin, adminWhite, appointment, appointmentWhite, company, companyWhite, dashboard, dashboardWhite, link, link2, link2Active, linkActive, members, membersWhite, referal, referalWhite, report, reportWhite, revenue, revenueWhite, service, serviceWhite, subscription, subscriptionWhite } from "../assets/export";
-
+import {
+  admin,
+  adminWhite,
+  appointment,
+  appointmentWhite,
+  company,
+  companyWhite,
+  dashboard,
+  dashboardWhite,
+  link,
+  link2,
+  link2Active,
+  linkActive,
+  members,
+  membersWhite,
+  referal,
+  referalWhite,
+  report,
+  reportWhite,
+  revenue,
+  revenueWhite,
+  service,
+  serviceWhite,
+  subscription,
+  subscriptionWhite,
+} from "../assets/export";
 
 // sidebarData
 export const sidebarDataSubAdmin = [
   {
     title: "Service Provider",
     url: "/app/dashboard",
-       icon: link2,        // Default icon
+    icon: link2, // Default icon
     activeIcon: link2Active, // Active icon
   },
   {
     title: "Unique Referral",
     url: "/app/unique-referral",
- 
-    icon: link,         // Default icon
+
+    icon: link, // Default icon
     activeIcon: linkActive, // Active icon
   },
 ];
@@ -24,64 +48,61 @@ export const sidebarDataAdmin = [
   {
     title: "Dashboard",
     url: "/app/dashboard",
-    icon: dashboard,  
+    icon: dashboard,
     activeIcon: dashboardWhite,
   },
   {
     title: "Members",
     url: "/app/member",
-    icon: members,   
-    activeIcon:membersWhite,
+    icon: members,
+    activeIcon: membersWhite,
   },
   {
     title: "Service",
     url: "/app/service",
-    icon: service,   
-    activeIcon:serviceWhite,
+    icon: service,
+    activeIcon: serviceWhite,
   },
   {
     title: "Sub Admin",
     url: "/app/sub-admin",
-    icon: admin,   
-    activeIcon:adminWhite,
+    icon: admin,
+    activeIcon: adminWhite,
   },
   {
     title: "Appointments",
     url: "/app/appointment",
-    icon: appointment,   
-    activeIcon:appointmentWhite,
+    icon: appointment,
+    activeIcon: appointmentWhite,
   },
   {
     title: "Unique Referral",
-    url: "/app/referal",
-    icon:referal,   
-    activeIcon:referalWhite,
+    url: "/app/unique-referral",
+    icon: referal,
+    activeIcon: referalWhite,
   },
   {
     title: "Membership Plans",
     url: "/app/membership",
-    icon:subscription,   
-    activeIcon:subscriptionWhite,
+    icon: subscription,
+    activeIcon: subscriptionWhite,
   },
   {
     title: "Report an Issue",
-    url: "/app/report",
-    icon:report,   
-    activeIcon:reportWhite,
+    url: "/app/report-issue",
+    icon: report,
+    activeIcon: reportWhite,
   },
   {
     title: "Revenue",
     url: "/app/revenue",
-    icon:revenue,   
-    activeIcon:revenueWhite,
+    icon: revenue,
+    activeIcon: revenueWhite,
   },
   {
     title: "Company Management ",
-    url: "/app/company",
-    icon:company,   
-    activeIcon:companyWhite,
+    url: "/app/company-managment",
+    icon: company,
+    activeIcon: companyWhite,
   },
 ];
-
-
-
