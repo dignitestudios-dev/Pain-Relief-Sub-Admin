@@ -3,7 +3,10 @@
 // e.g. formatDateToMMDDYYYY, formatEpochToMMDDYYYY, etc.
 import moment from "moment/moment";
 
-
 export const getLongDateFormat = (date) => {
   return moment(date).format("MMMM D, YYYY");
+};
+
+export const getDateFormat = (date) => {
+  return moment(date).format("MM-DD-YYYY");
 };

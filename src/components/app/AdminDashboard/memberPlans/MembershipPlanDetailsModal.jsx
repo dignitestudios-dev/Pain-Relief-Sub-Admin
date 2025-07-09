@@ -1,8 +1,13 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
 import { CrossImag } from "../../../../assets/export";
 import Button from "../../../global/Button";
 
-const MembershipPlanDetailsModal = ({ onClose,handleEdit }) => {
+const MembershipPlanDetailsModal = ({
+  onClose,
+  handleEdit,
+  memberPlanDetails,
+}) => {
   const plan = {
     name: "Basic Plan",
     description:
@@ -42,19 +47,27 @@ const MembershipPlanDetailsModal = ({ onClose,handleEdit }) => {
 
         {/* Plan Name & Description */}
         <div className="border-b pb-3">
-          <h3 className="font-semibold text-[16px] text-[#000]">{plan.name}</h3>
-          <p className="text-sm text-gray-500">{plan.description}</p>
+          <h3 className="font-semibold text-[16px] text-[#000]">
+            {memberPlanDetails?.planName}
+          </h3>
+          <p className="text-sm text-gray-500">
+            {memberPlanDetails.description ?? "Not Provided"}
+          </p>
         </div>
 
         {/* Membership Type & Price */}
         <div className="flex justify-between text-sm py-4 border-b">
           <div>
             <p className="text-gray-500">Membership Type</p>
-            <p className="text-[#000] font-medium">{plan.type}</p>
+            <p className="text-[#000] font-medium">
+              {memberPlanDetails?.category}
+            </p>
           </div>
           <div>
             <p className="text-gray-500">Membership Price</p>
-            <p className="text-[#000] font-bold">{plan.price}/mo</p>
+            <p className="text-[#000] font-bold">
+              {memberPlanDetails?.amount}/mo
+            </p>
           </div>
         </div>
 

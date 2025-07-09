@@ -42,10 +42,7 @@ export const AdminDashboardRoutes = [
     url: "sub-admin",
     page: <SubAdmin />,
   },
-  {
-    url: "sub-admin",
-    page: <SubAdmin />,
-  },
+
   {
     url: "sub-admin-detail/:id",
     page: <SubAdminDetail />,

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { useNavigate } from "react-router";
+import { getDateFormat } from "../../../../lib/helpers";
 
 const AppointmentsTable = ({ data }) => {
   console.log("🚀 ~ AppointmentsTable ~ data:", data);
@@ -35,7 +36,7 @@ const AppointmentsTable = ({ data }) => {
                   {appointment?.shortCode}
                 </td>
                 <td className="py-3 px-2 text-gray-600">
-                  {appointment.appointmentDate}
+                  {getDateFormat(appointment.appointmentDate)}
                 </td>
                 <td className="py-3 px-2 text-gray-600">
                   {appointment.appointmentTime}

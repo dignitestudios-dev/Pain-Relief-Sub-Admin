@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import AppointmentsTable from "../../../components/app/AdminDashboard/appointments/AppointmentsTable";
 import { useFetchData } from "../../../hooks/api/Get";
 import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
 
 const Appointments = () => {
-  const tabs = ["All", "Pending", "Approved", "Completed", "Canceled"];
+  const debounceRef = useRef();
+
+  const tabs = ["All", "Pending", "Approved", "Completed", "Cancelled"];
   const [activeTab, setActiveTab] = useState("All");
   const [search, setSearch] = useState("");
-  const { data, loading } = useFetchData(`/admin/get-appointments`, {}, 1);
+
+  const handleSearch = useCallback((value) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      setSearch(value);
+    }, 500);
+  }, []);
+
+  const { data, loading } = useFetchData(
+    `/admin/get-appointments`,
+    { search, status: activeTab === "All" ? "" : activeTab },
+    1
+  );
+
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       {/* Header and Tabs */}
@@ -41,8 +57,7 @@ const Appointments = () => {
             type="text"
             placeholder="Search"
             className="w-full text-sm bg-transparent border-none outline-none placeholder-gray-400"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
       </div>

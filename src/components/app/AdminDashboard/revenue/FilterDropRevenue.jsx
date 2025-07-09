@@ -1,27 +1,26 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { checkBoxOne, checkBoxTwo, CrossImag } from "../../../../assets/export";
 import Calender from "../../../global/DatePicker";
 import { IoChevronDown } from "react-icons/io5";
 import Button from "../../../global/Button";
 
-const FilterDropRevenue = ({ onClose }) => {
-  const [referralType, setReferralType] = useState("Subscription Type");
+const FilterDropRevenue = ({
+  onClose,
+  handleFilter,
+  filters,
+  setFilters,
+  selected,
+  toggle,
+  selectedTypes,
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+
   const handleSelect = (option) => {
-    setReferralType(option);
+    setFilters((prev) => ({ ...prev, planType: option }));
     setShowDropdown(false);
   };
-  const [selected, setSelected] = useState({
-    individual: false,
-    couple: false,
-    family: false,
-  });
 
-  const toggle = (type) => {
-    setSelected((prev) => ({ ...prev, [type]: !prev[type] }));
-  };
   return (
     <div className="fixed inset-0 z-40 flex items-start justify-end bg-black/30">
       <div className="bg-white absolute top-52 right-12 rounded-[13px] w-[371px] p-3 shadow-md">
@@ -82,16 +81,26 @@ const FilterDropRevenue = ({ onClose }) => {
         <div className="flex justify-between gap-4 my-4">
           <Calender
             endDate={true}
-            startDate={startDate ? startDate.toISOString().split("T")[0] : ""}
-            setStartDate={setStartDate}
+            startDate={
+              filters.startDate
+                ? filters.startDate.toISOString().split("T")[0]
+                : ""
+            }
+            setStartDate={(date) =>
+              setFilters((prev) => ({ ...prev, startDate: new Date(date) }))
+            }
             text={"DD/MM/YY"}
             isStyle={true}
             label={"Start Date"}
           />
           <Calender
             endDate={true}
-            startDate={endDate ? endDate.toISOString().split("T")[0] : ""}
-            setStartDate={setEndDate}
+            startDate={
+              filters.endDate ? filters.endDate.toISOString().split("T")[0] : ""
+            }
+            setStartDate={(date) =>
+              setFilters((prev) => ({ ...prev, endDate: new Date(date) }))
+            }
             text={"DD/MM/YY"}
             isStyle={true}
             label={"End Date"}
@@ -104,7 +113,7 @@ const FilterDropRevenue = ({ onClose }) => {
             className="border px-4 py-3 rounded-[8px] text-sm cursor-pointer flex justify-between items-center"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <span>{referralType}</span>
+            <span>{filters?.planType}</span>
             <IoChevronDown className="text-gray-600" />
           </div>
 
@@ -124,11 +133,33 @@ const FilterDropRevenue = ({ onClose }) => {
         </div>
 
         <div className="flex gap-4">
-          <button className="bg-[#DCDCDC] w-[165px] rounded-[8px] h-[49px] font-medium">
+          <button
+            className="bg-[#DCDCDC] w-[165px] rounded-[8px] h-[49px] font-medium"
+            onClick={() => {
+              handleFilter(null, null, "User Referral", "");
+              setFilters({
+                startDate: null,
+                endDate: null,
+                planType: "Select Type",
+                selectedTypes,
+              });
+            }}
+          >
             Clear
           </button>
+
           <div className="w-[165px]">
-            <Button text="Apply" />
+            <Button
+              text="Apply"
+              onClick={() =>
+                handleFilter(
+                  filters.startDate,
+                  filters.endDate,
+                  filters.planType,
+                  selectedTypes
+                )
+              }
+            />
           </div>
         </div>
       </div>

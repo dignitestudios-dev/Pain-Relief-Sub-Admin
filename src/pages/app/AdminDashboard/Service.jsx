@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 
@@ -9,15 +9,25 @@ import CreateModal from "../../../components/app/AdminDashboard/service/CreateMo
 import { useFetchData } from "../../../hooks/api/Get";
 import TableLoader from "../../../components/global/TableLoader";
 const Service = () => {
+  const debounceRef = useRef();
+
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("network");
   const [isPainRelief, setIsPainRelief] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [status, setStatus] = useState("");
 
+  const handleSearch = useCallback((value) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      setSearch(value);
+    }, 500);
+  }, []);
+
   const { data, loading } = useFetchData(
     `admin/get-providers`,
-    { isPainReliefCoach: isPainRelief, status: status },
+    { isPainReliefCoach: isPainRelief, status: status, search },
     1
   );
 
@@ -33,8 +43,7 @@ const Service = () => {
             type="text"
             placeholder="Search"
             className="w-full text-sm bg-transparent border-none outline-none placeholder-gray-400"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
 

@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { CrossImag } from "../../assets/export";
 import { IoChevronDown } from "react-icons/io5";
 import Calender from "./DatePicker";
 import Button from "./Button";
 
-const DropDownCalender = ({ onClose }) => {
-  const [referralType, setReferralType] = useState("Select Referral Type");
+const DropDownCalender = ({ onClose, handleFilter, filters, setFilters }) => {
+  // const [referralType, setReferralType] = useState("Select Referral Type");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+
   const handleSelect = (option) => {
-    setReferralType(option);
+    setFilters((prev) => ({ ...prev, referralType: option }));
     setShowDropdown(false);
   };
 
@@ -32,16 +32,26 @@ const DropDownCalender = ({ onClose }) => {
         <div className="flex justify-between gap-4 my-4">
           <Calender
             endDate={true}
-            startDate={startDate ? startDate.toISOString().split("T")[0] : ""}
-            setStartDate={setStartDate}
+            startDate={
+              filters.startDate
+                ? filters.startDate.toISOString().split("T")[0]
+                : ""
+            }
+            setStartDate={(date) =>
+              setFilters((prev) => ({ ...prev, startDate: new Date(date) }))
+            }
             text={"DD/MM/YY"}
             isStyle={true}
             label={"Start Date"}
           />
           <Calender
             endDate={true}
-            startDate={endDate ? endDate.toISOString().split("T")[0] : ""}
-            setStartDate={setEndDate}
+            startDate={
+              filters.endDate ? filters.endDate.toISOString().split("T")[0] : ""
+            }
+            setStartDate={(date) =>
+              setFilters((prev) => ({ ...prev, endDate: new Date(date) }))
+            }
             text={"DD/MM/YY"}
             isStyle={true}
             label={"End Date"}
@@ -54,7 +64,7 @@ const DropDownCalender = ({ onClose }) => {
             className="border px-4 py-3 rounded-[8px] text-sm cursor-pointer flex justify-between items-center"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <span>{referralType}</span>
+            <span>{filters?.referralType}</span>
             <IoChevronDown className="text-gray-600" />
           </div>
 
@@ -74,11 +84,32 @@ const DropDownCalender = ({ onClose }) => {
         </div>
 
         <div className="flex gap-4">
-          <button className="bg-[#DCDCDC] w-[165px] rounded-[8px] h-[49px] font-medium">
+          <button
+            onClick={() => {
+              handleFilter(null, null, "User Referral");
+              setFilters({
+                startDate: null,
+                endDate: null,
+                referralType: "User Referral",
+                search: "",
+              });
+            }}
+            className="bg-[#DCDCDC] w-[165px] rounded-[8px] h-[49px] font-medium"
+          >
             Clear
           </button>
           <div className="w-[165px]">
-            <Button text="Apply" />
+            <Button
+              onClick={() =>
+                handleFilter(
+                  filters.startDate,
+                  filters.endDate,
+                  filters.referralType
+                )
+              }
+              type="button"
+              text="Apply"
+            />
           </div>
         </div>
       </div>
