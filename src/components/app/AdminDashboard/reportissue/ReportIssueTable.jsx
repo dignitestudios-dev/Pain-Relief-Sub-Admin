@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import Button from "../../../global/Button";
+import { getDateFormat } from "../../../../lib/helpers";
 
 const staticUsers = [
   {
@@ -15,14 +16,7 @@ const staticUsers = [
   },
 ];
 
-const ReportIssueTable = () => {
-  const navigate = useNavigate();
-  const [search, setSearch] = useState("");
-
-  const handleViewDetail = (userId) => {
-    navigate(`/app/sub-admin-detail/${userId}`);
-  };
-
+const ReportIssueTable = ({ data, handleSearch, typeValue }) => {
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       {/* Header Section */}
@@ -37,8 +31,8 @@ const ReportIssueTable = () => {
             type="text"
             placeholder="Search"
             className="w-full text-sm bg-transparent border-none outline-none placeholder-gray-400"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={typeValue}
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
       </div>
@@ -61,8 +55,8 @@ const ReportIssueTable = () => {
 
         {/* Rows */}
         <div className="divide-y">
-          {staticUsers.length > 0 ? (
-            staticUsers.map((user, index) => (
+          {data?.length > 0 ? (
+            data?.map((user, index) => (
               <div
                 key={user.id}
                 className="grid grid-cols-[40px_1.5fr_2fr_1.5fr_1fr] gap-4 px-4 py-6 items-center text-sm hover:bg-gray-50"
@@ -70,15 +64,21 @@ const ReportIssueTable = () => {
                 <div>{index + 1}</div>
                 <div className="flex items-center gap-2">
                   <img
-                    src={user.avatar}
+                    src={user?.userDetails?.profilePicture}
                     alt="avatar"
                     className="w-10 h-10 rounded-full border border-[#63CFAC] p-0.5"
                   />
-                  <span>{user.name}</span>
+                  <span>{user?.userDetails?.firstName}</span>
                 </div>
-                <div className="text-gray-700">{user.issue}</div>
-                <div>{user.date}</div>
-                <div>{user.time}</div>
+                <div className="text-gray-700">{user?.description}</div>
+                <div>{getDateFormat(user?.date)}</div>
+                <div>
+                  {user?.createdAt
+                    ?.split("T")[1]
+                    ?.split(":")
+                    .slice(0, 2)
+                    .join(":")}
+                </div>
               </div>
             ))
           ) : (

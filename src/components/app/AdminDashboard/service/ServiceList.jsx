@@ -66,6 +66,7 @@ const ServiceList = ({ data }) => {
             </div>
           )}
         </div>
+        
       </div>
     </div>
   );

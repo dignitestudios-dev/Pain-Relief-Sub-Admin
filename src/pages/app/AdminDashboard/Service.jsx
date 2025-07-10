@@ -8,6 +8,7 @@ import PainReleifList from "../../../components/app/AdminDashboard/service/PainR
 import CreateModal from "../../../components/app/AdminDashboard/service/CreateModal";
 import { useFetchData } from "../../../hooks/api/Get";
 import TableLoader from "../../../components/global/TableLoader";
+import Pagination from "../../../components/global/Pagination";
 const Service = () => {
   const debounceRef = useRef();
 
@@ -16,7 +17,7 @@ const Service = () => {
   const [isPainRelief, setIsPainRelief] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [status, setStatus] = useState("");
-
+  const [page, setPage] = useState(1);
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -24,11 +25,14 @@ const Service = () => {
       setSearch(value);
     }, 500);
   }, []);
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
-  const { data, loading } = useFetchData(
+  const { data, loading, pagination } = useFetchData(
     `admin/get-providers`,
     { isPainReliefCoach: isPainRelief, status: status, search },
-    1
+    page
   );
 
   return (
@@ -137,8 +141,34 @@ const Service = () => {
         <TableLoader />
       ) : (
         <>
-          {activeTab === "network" && <ServiceList data={data} />}
-          {activeTab === "coach" && <PainReleifList data={data} />}
+          {activeTab === "network" && (
+            <>
+              <ServiceList data={data} />
+              <div className="flex justify-end">
+                <Pagination
+                  currentPage={pagination?.currentPage}
+                  totalPages={pagination?.totalPages}
+                  onPageChange={handlePageChange}
+                  setCurrentPage={page}
+                />
+              </div>
+            </>
+          )}
+
+          {activeTab === "coach" && (
+            <>
+              {" "}
+              <PainReleifList data={data} />{" "}
+              <div className="flex justify-end">
+                <Pagination
+                  currentPage={pagination?.currentPage}
+                  totalPages={pagination?.totalPages}
+                  onPageChange={handlePageChange}
+                  setCurrentPage={page}
+                />
+              </div>{" "}
+            </>
+          )}
           {createModal && <CreateModal onCLose={() => setCreateModal(false)} />}
         </>
       )}

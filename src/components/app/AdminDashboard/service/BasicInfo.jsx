@@ -4,7 +4,7 @@ const BasicInfo = ({ provider }) => {
   console.log(provider, "provider==>");
   return (
     <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-6">
-      <p className="text-[24px] font-[600] ">Members Details</p>
+      <p className="text-[24px] font-[600] ">Clinic Profile</p>
       <span className="w-full border border-b flex"></span>
       <InfoRow label="Full Name" value={provider?.name} />
       <InfoRow label="Email Address" value={provider?.email} />

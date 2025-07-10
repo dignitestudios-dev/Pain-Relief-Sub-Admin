@@ -3,6 +3,7 @@ import AppointmentsTable from "../../../components/app/AdminDashboard/appointmen
 import { useFetchData } from "../../../hooks/api/Get";
 import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
+import Pagination from "../../../components/global/Pagination";
 
 const Appointments = () => {
   const debounceRef = useRef();
@@ -10,7 +11,7 @@ const Appointments = () => {
   const tabs = ["All", "Pending", "Approved", "Completed", "Cancelled"];
   const [activeTab, setActiveTab] = useState("All");
   const [search, setSearch] = useState("");
-
+  const [page, setPage] = useState(1);
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -18,11 +19,14 @@ const Appointments = () => {
       setSearch(value);
     }, 500);
   }, []);
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
-  const { data, loading } = useFetchData(
+  const { data, loading, pagination } = useFetchData(
     `/admin/get-appointments`,
     { search, status: activeTab === "All" ? "" : activeTab },
-    1
+    page
   );
 
   return (
@@ -61,7 +65,21 @@ const Appointments = () => {
           />
         </div>
       </div>
-      {loading ? <TableLoader /> : <AppointmentsTable data={data} />}
+      {loading ? (
+        <TableLoader />
+      ) : (
+        <>
+          <AppointmentsTable data={data} />
+          <div className="flex justify-end">
+            <Pagination
+              currentPage={pagination?.currentPage}
+              totalPages={pagination?.totalPages}
+              onPageChange={handlePageChange}
+              setCurrentPage={page}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

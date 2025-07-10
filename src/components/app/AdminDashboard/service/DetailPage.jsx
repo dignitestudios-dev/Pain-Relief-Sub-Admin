@@ -2,19 +2,27 @@ import { useState } from "react";
 import Button from "../../../global/Button";
 import BasicInfo from "./BasicInfo";
 import MedicalLicense from "./MedicalLicense";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useFetchById } from "../../../../hooks/api/Get";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const DetailPage = () => {
+  const navigate =useNavigate()
   const [activeTab, setActiveTab] = useState("Basic Info");
   const { id } = useParams();
   const { data, loading } = useFetchById(`/admin/get-provider/${id}`);
 
-  console.log("🚀 ~ DetailPage ~ data:", data);
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
+      <div
+        className="flex items-center cursor-pointer "
+        onClick={() => navigate(-1)}
+      >
+        <IoIosArrowRoundBack size={18} />
+        <p className="text-[14px] font-[600] ">Back</p>
+      </div>
       <h2 className="text-[32px] font-[600] text-[#212121] mb-4">
-        Members Details
+        Service Provider Details
       </h2>
 
       <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">

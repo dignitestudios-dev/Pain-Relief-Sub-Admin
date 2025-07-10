@@ -6,13 +6,14 @@ import TableLoader from "../../../components/global/TableLoader";
 import Button from "../../../components/global/Button";
 import { FaPlus } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
+import Pagination from "../../../components/global/Pagination";
 
 const SubAdmin = () => {
   const debounceRef = useRef();
 
   const [subAdminModal, setSubAdminModal] = useState(false);
   const [search, setSearch] = useState("");
-
+  const [page, setPage] = useState(1);
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -21,7 +22,16 @@ const SubAdmin = () => {
     }, 500);
   }, []);
 
-  const { data, loading } = useFetchData(`admin/get-sub-admins`, { search }, 1);
+  const { data, loading, pagination } = useFetchData(
+    `admin/get-sub-admins`,
+    { search },
+    page
+  );
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -51,7 +61,17 @@ const SubAdmin = () => {
       {loading ? (
         <TableLoader />
       ) : (
-        <SubAdminTable setSubAdminModal={setSubAdminModal} data={data} />
+        <>
+          <SubAdminTable setSubAdminModal={setSubAdminModal} data={data} />
+          <div className="flex justify-end">
+            <Pagination
+              currentPage={pagination?.currentPage}
+              totalPages={pagination?.totalPages}
+              onPageChange={handlePageChange}
+              setCurrentPage={page}
+            />
+          </div>
+        </>
       )}
       {subAdminModal && (
         <CreateSubAdminModal onCLose={() => setSubAdminModal(false)} />

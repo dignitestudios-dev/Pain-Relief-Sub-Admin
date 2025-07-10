@@ -8,6 +8,7 @@ import Button from "../../../components/global/Button";
 import { FaPlus } from "react-icons/fa";
 import { useFetchData } from "../../../hooks/api/Get";
 import TableLoader from "../../../components/global/TableLoader";
+import Pagination from "../../../components/global/Pagination";
 
 const MemberPlans = () => {
   const debounceRef = useRef();
@@ -16,7 +17,7 @@ const MemberPlans = () => {
   const [search, setSearch] = useState("");
   const [memberPlanDetails, setMemberPlanDetails] = useState("");
   const [typeValue, setTypeValue] = useState("");
-
+  const [page, setPage] = useState(1);
   const [membershipPlanDetailsModal, setMembershipPlanDetailsModal] =
     useState(false);
 
@@ -34,13 +35,16 @@ const MemberPlans = () => {
     setTypeValue(value);
   }, []);
 
-  const { data, loading } = useFetchData(
-    `admin/get-plans-revenue`,
+  const { data, loading, pagination } = useFetchData(
+    `/payment/subscriptions`,
     { search },
-    1
+    page
   );
 
-  console.log("🚀 ~ MemberPlans ~ data:", data);
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -66,16 +70,30 @@ const MemberPlans = () => {
           </div>
         </div>
       </div>
+
+
       {loading ? (
         <TableLoader />
       ) : (
-        <MembersPlanTable
-          data={data}
-          handleSearch={handleSearch}
-          typeValue={typeValue}
-          handleViewDetail={handleViewDetail}
-        />
+        <>
+          <MembersPlanTable
+            data={data}
+            handleSearch={handleSearch}
+            typeValue={typeValue}
+            handleViewDetail={handleViewDetail}
+          />
+          <div className="flex justify-end">
+            <Pagination
+              currentPage={pagination?.currentPage}
+              totalPages={pagination?.totalPages}
+              onPageChange={handlePageChange}
+              setCurrentPage={page}
+            />
+          </div>
+        </>
       )}
+
+
       {memberPlanModal && (
         <AddMemberPlanModal onClose={() => setMemberModal(false)} />
       )}

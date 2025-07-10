@@ -6,6 +6,7 @@ import { CiFilter } from "react-icons/ci";
 import Button from "../../../components/global/Button";
 import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
+import Pagination from "../../../components/global/Pagination";
 
 const Revenue = () => {
   const debounceRef = useRef();
@@ -13,7 +14,7 @@ const Revenue = () => {
   const tabs = ["All", "Standard Plan", "Premium Plan"];
   const [activeTab, setActiveTab] = useState("All");
   const [filterDropDown, setFilterDropDown] = useState(false);
-
+  const [page, setPage] = useState(1);
   const [plans, setPlans] = useState("");
 
   const [selectedTypes, setSelectedTypes] = useState("");
@@ -68,8 +69,11 @@ const Revenue = () => {
     setSelected((prev) => ({ [type]: !prev[type] }));
     setSelectedTypes(type);
   };
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
-  const { data, loading } = useFetchData(
+  const { data, loading, pagination } = useFetchData(
     `admin/get-plans-revenue`,
     {
       plan: plans,
@@ -88,7 +92,7 @@ const Revenue = () => {
           ? "yearly"
           : "",
     },
-    1
+    page
   );
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -151,7 +155,21 @@ const Revenue = () => {
           selectedTypes={selectedTypes}
         />
       )}
-      {loading ? <TableLoader /> : <RevenueTable data={data} />}
+      {loading ? (
+        <TableLoader />
+      ) : (
+        <>
+          <RevenueTable data={data} />
+          <div className="flex justify-end">
+            <Pagination
+              currentPage={pagination?.currentPage}
+              totalPages={pagination?.totalPages}
+              onPageChange={handlePageChange}
+              setCurrentPage={page}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

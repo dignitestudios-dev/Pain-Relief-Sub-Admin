@@ -5,6 +5,7 @@ import DropDownCalender from "../../../components/global/DropDownCalender";
 import TableLoader from "../../../components/global/TableLoader";
 import { IoSearch } from "react-icons/io5";
 import { CiFilter } from "react-icons/ci";
+import Pagination from "../../../components/global/Pagination";
 
 const UniqueReferral = () => {
   const debounceRef = useRef();
@@ -23,8 +24,8 @@ const UniqueReferral = () => {
     referralType: "User Referral",
     search: "",
   });
-
-  const { data, loading } = useFetchData(
+  const [page, setPage] = useState(1);
+  const { data, loading, pagination } = useFetchData(
     `admin/unique-referrals`,
     {
       role: activeTab === "User Referral" ? "user" : "provider",
@@ -37,7 +38,7 @@ const UniqueReferral = () => {
         : "",
       referralType: filterDate?.referralType,
     },
-    1
+    page
   );
 
   const handleSearch = useCallback((value) => {
@@ -62,6 +63,9 @@ const UniqueReferral = () => {
       }));
     }
     setFilterDropDown(false);
+  };
+  const handlePageChange = (page) => {
+    setPage(page);
   };
 
   return (
@@ -116,7 +120,21 @@ const UniqueReferral = () => {
           setFilters={setFilters}
         />
       )}
-      {loading ? <TableLoader /> : <UniqueReferralTable data={data} />}
+      {loading ? (
+        <TableLoader />
+      ) : (
+        <>
+          <UniqueReferralTable data={data} />
+          <div className="flex justify-end">
+            <Pagination
+              currentPage={pagination?.currentPage}
+              totalPages={pagination?.totalPages}
+              onPageChange={handlePageChange}
+              setCurrentPage={page}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
