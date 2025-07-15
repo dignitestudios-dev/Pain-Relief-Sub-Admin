@@ -7,6 +7,10 @@ import Button from "../../../components/global/Button";
 import { FaPlus } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import Pagination from "../../../components/global/Pagination";
+import axios from "../../../axios";
+import { CreateSubAdminSchema } from "../../../schema/editForm/editFormSchema";
+import { useFormik } from "formik";
+import { ErrorToast, SuccessToast } from "../../../components/global/Toaster";
 
 const SubAdmin = () => {
   const debounceRef = useRef();
@@ -14,6 +18,9 @@ const SubAdmin = () => {
   const [subAdminModal, setSubAdminModal] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [update, setUpdate] = useState(false);
+
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -25,12 +32,53 @@ const SubAdmin = () => {
   const { data, loading, pagination } = useFetchData(
     `admin/get-sub-admins`,
     { search },
-    page
+    page,
+    update
   );
 
   const handlePageChange = (page) => {
     setPage(page);
   };
+
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+    useFormik({
+      initialValues: {
+        firstName: "",
+        // lastName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+      },
+      validationSchema: CreateSubAdminSchema,
+      onSubmit: async (values, { resetForm }) => {
+        const payload = {
+          firstName: values.firstName,
+          // lastName: values.lastName,
+          email: values.email,
+          phone: values.phone,
+          password: values.password,
+        };
+
+        try {
+          setBtnLoading(true);
+          await axios.post("/admin/create-subAdmin", payload);
+          // 🔁 Optional: show success toast, close modal, etc.
+          resetForm();
+          setSubAdminModal(false);
+          setUpdate((prev) => !prev);
+          SuccessToast("Added Successfully");
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+          console.error(
+            "Error creating sub admin:",
+            error?.response?.data?.message
+          );
+        } finally {
+          setBtnLoading(false);
+        }
+      },
+    });
 
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -74,7 +122,16 @@ const SubAdmin = () => {
         </>
       )}
       {subAdminModal && (
-        <CreateSubAdminModal onCLose={() => setSubAdminModal(false)} />
+        <CreateSubAdminModal
+          onCLose={() => setSubAdminModal(false)}
+          values={values}
+          errors={errors}
+          touched={touched}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          handleSubmit={handleSubmit}
+          btnLoading={btnLoading}
+        />
       )}
     </div>
   );

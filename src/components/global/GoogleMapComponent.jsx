@@ -24,7 +24,7 @@ const libraries = ["places"];
 const GoogleMapComponent = ({
   coords,
   address,
-  distance = 1,
+  distance = 8,
   showRadius = true,
 }) => {
   console.log("🚀 ~ editAddress:", coords, "`~~ address ~~", address);

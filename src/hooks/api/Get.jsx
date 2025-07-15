@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "../../axios";
 import { processError } from "../../lib/utils";
 
-const useFetchData = (url, filter = {}, currentPage = 1) => {
+const useFetchData = (url, filter = {}, currentPage = 1, update = false) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -34,12 +34,12 @@ const useFetchData = (url, filter = {}, currentPage = 1) => {
 
   useEffect(() => {
     getUsers();
-  }, [JSON.stringify(filter), currentPage]);
+  }, [JSON.stringify(filter), currentPage, update]);
 
   return { loading, data, pagination };
 };
 
-const useFetchById = (url) => {
+const useFetchById = (url, update = false) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -60,7 +60,7 @@ const useFetchById = (url) => {
 
   useEffect(() => {
     getDataById();
-  }, []);
+  }, [update]);
 
   return { loading, data, pagination };
 };

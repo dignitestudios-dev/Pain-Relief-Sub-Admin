@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router";
 
 const ServiceList = ({ data }) => {
+  console.log("🚀 ~ ServiceList ~ data:", data);
   const navigate = useNavigate();
 
   const handleViewDetail = (userId) => {
@@ -66,7 +67,6 @@ const ServiceList = ({ data }) => {
             </div>
           )}
         </div>
-        
       </div>
     </div>
   );

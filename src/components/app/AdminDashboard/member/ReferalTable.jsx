@@ -3,10 +3,15 @@
 const ReferalTable = ({ referralData }) => {
   return (
     <div className="p-3 bg-[#FAFAFA] rounded-lg shadow">
-      <div className="text-blue-500 cursor-pointer mb-4">
-        <p className="bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent text-[14px] font-[500] text-end">
-          Export CSV
-        </p>
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-[24px] font-[500] ">
+          Referral Friend ({referralData?.length}){" "}
+        </h2>
+        <div className="text-blue-500 cursor-pointer ">
+          <p className="bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent text-[14px] font-[500] text-end">
+            Export CSV
+          </p>
+        </div>
       </div>
 
       <div className="bg-[#FAFAFA] p-2 rounded-md">
@@ -27,14 +32,14 @@ const ReferalTable = ({ referralData }) => {
             className="grid grid-cols-[40px_1.2fr_1.5fr_1.5fr_1.3fr_1fr] gap-4 px-4 py-6 items-center text-sm hover:bg-gray-50 border-b last:border-none"
           >
             <div>{index + 1}</div>
-            <div>{user.referralId}</div>
+            <div>{user?.referId}</div>
             <div className="flex items-center gap-2">
               <img
-                src={user.profilePicture || "https://i.pravatar.cc/40?img=4"}
+                src={user?.profilePicture || "https://i.pravatar.cc/40?img=4"}
                 alt="avatar"
                 className="w-10 h-10 rounded-full"
               />
-              <span>{user.name}</span>
+              <span>{user?.name}</span>
             </div>
             <div>{user.email}</div>
             <div>
@@ -44,7 +49,9 @@ const ReferalTable = ({ referralData }) => {
                 day: "numeric",
               })}
             </div>
-            <div className="capitalize">{user.status}</div>
+            <div className="capitalize">
+              {user.isSubscribed ? "Subscribed" : "Unsubscribed"}
+            </div>
           </div>
         ))}
       </div>

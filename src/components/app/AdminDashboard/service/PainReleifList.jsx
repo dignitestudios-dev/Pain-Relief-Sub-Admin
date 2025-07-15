@@ -6,7 +6,7 @@ const PainReleifList = ({ data }) => {
   const navigate = useNavigate();
 
   const handleViewDetail = (userId) => {
-    navigate(`/app/user-details/${userId}`);
+    navigate(`/app/service-provider-detail/${userId}`);
   };
 
   return (
@@ -52,7 +52,9 @@ const PainReleifList = ({ data }) => {
                 <div>{user.email}</div>
                 <div>{user.phone}</div>
                 <div>{user?.address?.address}</div>
-                <div className="capitalize">{user?.profileStatus}</div>
+                <div className="capitalize">
+                  {user?.isPainReliefCoach ? "Approved" : "Pending"}
+                </div>
                 <div
                   className="font-medium underline cursor-pointer text-[#63CFAC]"
                   onClick={() => handleViewDetail(user._id)}

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import MembersPlanTable from "../../../components/app/AdminDashboard/memberPlans/MembersPlanTable";
 import AddMemberPlanModal from "../../../components/app/AdminDashboard/memberPlans/AddMemberPlanModal";
 import MembershipPlanDetailsModal from "../../../components/app/AdminDashboard/memberPlans/MembershipPlanDetailsModal";
@@ -8,7 +8,7 @@ import Button from "../../../components/global/Button";
 import { FaPlus } from "react-icons/fa";
 import { useFetchData } from "../../../hooks/api/Get";
 import TableLoader from "../../../components/global/TableLoader";
-import Pagination from "../../../components/global/Pagination";
+// import Pagination from "../../../components/global/Pagination";
 
 const MemberPlans = () => {
   const debounceRef = useRef();
@@ -18,6 +18,9 @@ const MemberPlans = () => {
   const [memberPlanDetails, setMemberPlanDetails] = useState("");
   const [typeValue, setTypeValue] = useState("");
   const [page, setPage] = useState(1);
+
+  const [update, setUpdate] = useState(false);
+
   const [membershipPlanDetailsModal, setMembershipPlanDetailsModal] =
     useState(false);
 
@@ -35,15 +38,16 @@ const MemberPlans = () => {
     setTypeValue(value);
   }, []);
 
-  const { data, loading, pagination } = useFetchData(
+  const { data, loading } = useFetchData(
     `/payment/subscriptions`,
     { search },
-    page
+    page,
+    update
   );
 
-  const handlePageChange = (page) => {
-    setPage(page);
-  };
+  // const handlePageChange = (page) => {
+  //   setPage(page);
+  // };
 
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -71,7 +75,6 @@ const MemberPlans = () => {
         </div>
       </div>
 
-
       {loading ? (
         <TableLoader />
       ) : (
@@ -82,20 +85,22 @@ const MemberPlans = () => {
             typeValue={typeValue}
             handleViewDetail={handleViewDetail}
           />
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
             <Pagination
               currentPage={pagination?.currentPage}
               totalPages={pagination?.totalPages}
               onPageChange={handlePageChange}
               setCurrentPage={page}
             />
-          </div>
+          </div> */}
         </>
       )}
 
-
       {memberPlanModal && (
-        <AddMemberPlanModal onClose={() => setMemberModal(false)} />
+        <AddMemberPlanModal
+          onClose={() => setMemberModal(false)}
+          setUpdate={setUpdate}
+        />
       )}
       {membershipPlanDetailsModal && (
         <MembershipPlanDetailsModal
@@ -108,7 +113,11 @@ const MemberPlans = () => {
         />
       )}
       {editmemberPlanModal && (
-        <EditMemberModal onClose={() => setEditmemberPlanModal(false)} />
+        <EditMemberModal
+          onClose={() => setEditmemberPlanModal(false)}
+          memberPlanDetails={memberPlanDetails}
+          setUpdate={setUpdate}
+        />
       )}
     </div>
   );

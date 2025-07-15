@@ -82,14 +82,14 @@ const Service = () => {
             Pain Relief Coach
           </button>
         </div>
-        <div className="flex items-center gap-8 ">
+        {/* <div className="flex items-center gap-8 ">
           <div className="w-[122px]">
             <Button text={"CSV Import"} />
           </div>
           <div className="w-[61px]">
             <Button text={<FaPlus />} onClick={() => setCreateModal(true)} />
           </div>
-        </div>
+        </div> */}
       </div>
       <div>
         <div className="flex ml-5  gap-4 mt-2">

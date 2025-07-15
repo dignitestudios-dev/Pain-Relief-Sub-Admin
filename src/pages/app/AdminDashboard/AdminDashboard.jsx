@@ -13,6 +13,12 @@ const AdminDashboard = () => {
     1
   );
 
+  const { data: referralCount, loading: loader } = useFetchData(
+    `/admin/referal-overview`,
+    { year: year?.getFullYear() },
+    1
+  );
+
   return (
     <div
       style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px" }}
@@ -38,7 +44,13 @@ const AdminDashboard = () => {
           graphData={data}
         />
       )}
-      <ReferralBarChart />
+      {loader ? (
+        <div className="bg-[#FAFAFA] mt-5 p-8 rounded-[16px] shadow-sm h-72">
+          Loading...
+        </div>
+      ) : (
+        <ReferralBarChart data={referralCount} />
+      )}
     </div>
   );
 };

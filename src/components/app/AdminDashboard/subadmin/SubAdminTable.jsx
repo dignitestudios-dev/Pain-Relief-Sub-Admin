@@ -39,7 +39,7 @@ const SubAdminTable = ({ data }) => {
                   className="w-10 h-10 rounded-full border border-[#63CFAC]  p-0.5"
                 />
                 <span>
-                  {user.firstName} {user.firstName}
+                  {user.firstName} {user.lastName}
                 </span>
               </div>
               <div>{user.email}</div>

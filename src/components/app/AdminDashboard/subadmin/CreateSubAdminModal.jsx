@@ -1,9 +1,19 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
 import AuthInput from "../../../global/AuthInput";
 import { CrossImag } from "../../../../assets/export";
 import Button from "../../../global/Button";
 
-const CreateSubAdminModal = ({ onCLose }) => {
+const CreateSubAdminModal = ({
+  onCLose,
+  values,
+  errors,
+  touched,
+  handleChange,
+  handleBlur,
+  handleSubmit,
+  btnLoading,
+}) => {
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-1">
       <div
@@ -22,39 +32,69 @@ const CreateSubAdminModal = ({ onCLose }) => {
             />
           </div>
         </div>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <AuthInput
-              placeholder="Full Name"
+              placeholder="First Name"
               type="text"
-              name="name"
+              name="firstName"
               maxLength={50}
+              value={values.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.firstName && errors.firstName}
             />
+            {/* <AuthInput
+              placeholder="Last Name"
+              type="text"
+              name="lastName"
+              maxLength={50}
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.lastName && errors.lastName}
+            /> */}
             <AuthInput
               placeholder="Enter email here"
               type="email"
               name="email"
               maxLength={50}
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.email && errors.email}
             />
             <AuthInput
               placeholder="Phone Number"
               type="text"
-              name="number"
+              name="phone"
               maxLength={50}
+              value={values.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.phone && errors.phone}
             />
             <AuthInput
               placeholder="Password"
               type="password"
               name="password"
               maxLength={50}
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.password && errors.password}
             />
             <AuthInput
               placeholder="Confirm Password"
               type="password"
-              name="password"
+              name="confirmPassword"
               maxLength={50}
+              value={values.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.confirmPassword && errors.confirmPassword}
             />
-            <Button text={"Create Now"} />
+            <Button loading={btnLoading} text="Create Now" type="submit" />
           </div>
         </form>
       </div>

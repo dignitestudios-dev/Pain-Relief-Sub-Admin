@@ -12,7 +12,6 @@ const AuthInput = ({
   onChange,
   onBlur,
   error,
-  touched,
   label,
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
@@ -27,7 +26,7 @@ const AuthInput = ({
       <div
         className={`relative w-full h-[48px] border-[1px]   
           ${
-            error && touched
+            error
               ? "border-red-600 focus-within:border-[1px] focus-within:border-red-600"
               : "border-[#D9D9D9] focus-within:border-[1px]  focus-within:border-[#55C9FA]"
           } flex justify-between items-center rounded-[8px] md:pl-3 pl-1.5`}
@@ -54,7 +53,7 @@ const AuthInput = ({
             (!isPassVisible ? <BsEyeSlash /> : <img src={Eye} />)}
         </span>
       </div>
-      {error && touched && <p className="text-red-600 text-[12px]">{error}</p>}
+      {error && <p className="text-red-600 text-[12px]">{error}</p>}
     </div>
   );
 };

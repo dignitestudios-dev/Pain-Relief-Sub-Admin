@@ -41,8 +41,7 @@ const Revenue = () => {
     setTypeValue(value);
   }, []);
 
-  const handleFilter = (start, end, types, planType) => {
-    console.log("🚀 ~ handleFilter ~ planType:", planType);
+  const handleFilter = (start, end, types) => {
     setFilterData({ startDate: start, endDate: end });
 
     if (["Monthly", "Yearly"].includes(types)) {

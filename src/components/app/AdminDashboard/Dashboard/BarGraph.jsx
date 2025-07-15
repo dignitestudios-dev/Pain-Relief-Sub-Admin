@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
 import {
   Chart,
@@ -22,7 +23,7 @@ Chart.register(
   Legend
 );
 
-const ReferralBarChart = () => {
+const ReferralBarChart = ({ data }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
   const [startDate, setStartDate] = useState(new Date());
@@ -36,31 +37,26 @@ const ReferralBarChart = () => {
       chartInstance.current.destroy();
     }
 
+    const labels = data.map((item) => item.year);
+    const userCounts = data.map((item) => item.userCount);
+    const providerCounts = data.map((item) => item.providerCount);
+
     // Create new chart
     chartInstance.current = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: [
-          "2018",
-          "2019",
-          "2020",
-          "2021",
-          "2022",
-          "2023",
-          "2024",
-          "2025",
-        ],
+        labels,
         datasets: [
           {
             label: "Members",
-            data: [2.8, 3.0, 3.9, 1.9, 2.8, 3.0, 4.0, 1.9],
+            data: userCounts,
             backgroundColor: "#10B981",
             borderRadius: 8,
             barThickness: 40,
           },
           {
             label: "Service Providers",
-            data: [2.2, 2.2, 3.5, 0.7, 2.2, 2.2, 3.5, 0.7],
+            data: providerCounts,
             backgroundColor: "#0891B2",
             borderRadius: 8,
             barThickness: 40,
@@ -150,7 +146,7 @@ const ReferralBarChart = () => {
                 weight: "500",
               },
               padding: 16,
-              callback: (value) => `${value}M`,
+              callback: (value) => `${value}`,
               stepSize: 1,
             },
           },
@@ -173,7 +169,7 @@ const ReferralBarChart = () => {
     <div className="bg-[#FAFAFA] mt-5 p-8 rounded-lg shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold text-gray-900">Referral</h2>
-        <div className="flex  gap-3">
+        {/* <div className="flex  gap-3">
           <div className="w-[200px]">
             <Calender
               endDate={true}
@@ -194,7 +190,7 @@ const ReferralBarChart = () => {
               label={"End Date"}
             />
           </div>
-        </div>
+        </div> */}
       </div>
       <hr className="border-[#2121211C]" />
       <div className="flex items-center space-x-6 mt-4 mb-8">

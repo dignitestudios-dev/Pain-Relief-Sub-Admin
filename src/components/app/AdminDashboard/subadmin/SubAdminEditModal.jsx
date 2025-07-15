@@ -1,9 +1,21 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
 import AuthInput from "../../../global/AuthInput";
 import { CrossImag } from "../../../../assets/export";
 import Button from "../../../global/Button";
 
-const SubAdminEditModal = ({ onCLose }) => {
+const SubAdminEditModal = ({
+  onCLose,
+  handleSubmit,
+  values,
+  errors,
+  touched,
+  handleBlur,
+  handleChange,
+  btnLoading,
+}) => {
+  console.log("🚀 ~ errors:", errors);
+  console.log("🚀 ~ touched:", touched);
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-1">
       <div
@@ -22,28 +34,45 @@ const SubAdminEditModal = ({ onCLose }) => {
             />
           </div>
         </div>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <AuthInput
-              placeholder="Full Name"
+              placeholder="First Name"
               type="text"
-              name="name"
+              name="firstName"
               maxLength={50}
+              value={values.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.firstName && errors.firstName}
             />
-            <AuthInput
+            <input
+              type="email"
+              value={values.email}
+              readOnly
+              className="w-full px-4 py-2 bg-gray-100 border rounded-md text-gray-500"
+            />
+            {/* <AuthInput
               placeholder="Enter email here"
               type="email"
               name="email"
               maxLength={50}
-            />
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.email && errors.email}
+            /> */}
             <AuthInput
               placeholder="Phone Number"
               type="text"
-              name="number"
+              name="phone"
               maxLength={50}
+              value={values.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.phone && errors.phone}
             />
-
-            <Button text={"Save"} />
+            <Button loading={btnLoading} text="Save" type="submit" />
           </div>
         </form>
       </div>

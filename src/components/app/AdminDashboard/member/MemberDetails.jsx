@@ -5,13 +5,13 @@ import ReferalTable from "./ReferalTable";
 import FamilyMember from "./FamilyMember";
 import BasicInfo from "./BasicInfo";
 import { useFetchById } from "../../../../hooks/api/Get";
-import { IoIosArrowBack, IoIosArrowRoundBack } from "react-icons/io";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const MemberDetails = () => {
-  const navigate =useNavigate()
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Basic Info");
   const { id } = useParams();
-  const { data, loading } = useFetchById(`/admin/get-member/${id}`);
+  const { data } = useFetchById(`/admin/get-member/${id}`);
   const { data: referralData, loading: loader } = useFetchById(
     `/admin/get-member-referral?userId=${id}`
   );
@@ -19,7 +19,10 @@ const MemberDetails = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
-      <div className="flex items-center cursor-pointer " onClick={()=>navigate(-1)}>
+      <div
+        className="flex items-center cursor-pointer "
+        onClick={() => navigate(-1)}
+      >
         <IoIosArrowRoundBack size={18} />
         <p className="text-[14px] font-[600] ">Back</p>
       </div>

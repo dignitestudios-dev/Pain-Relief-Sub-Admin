@@ -3,14 +3,15 @@ import { MapImg, Profile } from "../../../../assets/export";
 import { IoLocationOutline } from "react-icons/io5";
 import Button from "../../../global/Button";
 import { useFetchById } from "../../../../hooks/api/Get";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getDateFormat } from "../../../../lib/helpers";
 import GoogleMapComponent from "../../../global/GoogleMapComponent";
 
 const AppoitmentDetail = () => {
   const { id } = useParams();
   const { data, loading } = useFetchById(`/admin/get-appointment/${id}`);
-  console.log("🚀 ~ AppoitmentDetail ~ data:", data);
+
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-[10px] p-4">
       <h2 className="text-[32px] font-semibold text-[#212121]">
@@ -54,7 +55,7 @@ const AppoitmentDetail = () => {
                 <img
                   src={data?.provider?.profilePicture ?? Profile}
                   alt="Profile"
-                  className="w-[53.7px] h-[53.7px]"
+                  className="w-[53.7px] h-[53.7px] rounded-full object-cover"
                 />
 
                 <div>
@@ -81,7 +82,14 @@ const AppoitmentDetail = () => {
                   </p>
                 </div>
 
-                <div className="w-[150.04px]">
+                <div
+                  onClick={() =>
+                    navigate(
+                      `/app/service-provider-detail/${data?.provider?._id}`
+                    )
+                  }
+                  className="w-[150.04px]"
+                >
                   <Button text="View Profile" />
                 </div>
               </div>
@@ -96,7 +104,7 @@ const AppoitmentDetail = () => {
                 <img
                   src={data?.user?.profilePicture ?? Profile}
                   alt="Profile"
-                  className="w-[53.7px] h-[53.7px]"
+                  className="w-[53.7px] h-[53.7px] rounded-full object-cover"
                 />
 
                 <div>
