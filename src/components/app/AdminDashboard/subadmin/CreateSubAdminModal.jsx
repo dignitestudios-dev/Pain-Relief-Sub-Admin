@@ -3,6 +3,8 @@
 import AuthInput from "../../../global/AuthInput";
 import { CrossImag } from "../../../../assets/export";
 import Button from "../../../global/Button";
+import PhoneInput from "../../../global/PhoneInput";
+import { phoneFormatter } from "../../../../lib/helpers";
 
 const CreateSubAdminModal = ({
   onCLose,
@@ -14,6 +16,7 @@ const CreateSubAdminModal = ({
   handleSubmit,
   btnLoading,
 }) => {
+  console.log("🚀 ~ errors:", errors);
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-1">
       <div
@@ -64,16 +67,17 @@ const CreateSubAdminModal = ({
               onBlur={handleBlur}
               error={touched.email && errors.email}
             />
-            <AuthInput
-              placeholder="Phone Number"
-              type="text"
-              name="phone"
-              maxLength={50}
-              value={values.phone}
+            <PhoneInput
+              value={phoneFormatter(values.phone)}
+              id={"phone"}
+              name={"phone"}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.phone && errors.phone}
+              error={errors.phone}
+              touched={touched.phone}
+              autoComplete="off"
             />
+
             <AuthInput
               placeholder="Password"
               type="password"

@@ -46,7 +46,7 @@ const MemberTable = ({ data }) => {
                   {member.country}, {member.state}
                 </td>
                 <td className="py-3 px-2 text-gray-900 font-semibold">
-                  {member.isSubscribed ? "Subscribed" : "Un Subscribed"}
+                  {member.isSubscribed ? "Subscribed" : "Unsubscribed"}
                 </td>
                 <td
                   onClick={() => navigate(`/app/member-details/${member?._id}`)}

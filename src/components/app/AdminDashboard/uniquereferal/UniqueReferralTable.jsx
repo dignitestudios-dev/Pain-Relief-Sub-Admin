@@ -71,7 +71,7 @@ const UniqueReferralTable = ({ data }) => {
                 <td className="py-3 px-2 text-gray-600">
                   {appointment.status === "active"
                     ? "Subscribed"
-                    : "Un Subscribed"}
+                    : "Unsubscribed"}
                 </td>
               </tr>
             ))
