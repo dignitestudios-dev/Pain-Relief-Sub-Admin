@@ -5,44 +5,46 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 export const baseUrl = "https://api.painreliefusa.com";
 
-// async function getDeviceFingerprint() {
-//   const fp = await FingerprintJS.load();
-//   const result = await fp.get();
+async function getDeviceFingerprint() {
+  const fp = await FingerprintJS.load();
+  const result = await fp.get();
 
-//   console.log(result.visitorId); // Unique device ID
-//   return result.visitorId;
-// }
+  return result.visitorId;
+}
 
 const instance = axios.create({
   baseURL: baseUrl,
   headers: {
-    devicemodel: 123,
-    deviceuniqueid: 123,
-    // deviceuniqueid: await getDeviceFingerprint(),
+    devicemodel: getDeviceFingerprint(),
+    deviceuniqueid: getDeviceFingerprint(),
   },
-  timeout: 50000, // 10 seconds timeout
 });
 
-instance.interceptors.request.use((request) => {
-  const token = Cookies.get("token");
-  if (!navigator.onLine) {
-    // No internet connection
-    ErrorToast(
-      "No internet connection. Please check your network and try again."
-    );
-    return;
-    // return Promise.reject(new Error("No internet connection"));
-  }
+instance.interceptors.request.use(
+  async (request) => {
+    if (!navigator.onLine) {
+      ErrorToast(
+        "No internet connection. Please check your network and try again."
+      );
+      return Promise.reject(new Error("No internet connection"));
+    }
 
-  // Merge existing headers with token
-  request.headers = {
-    ...request.headers, // Keep existing headers like devicemodel and deviceuniqueid
-    Accept: "application/json, text/plain, */*",
-    ...(token && { Authorization: `Bearer ${token}` }), // Add Authorization only if token exists
-  };
+    const token = Cookies.get("token");
 
-  return request;
-});
+    const visitorId = await getDeviceFingerprint();
+
+    request.headers = {
+      ...request.headers,
+      Accept: "application/json, text/plain, */*",
+      devicemodel: visitorId,
+      deviceuniqueid: visitorId,
+      ...(token && { Authorization: `Bearer ${token}` }),
+    };
+
+    return request;
+  },
+  (error) => Promise.reject(error)
+);
 
 instance.interceptors.response.use(
   (response) => response,

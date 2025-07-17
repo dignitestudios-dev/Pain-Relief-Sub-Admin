@@ -19,6 +19,14 @@ const AdminDashboard = () => {
     1
   );
 
+  const { data: totalCount, loading: loadit } = useFetchData(
+    `/admin/total-dashboard-count`,
+    {},
+    1
+  );
+  console.log("🚀 ~ AdminDashboard ~ loadit:", loadit);
+  console.log("🚀 ~ AdminDashboard ~ totalCount:", totalCount);
+
   return (
     <div
       style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px" }}
@@ -32,7 +40,7 @@ const AdminDashboard = () => {
           Welcome to Pain Relief!
         </h3>
       </div>
-      <Stats />
+      <Stats totalCount={totalCount} />
       {loading ? (
         <div className="bg-[#FAFAFA] mt-5 p-8 rounded-[16px] shadow-sm h-72">
           Loading...

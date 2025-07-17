@@ -8,6 +8,9 @@ import Button from "../../../components/global/Button";
 import { FaPlus } from "react-icons/fa";
 import { useFetchData } from "../../../hooks/api/Get";
 import TableLoader from "../../../components/global/TableLoader";
+import { ErrorToast, SuccessToast } from "../../../components/global/Toaster";
+import axios from "../../../axios";
+import ServiceRequestModal from "../../../components/app/AdminDashboard/service/ServiceRequestModal";
 // import Pagination from "../../../components/global/Pagination";
 
 const MemberPlans = () => {
@@ -23,6 +26,9 @@ const MemberPlans = () => {
 
   const [membershipPlanDetailsModal, setMembershipPlanDetailsModal] =
     useState(false);
+
+  const [delLoading, setDelLoading] = useState(false);
+  const [delRequestModal, setDelRequestModal] = useState(null);
 
   const handleViewDetail = (data) => {
     setMemberPlanDetails(data);
@@ -48,6 +54,24 @@ const MemberPlans = () => {
   // const handlePageChange = (page) => {
   //   setPage(page);
   // };
+
+  const deleteSubscriptionPlan = async () => {
+    try {
+      setDelLoading(true);
+      const response = await axios.delete("/payment/subscription", {
+        data: { _id: delRequestModal }, // Send the _id in the 'data' field
+      });
+      if (response.status === 200) {
+        SuccessToast("Delete Successfully");
+        setDelRequestModal(null);
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setDelLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -84,6 +108,8 @@ const MemberPlans = () => {
             handleSearch={handleSearch}
             typeValue={typeValue}
             handleViewDetail={handleViewDetail}
+            delLoading={delLoading}
+            setDelRequestModal={setDelRequestModal}
           />
           {/* <div className="flex justify-end">
             <Pagination
@@ -117,6 +143,16 @@ const MemberPlans = () => {
           onClose={() => setEditmemberPlanModal(false)}
           memberPlanDetails={memberPlanDetails}
           setUpdate={setUpdate}
+        />
+      )}
+      {delRequestModal && (
+        <ServiceRequestModal
+          btnText="Delete"
+          title="Delete Request"
+          content="Are you sure?"
+          onClose={() => setDelRequestModal(null)}
+          handleClick={deleteSubscriptionPlan}
+          delLoading={delLoading}
         />
       )}
     </div>

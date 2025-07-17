@@ -11,6 +11,7 @@ import axios from "../../../axios";
 import { CreateSubAdminSchema } from "../../../schema/editForm/editFormSchema";
 import { useFormik } from "formik";
 import { ErrorToast, SuccessToast } from "../../../components/global/Toaster";
+import ServiceRequestModal from "../../../components/app/AdminDashboard/service/ServiceRequestModal";
 
 const SubAdmin = () => {
   const debounceRef = useRef();
@@ -20,6 +21,8 @@ const SubAdmin = () => {
   const [page, setPage] = useState(1);
   const [btnLoading, setBtnLoading] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [delLoading, setDelLoading] = useState(false);
+  const [delRequestModal, setDelRequestModal] = useState(null);
 
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -80,6 +83,24 @@ const SubAdmin = () => {
       },
     });
 
+  const deleteSubAdmin = async () => {
+    try {
+      setDelLoading(true);
+      const response = await axios.post("/admin/delete-sub-admin", {
+        subAdminId: delRequestModal,
+      });
+      if (response.status === 200) {
+        SuccessToast("Delete Successfully");
+        setDelRequestModal(null);
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setDelLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -110,7 +131,12 @@ const SubAdmin = () => {
         <TableLoader />
       ) : (
         <>
-          <SubAdminTable setSubAdminModal={setSubAdminModal} data={data} />
+          <SubAdminTable
+            setSubAdminModal={setSubAdminModal}
+            data={data}
+            delLoading={delLoading}
+            setDelRequestModal={setDelRequestModal}
+          />
           <div className="flex justify-end">
             <Pagination
               currentPage={pagination?.currentPage}
@@ -131,6 +157,16 @@ const SubAdmin = () => {
           handleBlur={handleBlur}
           handleSubmit={handleSubmit}
           btnLoading={btnLoading}
+        />
+      )}
+      {delRequestModal && (
+        <ServiceRequestModal
+          btnText="Delete"
+          title="Delete Request"
+          content="Are you sure?"
+          onClose={() => setDelRequestModal(null)}
+          handleClick={deleteSubAdmin}
+          delLoading={delLoading}
         />
       )}
     </div>

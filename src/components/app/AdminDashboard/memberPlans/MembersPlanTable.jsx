@@ -1,7 +1,13 @@
 /* eslint-disable react/prop-types */
 
-const MembersPlanTable = ({ data, handleViewDetail }) => {
-  console.log("🚀 ~ MembersPlanTable ~ data:", data);
+import { FiTrash2 } from "react-icons/fi";
+
+const MembersPlanTable = ({
+  data,
+  handleViewDetail,
+  setDelRequestModal,
+  delLoading,
+}) => {
   return (
     <div className="bg-[#FAFAFA]  rounded-md">
       <div
@@ -17,7 +23,7 @@ const MembersPlanTable = ({ data, handleViewDetail }) => {
         {/* <div>Membership Benefits</div>
         <div>Membership Type</div>
         <div>Price</div> */}
-        <div className="flex justify-end mx-2">Action</div>
+        <div className="flex mx-10">Action</div>
       </div>
 
       <div className="divide-y">
@@ -38,11 +44,22 @@ const MembersPlanTable = ({ data, handleViewDetail }) => {
               {/* <div>{subscription.benefit ?? "Not Defined By Admin"}</div>
               <div>{subscription.category}</div>
               <div>{subscription.amount}$</div> */}
-              <div
-                className="font-medium flex justify-end underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
-                onClick={() => handleViewDetail(subscription)}
-              >
-                View Detail
+              <div className="flex justify-evenly">
+                <div
+                  className="font-medium flex justify-end underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
+                  onClick={() => handleViewDetail(subscription)}
+                >
+                  View Detail
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setDelRequestModal(subscription?._id)}
+                  disabled={delLoading}
+                  className={`flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  <FiTrash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
           ))

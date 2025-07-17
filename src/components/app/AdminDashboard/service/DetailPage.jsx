@@ -21,13 +21,14 @@ const DetailPage = () => {
 
   const { data, loading } = useFetchById(`/admin/get-provider/${id}`, update);
 
+  console.log("🚀 ~ DetailPage ~ data:", data);
   const handleRequest = async (status) => {
     try {
       setBtnLoading(status);
       const response = await axios.post("/admin/update-provider-status", {
         providerId: id,
         status,
-        isPainReliefCoach: true,
+        isPainReliefCoach: data?.painReliefCoachRequested ? true : false,
       });
       if (response.status === 200) {
         SuccessToast("Status Updated");
@@ -71,6 +72,32 @@ const DetailPage = () => {
                 </p>
               </div>
             </div>
+            {data?.painReliefCoachRequested &&
+              data?.isPainReliefCoach === false && (
+                <div className="flex items-center gap-4">
+                  <div>
+                    <button
+                      onClick={() => handleRequest("rejected")}
+                      className="border rounded-[8px] font-[500]  border-[#C31736] text-[#C31736]  w-[184px] h-[49px] "
+                    >
+                      <div className="flex justify-center items-center">
+                        <span className="mr-1">Reject</span>
+                        {btnLoading === "rejected" && (
+                          <RiLoader5Line className="animate-spin text-lg" />
+                        )}
+                      </div>
+                    </button>
+                  </div>
+                  <div className="w-[184px]">
+                    <Button
+                      loading={btnLoading === "approved"}
+                      onClick={() => handleRequest("approved")}
+                      text={"Accept"}
+                      type="button"
+                    />
+                  </div>
+                </div>
+              )}
             {data?.profileStatus === "pending" && (
               <div className="flex items-center gap-4">
                 <div>

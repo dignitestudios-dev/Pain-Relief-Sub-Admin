@@ -1,8 +1,27 @@
-import React from "react";
-import { StatsData } from "../../../../static/StatsData";
+/* eslint-disable react/prop-types */
+
 import { ChartImg } from "../../../../assets/export";
 
-export default function Stats() {
+export default function Stats({ totalCount }) {
+  console.log("🚀 ~ Stats ~ totalCount:", totalCount);
+  const StatsData = [
+    {
+      title: "Total Members",
+      value: totalCount?.userCount,
+    },
+    {
+      title: "Total Network Provider",
+      value: totalCount?.providerCount,
+    },
+    {
+      title: "Total Appointment",
+      value: totalCount?.appointmentCount,
+    },
+    {
+      title: "Total Referral",
+      value: totalCount?.referralCount,
+    },
+  ];
   return (
     <div className="grid grid-cols-4 gap-3 mt-5  items-center">
       {StatsData?.map((item, i) => (

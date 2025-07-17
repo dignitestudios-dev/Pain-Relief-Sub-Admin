@@ -9,6 +9,7 @@ const MembershipPlanDetailsModal = ({
   handleEdit,
   memberPlanDetails,
 }) => {
+  console.log("🚀 ~ memberPlanDetails:", memberPlanDetails);
   const [duration, setDuration] = useState("Monthly");
 
   const [selected, setSelected] = useState({

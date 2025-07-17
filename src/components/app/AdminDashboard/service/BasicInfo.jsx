@@ -9,11 +9,11 @@ const BasicInfo = ({ provider }) => {
       <InfoRow label="Full Name" value={provider?.name} />
       <InfoRow label="Email Address" value={provider?.email} />
       <InfoRow label="Mobile Number" value={provider?.phone} />
-      <InfoRow
+      {/* <InfoRow
         label="Age"
         value={provider?.age != null ? `${provider?.age} yrs old` : "--"}
-      />
-      <InfoRow label="Gender" value={provider?.gender ?? "- -"} />
+      /> */}
+      {/* <InfoRow label="Gender" value={provider?.gender ?? "- -"} /> */}
       <InfoRow
         label="Location"
         value={

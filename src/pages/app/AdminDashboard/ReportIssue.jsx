@@ -4,12 +4,18 @@ import { useFetchData } from "../../../hooks/api/Get";
 import Pagination from "../../../components/global/Pagination";
 import TableLoader from "../../../components/global/TableLoader";
 import { IoSearch } from "react-icons/io5";
+import { ErrorToast, SuccessToast } from "../../../components/global/Toaster";
+import ServiceRequestModal from "../../../components/app/AdminDashboard/service/ServiceRequestModal";
+import axios from "../../../axios";
 
 const ReportIssue = () => {
   const [page, setPage] = useState(1);
   const debounceRef = useRef();
   const [typeValue, setTypeValue] = useState("");
   const [search, setSearch] = useState("");
+  const [delLoading, setDelLoading] = useState(false);
+  const [delRequestModal, setDelRequestModal] = useState(null);
+  const [update, setUpdate] = useState(false);
 
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -23,8 +29,27 @@ const ReportIssue = () => {
   const { data, loading, pagination } = useFetchData(
     `admin/get-reported-issues`,
     { search },
-    1
+    1,
+    update
   );
+
+  const deleteIssue = async () => {
+    try {
+      setDelLoading(true);
+      const response = await axios.post("/admin/delete-report", {
+        reportId: delRequestModal,
+      });
+      if (response.status === 200) {
+        SuccessToast("Delete Successfully");
+        setDelRequestModal(null);
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setDelLoading(false);
+    }
+  };
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -56,6 +81,8 @@ const ReportIssue = () => {
             data={data}
             typeValue={typeValue}
             handleSearch={handleSearch}
+            delLoading={delLoading}
+            setDelRequestModal={setDelRequestModal}
           />
         </div>
       )}
@@ -67,6 +94,16 @@ const ReportIssue = () => {
           setCurrentPage={page}
         />
       </div>
+      {delRequestModal && (
+        <ServiceRequestModal
+          btnText="Delete"
+          title="Delete Request"
+          content="Are you sure?"
+          onClose={() => setDelRequestModal(null)}
+          handleClick={deleteIssue}
+          delLoading={delLoading}
+        />
+      )}
     </div>
   );
 };

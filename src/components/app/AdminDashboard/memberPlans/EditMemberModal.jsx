@@ -8,11 +8,13 @@ import { ErrorToast, SuccessToast } from "../../../global/Toaster";
 import axios from "../../../../axios";
 
 const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
+  console.log("🚀 ~ EditMemberModal ~ memberPlanDetails:", memberPlanDetails);
   const [duration, setDuration] = useState("Monthly");
   const [benefitInput, setBenefitInput] = useState("");
   const [benefits, setBenefits] = useState([]);
   const [planName, setPlanName] = useState("");
   const [priceLoading, setPriceLoading] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
 
   const [selectedMonthlyCategory, setSelectedMonthlyCategory] = useState([
     "individual",
@@ -175,8 +177,8 @@ const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
 
     const payload = {
       subscriptionPlanId: memberPlanDetails?._id,
-      monthly,
-      yearly,
+      ...(monthly.length > 0 && { monthly }),
+      ...(yearly.length > 0 && { yearly }),
     };
 
     try {
@@ -194,6 +196,27 @@ const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
       ErrorToast(err.response.data.message);
     } finally {
       setPriceLoading(false);
+    }
+  };
+
+  const AddSubscriptionPlan = async () => {
+    const payload = {
+      _id: memberPlanDetails?._id,
+      name: planName,
+      features: benefits,
+    };
+
+    try {
+      setAddLoading(true);
+      const response = await axios.put("/payment/subscription", payload);
+      if (response.status === 200) {
+        SuccessToast("Plan name updated successfully");
+        setIsAddForm(false);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setAddLoading(false);
     }
   };
 
@@ -384,7 +407,11 @@ const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
               </button>
             </div>
             <div className="w-full">
-              <Button text="Next" />
+              <Button
+                text="Next"
+                loading={addLoading}
+                onClick={AddSubscriptionPlan}
+              />
             </div>
           </div>
         ) : (

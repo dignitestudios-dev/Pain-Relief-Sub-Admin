@@ -9,10 +9,7 @@ import axios from "../../../../axios";
 
 const AddMemberPlanModal = ({ onClose, setUpdate }) => {
   const [subscriptionPlanId, setSubscriptionPlanId] = useState("");
-  console.log(
-    "🚀 ~ AddMemberPlanModal ~ subscriptionPlanId:",
-    subscriptionPlanId
-  );
+
   const [duration, setDuration] = useState("Monthly");
   const [planName, setPlanName] = useState("");
 

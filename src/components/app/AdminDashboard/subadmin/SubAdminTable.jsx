@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 
+import { FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router";
 
-const SubAdminTable = ({ data }) => {
+const SubAdminTable = ({ data, delLoading, setDelRequestModal }) => {
   const navigate = useNavigate();
   const handleViewDetail = (user) => {
     navigate(`/app/sub-admin-detail/${user?._id}`, { state: { user } });
@@ -20,7 +21,7 @@ const SubAdminTable = ({ data }) => {
         <div>Name</div>
         <div>Email Address</div>
         <div>Phone Number</div>
-        <div>Action</div>
+        <div className="mx-5">Action</div>
       </div>
 
       {/* Rows */}
@@ -44,11 +45,21 @@ const SubAdminTable = ({ data }) => {
               </div>
               <div>{user.email}</div>
               <div>{user.phone}</div>
-              <div
-                className="font-medium underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
-                onClick={() => handleViewDetail(user)}
-              >
-                View Detail
+              <div className="flex justify-evenly">
+                <div
+                  className="font-medium underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
+                  onClick={() => handleViewDetail(user)}
+                >
+                  View Detail
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setDelRequestModal(user?._id)}
+                  disabled={delLoading}
+                  className={`flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  <FiTrash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
           ))

@@ -3,7 +3,14 @@
 import { CrossImag, TickSign } from "../../../../assets/export";
 import Button from "../../../global/Button";
 
-const ServiceRequestModal = ({ onClose, handleClick }) => {
+const ServiceRequestModal = ({
+  onClose,
+  handleClick,
+  title,
+  content,
+  btnText,
+  delLoading,
+}) => {
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-md rounded-[20px] shadow-lg p-6">
@@ -20,10 +27,8 @@ const ServiceRequestModal = ({ onClose, handleClick }) => {
           <div className="flex justify-center my-3 items-center">
             <img src={TickSign} className="w-[117px] h-[117px] " alt="" />
           </div>
-          <h2 className="text-center text-[24px] font-[600] ">
-            Handle Request
-          </h2>
-          <p className="text-center text-[16px] font-[400] ">Are you sure?</p>
+          <h2 className="text-center text-[24px] font-[600] ">{title}</h2>
+          <p className="text-center text-[16px] font-[400] ">{content}</p>
         </div>
         <div className="flex justify-between space-x-2">
           <button
@@ -33,7 +38,7 @@ const ServiceRequestModal = ({ onClose, handleClick }) => {
             Cancel
           </button>
           <div className="w-full">
-            <Button text={"Send"} onClick={handleClick} />
+            <Button loading={delLoading} text={btnText} onClick={handleClick} />
           </div>
         </div>
       </div>
