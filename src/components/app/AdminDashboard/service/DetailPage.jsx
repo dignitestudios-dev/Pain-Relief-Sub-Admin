@@ -9,6 +9,7 @@ import DetailLoader from "../../../global/DetailLoader";
 import { ErrorToast, SuccessToast } from "../../../global/Toaster";
 import { RiLoader5Line } from "react-icons/ri";
 import axios from "../../../../axios";
+import ServiceRequestModal from "./ServiceRequestModal";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const DetailPage = () => {
   const { id } = useParams();
   const [btnLoading, setBtnLoading] = useState(null);
   const [update, setUpdate] = useState(false);
+  const [serviceRequestModal, setServiceRequestModal] = useState(false);
 
   const { data, loading } = useFetchById(`/admin/get-provider/${id}`, update);
 
@@ -121,6 +123,15 @@ const DetailPage = () => {
 
       {activeTab === "Referral Friends" && <ReferalTable />} */}
         </>
+      )}
+
+      {serviceRequestModal && (
+        <ServiceRequestModal
+          onClose={() => setServiceRequestModal(false)}
+          handleClick={() => {
+            setServiceRequestModal(false);
+          }}
+        />
       )}
     </div>
   );
