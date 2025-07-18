@@ -58,13 +58,13 @@ export const sidebarDataAdmin = [
     activeIcon: membersWhite,
   },
   {
-    title: "Service",
+    title: "Service Providers",
     url: "/app/service",
     icon: service,
     activeIcon: serviceWhite,
   },
   {
-    title: "Sub Admin",
+    title: "Sub Admins",
     url: "/app/sub-admin",
     icon: admin,
     activeIcon: adminWhite,

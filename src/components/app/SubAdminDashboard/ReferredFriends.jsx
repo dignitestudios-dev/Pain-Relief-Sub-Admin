@@ -117,7 +117,8 @@ const ReferredFriends = () => {
                 <div className="flex items-center gap-2">
                   <img
                     src={
-                      user.profilePicture || "https://i.pravatar.cc/40?img=4"
+                      user.profilePicture ||
+                      "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
                     } // Default avatar if profile picture is null
                     alt="avatar"
                     className="w-10 h-10 rounded-full"

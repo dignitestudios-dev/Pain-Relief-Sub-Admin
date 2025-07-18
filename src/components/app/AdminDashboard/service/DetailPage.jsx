@@ -18,10 +18,11 @@ const DetailPage = () => {
   const [btnLoading, setBtnLoading] = useState(null);
   const [update, setUpdate] = useState(false);
   const [serviceRequestModal, setServiceRequestModal] = useState(false);
+  const [delLoading, setDelLoading] = useState(false);
+  const [disableRequestModal, setDisableRequestModal] = useState(null);
 
   const { data, loading } = useFetchById(`/admin/get-provider/${id}`, update);
 
-  console.log("🚀 ~ DetailPage ~ data:", data);
   const handleRequest = async (status) => {
     try {
       setBtnLoading(status);
@@ -38,6 +39,24 @@ const DetailPage = () => {
       ErrorToast(err?.response?.data?.message);
     } finally {
       setBtnLoading(null);
+    }
+  };
+
+  const disableUser = async () => {
+    try {
+      setDelLoading(true);
+      const response = await axios.post("admin/disable-user", {
+        userId: disableRequestModal,
+      });
+      if (response.status === 200) {
+        SuccessToast("Update Successfully");
+        setDisableRequestModal(null);
+        setUpdate((prev) => !prev);
+      }
+    } catch (err) {
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setDelLoading(false);
     }
   };
 
@@ -61,7 +80,10 @@ const DetailPage = () => {
           <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">
             <div className="flex items-center  mb-4">
               <img
-                src={data?.profilePicture ?? "https://i.pravatar.cc/100?img=5"}
+                src={
+                  data?.profilePicture ??
+                  "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
+                }
                 alt="avatar"
                 className="w-[116px] h-[116px] rounded-full border border-[#63CFAC] mr-6 p-0.5"
               />
@@ -158,6 +180,17 @@ const DetailPage = () => {
           handleClick={() => {
             setServiceRequestModal(false);
           }}
+        />
+      )}
+
+      {disableRequestModal && (
+        <ServiceRequestModal
+          btnText="Change Status"
+          title="Change Status Request"
+          content="Are you sure?"
+          onClose={() => setDisableRequestModal(null)}
+          handleClick={disableUser}
+          delLoading={delLoading}
         />
       )}
     </div>

@@ -7,6 +7,8 @@ import Button from "../../../components/global/Button";
 import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
 import Pagination from "../../../components/global/Pagination";
+import axios from "../../../axios";
+import { ErrorToast } from "../../../components/global/Toaster";
 
 const Revenue = () => {
   const debounceRef = useRef();
@@ -93,6 +95,39 @@ const Revenue = () => {
     },
     page
   );
+
+  const [csvLoading, setCsvLoading] = useState(false);
+  const handleCsv = async () => {
+    try {
+      setCsvLoading(true);
+      const response = await axios.get("/admin/download-plans-revenue", {
+        responseType: "blob", // 👈 Required for binary files like .xlsx
+      });
+
+      // Create a blob URL from the response
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // 👈 MIME type for .xlsx
+        })
+      );
+
+      // Create a temporary anchor element
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "plans.xlsx"); // 👈 Updated file name
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      ErrorToast("Downloading Fail");
+      console.log("🚀 ~ handleXlsxDownload ~ error:", error);
+    } finally {
+      setCsvLoading(false);
+    }
+  };
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -133,7 +168,12 @@ const Revenue = () => {
             />
           </div>
           <div className="w-[122px]">
-            <Button text={"Export CSV"} />
+            <Button
+              onClick={handleCsv}
+              disabled={csvLoading}
+              loading={csvLoading}
+              text={"Export CSV"}
+            />
           </div>
           <div
             onClick={() => setFilterDropDown((prev) => !prev)}

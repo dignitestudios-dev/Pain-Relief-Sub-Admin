@@ -35,7 +35,10 @@ const SubAdminTable = ({ data, delLoading, setDelRequestModal }) => {
               <div>{index + 1}</div>
               <div className="flex items-center gap-2">
                 <img
-                  src={user?.profilePicture}
+                  src={
+                    user?.profilePicture ??
+                    "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
+                  }
                   alt="avatar"
                   className="w-10 h-10 rounded-full border border-[#63CFAC]  p-0.5"
                 />

@@ -21,7 +21,7 @@ const FamilyMember = ({ provider }) => {
                     <img
                       src={
                         member?.profilePicture ??
-                        "https://i.pravatar.cc/100?img=5"
+                        "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
                       }
                       alt="avatar"
                       className="w-20 h-20 rounded-full border border-[#63CFAC]  p-0.5"

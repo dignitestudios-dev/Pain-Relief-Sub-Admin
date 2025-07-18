@@ -37,7 +37,7 @@ const UniqueReferralTable = ({ data }) => {
                     <img
                       src={
                         appointment?.referredBy?.profilePicture ??
-                        "https://i.pravatar.cc/40?img=4"
+                        "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
                       }
                       alt={appointment?.referredBy?.name}
                       className="w-8 h-8 rounded-full object-cover"
@@ -52,7 +52,7 @@ const UniqueReferralTable = ({ data }) => {
                     <img
                       src={
                         appointment?.referredUser?.profilePicture ??
-                        "https://i.pravatar.cc/40?img=4"
+                        "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
                       }
                       alt={appointment?.referredUser?.name}
                       className="w-8 h-8 rounded-full object-cover"

@@ -52,7 +52,10 @@ const SubAdminDetail = () => {
       <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">
         <div className="flex items-center  mb-4">
           <img
-            src={user.profilePicture}
+            src={
+              user.profilePicture ??
+              "https://placeholder.vn/placeholder/300x200?bg=cccccc&color=333333&text=No+Image"
+            }
             alt="avatar"
             className="w-[116px] h-[116px] rounded-full border border-[#63CFAC] mr-6 p-0.5"
           />
