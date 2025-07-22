@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useRef, useState } from "react";
 import { CrossImag, ProfileAdd } from "../../../../assets/export";
 import AuthInput from "../../../global/AuthInput";
 import { IoChevronDown } from "react-icons/io5";

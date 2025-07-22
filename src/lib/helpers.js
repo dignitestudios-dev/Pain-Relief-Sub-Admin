@@ -34,3 +34,33 @@ export const phoneFormatter = (input) => {
 
   return cleaned;
 };
+
+export const validateCompanyForm = ({
+  companyData,
+  companyImage,
+  // selectedPlan,
+  // selectedType,
+  // selected,
+}) => {
+  const errors = {};
+
+  if (!companyImage) errors.image = "Company image is required";
+  if (!companyData?.name) errors.name = "Company name is required";
+  if (!companyData?.email) errors.email = "Email is required";
+  // if (!selectedPlan) errors.plan = "Please select a subscription plan";
+  // if (!selectedType || Object.keys(selectedType).length === 0)
+  //   errors.type = "Please select a subscription type";
+
+  // const selectedCategories = Object.values(selectedType)?.[0];
+  // const selectedKeys = Object.keys(selected).filter((key) => selected[key]);
+
+  // if (
+  //   !selectedCategories?.some((cat) => selectedKeys.includes(cat?.planType))
+  // ) {
+  //   errors.categories = "Please select at least one plan category";
+  // }
+
+  // if (!companyData?.price) errors.price = "Cost per employee is required";
+
+  return errors;
+};

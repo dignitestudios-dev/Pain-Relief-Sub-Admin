@@ -14,8 +14,6 @@ const SubAdminEditModal = ({
   handleChange,
   btnLoading,
 }) => {
-  console.log("🚀 ~ errors:", errors);
-  console.log("🚀 ~ touched:", touched);
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-1">
       <div

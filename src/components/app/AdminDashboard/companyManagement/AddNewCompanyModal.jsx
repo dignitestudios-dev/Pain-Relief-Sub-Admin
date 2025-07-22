@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import {
   checkBoxOne,
   checkBoxTwo,
@@ -10,26 +11,45 @@ import AuthInput from "../../../global/AuthInput";
 import { IoChevronDown } from "react-icons/io5";
 import { useRef } from "react";
 
-const AddNewCompanyModal = ({ onCLose }) => {
+const AddNewCompanyModal = ({
+  onCLose,
+  plans,
+  handleCompany,
+  companyLoading,
+  errors,
+  setErrors,
+}) => {
   const [showPlanDropdown, setShowPlanDropdown] = useState(false);
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 
+  const [planTypeData, setPlanTypeData] = useState([]);
+
   const [selectedPlan, setSelectedPlan] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [companyData, setCompanyData] = useState({});
+  const [companyImage, setCompanyImage] = useState("");
 
   const [selected, setSelected] = useState({
     individual: false,
-    couple: false,
+    couples: false,
     family: false,
   });
 
   const toggleCategory = (type) => {
-    setSelected((prev) => ({ ...prev, [type]: !prev[type] }));
+    setSelected((prev) => ({ [type]: !prev[type] }));
   };
 
-  const handleSelectPlan = (option) => {
+  const handleSelectPlan = (option, index) => {
     setSelectedPlan(option);
     setShowPlanDropdown(false);
+    const plan = plans[index];
+    const types = [];
+
+    if (plan?.monthly?.length > 0)
+      types.push({ monthly: plans[index]?.monthly });
+    if (plan?.yearly?.length > 0) types.push({ yearly: plans[index]?.yearly });
+
+    setPlanTypeData(types);
   };
 
   const handleSelectType = (option) => {
@@ -41,9 +61,11 @@ const AddNewCompanyModal = ({ onCLose }) => {
   const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
+    setErrors((prev) => ({ ...prev, image: null }));
     const file = e.target.files[0];
     if (file) {
       setImagePreview(URL.createObjectURL(file));
+      setCompanyImage(file);
     }
   };
 
@@ -90,23 +112,42 @@ const AddNewCompanyModal = ({ onCLose }) => {
             className="hidden"
           />
         </div>
-
-        <form className="space-y-4">
-          <AuthInput
-            label={"Company Name"}
-            placeholder="Company Name"
-            type="text"
-            name="companyName"
-          />
-          <AuthInput
-            label={"Email"}
-            placeholder="Enter your email"
-            type="email"
-            name="email"
-          />
-
+        {errors.image && (
+          <p className="text-red-500 text-xs -mt-4 mb-2">{errors.image}</p>
+        )}
+        <div className="space-y-4">
           <div>
-            <label className="text-sm text-[#212121] block mb-1">
+            <AuthInput
+              label={"Company Name"}
+              placeholder="Company Name"
+              type="text"
+              name="companyName"
+              onChange={(e) => {
+                setCompanyData((prev) => ({ ...prev, name: e.target.value }));
+                setErrors((prev) => ({ ...prev, name: null }));
+              }}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+            )}
+          </div>
+          <div>
+            <AuthInput
+              label={"Email"}
+              placeholder="Enter your email"
+              type="email"
+              name="email"
+              onChange={(e) => {
+                setCompanyData((prev) => ({ ...prev, email: e.target.value }));
+                setErrors((prev) => ({ ...prev, email: null }));
+              }}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
+          </div>
+          <div className="space-y-2 gap-1">
+            <label className="text-[15px] text-[#212121] font-[400] block mb-1">
               Subscription Plan
             </label>
             <div className="relative mb-2">
@@ -125,13 +166,13 @@ const AddNewCompanyModal = ({ onCLose }) => {
 
               {showPlanDropdown && (
                 <div className="absolute h-[90px] top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
-                  {["Monthly", "Yearly"].map((option) => (
+                  {plans?.map((option, index) => (
                     <div
-                      key={option}
-                      onClick={() => handleSelectPlan(option)}
+                      key={option?._id}
+                      onClick={() => handleSelectPlan(option?.name, index)}
                       className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     >
-                      {option}
+                      {option?.name}
                     </div>
                   ))}
                 </div>
@@ -139,28 +180,8 @@ const AddNewCompanyModal = ({ onCLose }) => {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-[14px] font-[500] my-2">Plan Categories</h2>
-            <div className="flex gap-8 items-center">
-              {["individual", "couple", "family"].map((type) => (
-                <div
-                  key={type}
-                  className="flex items-center gap-2 cursor-pointer"
-                  onClick={() => toggleCategory(type)}
-                >
-                  <img
-                    src={selected[type] ? checkBoxOne : checkBoxTwo}
-                    alt="checkbox"
-                    className="w-4 h-4"
-                  />
-                  <span className="text-sm font-medium capitalize">{type}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="text-sm text-[#212121] block mb-1">
+          <div className="space-y-2 gap-1">
+            <label className="text-[15px] text-[#212121] font-[400] block mb-1">
               Subscription Type
             </label>
             <div className="relative mb-2">
@@ -172,24 +193,55 @@ const AddNewCompanyModal = ({ onCLose }) => {
                 }}
               >
                 <span>
-                  {selectedType ? selectedType : "Select Subscription Type"}
+                  {Object.keys(selectedType)[0]
+                    ? Object.keys(selectedType)[0]
+                    : "Select Subscription Type"}
                 </span>
                 <IoChevronDown className="text-gray-600" />
               </div>
 
               {showTypeDropdown && (
                 <div className="absolute h-[90px] top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
-                  {["Premium", "Standard"].map((option) => (
-                    <div
-                      key={option}
-                      onClick={() => handleSelectType(option)}
-                      className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                    >
-                      {option}
-                    </div>
-                  ))}
+                  {planTypeData?.map((option, index) => {
+                    const key = Object.keys(option)[0];
+                    const value = option[key];
+
+                    return (
+                      <div
+                        key={key}
+                        onClick={() => handleSelectType({ [key]: value })}
+                        className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      >
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-[14px] font-[500] ">Plan Categories</h2>
+            <div className="flex gap-8 items-center">
+              {Object.values(selectedType)[0]?.map((type) => {
+                return (
+                  <div
+                    key={type?._id}
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={() => toggleCategory(type?.planType)}
+                  >
+                    <img
+                      src={selected[type?.planType] ? checkBoxOne : checkBoxTwo}
+                      alt="checkbox"
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm font-medium capitalize">
+                      {type?.planType}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -198,12 +250,20 @@ const AddNewCompanyModal = ({ onCLose }) => {
             type="text"
             name="costPerEmployee"
             label="Cost Per Employee"
+            onChange={(e) =>
+              setCompanyData((prev) => ({ ...prev, price: e.target.value }))
+            }
           />
 
           <div className="pt-2">
-            <Button text="Add Now" />
+            <Button
+              onClick={() => handleCompany(companyData, companyImage)}
+              text="Add Now"
+              type="button"
+              loading={companyLoading}
+            />
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

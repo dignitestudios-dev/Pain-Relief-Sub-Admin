@@ -22,3 +22,9 @@ export const CreateSubAdminSchema = Yup.object().shape({
     .required("Confirm your password")
     .oneOf([Yup.ref("password")], "Passwords must match"),
 });
+
+export const BankDetailSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required").max(50),
+  accountNo: Yup.string().required("Account Number is required").max(50),
+  accountId: Yup.string().required("Account Id is required").max(50),
+});
