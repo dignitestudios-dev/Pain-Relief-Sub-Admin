@@ -1,17 +1,26 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 
-const CompanyBasiInfo = ({ provider }) => {
+const CompanyBasiInfo = ({ companyData }) => {
   return (
     <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-6">
       <p className="text-[24px] font-[600] ">Employee Details</p>
       <span className="w-full border border-b flex"></span>
-      <InfoRow label="Full Name" value={provider.fullName} />
-      <InfoRow label="Email Address" value={provider.email} />
-      <InfoRow label="Mobile Number" value={provider.phone} />
-      <InfoRow label="Subscription Plan" value={"Basic"} />
-      <InfoRow label="Plan Category" value={"Individual"} />
-      <InfoRow label="Subscription Type" value={"Monthly"} />
-      <InfoRow label="Cost Per Employee" value={"$30"} />
+      <InfoRow label="Full Name" value={companyData?.name} />
+      <InfoRow label="Email Address" value={companyData?.email} />
+      <InfoRow label="Mobile Number" value={companyData?.email} />
+      <InfoRow
+        label="Subscription Plan"
+        value={companyData?.subscriptionPlan?.name}
+      />
+      <InfoRow
+        label="Plan Category"
+        value={companyData.subscriptionPrice?.billingPeriod}
+      />
+      <InfoRow
+        label="Subscription Type"
+        value={companyData?.subscriptionPrice?.planType}
+      />
+      <InfoRow label="Cost Per Employee" value={companyData?.costPerEmployee} />
     </div>
   );
 };

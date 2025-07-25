@@ -1,21 +1,24 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 
-const EmployeeBasicInfo = ({provider}) => {
+const EmployeeBasicInfo = ({ employeeData }) => {
   return (
     <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-6">
       <p className="text-[24px] font-[600] ">Employee Details</p>
       <span className="w-full border border-b flex"></span>
-      <InfoRow label="Full Name" value={provider.fullName} />
-      <InfoRow label="Email Address" value={provider.email} />
-      <InfoRow label="Mobile Number" value={provider.phone} />
-      <InfoRow label="Age" value={provider.age + "yrs old"} />
-      <InfoRow label="Number of Employees" value={"15"} />
-      <InfoRow label="Gender" value={provider.gender} />
-      <InfoRow label="Location" value={provider.location} multi />
+      <InfoRow
+        label="Full Name"
+        value={employeeData.firstName + employeeData.lastName}
+      />
+      <InfoRow label="Email Address" value={employeeData.email} />
+      <InfoRow label="Mobile Number" value={employeeData.phone} />
+      {/* <InfoRow label="Age" value={employeeData.age + "yrs old"} /> */}
+      {/* <InfoRow label="Number of Employees" value={"15"} />
+      <InfoRow label="Gender" value={employeeData.gender || "--"} />
+      <InfoRow label="Location" value={employeeData.location || "--"} multi /> */}
       <div>
         <p className="font-medium mb-1">Description</p>
         <p className="text-gray-600 whitespace-pre-line">
-          {provider.description}
+          {employeeData.description}
         </p>
       </div>
     </div>

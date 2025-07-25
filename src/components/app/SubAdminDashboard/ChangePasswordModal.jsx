@@ -1,21 +1,36 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const ChangePasswordModal = ({ isOpen, onClose, onSubmit, formData, setFormData, loading }) => {
+const ChangePasswordModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  formData,
+  setFormData,
+  loading,
+}) => {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   if (!isOpen) return null;
 
-  const renderInput = (type, placeholder, valueKey, showState, setShowState) => (
+  const renderInput = (
+    type,
+    placeholder,
+    valueKey,
+    showState,
+    setShowState
+  ) => (
     <div className="relative">
       <input
         type={showState ? "text" : "password"}
         placeholder={placeholder}
         className="w-full px-4 py-2 border rounded-md pr-10"
         value={formData[valueKey]}
-        onChange={(e) => setFormData({ ...formData, [valueKey]: e.target.value })}
+        onChange={(e) =>
+          setFormData({ ...formData, [valueKey]: e.target.value })
+        }
       />
       <button
         type="button"
@@ -41,23 +56,40 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit, formData, setFormData,
         <span className="border-b flex mb-3"></span>
 
         <div className="space-y-4">
-          {renderInput("password", "Current Password", "currentPassword", showCurrent, setShowCurrent)}
-          {renderInput("password", "New Password", "newPassword", showNew, setShowNew)}
-          {renderInput("password", "Confirm New Password", "confirmPassword", showConfirm, setShowConfirm)}
+          {renderInput(
+            "password",
+            "Current Password",
+            "currentPassword",
+            showCurrent,
+            setShowCurrent
+          )}
+          {renderInput(
+            "password",
+            "New Password",
+            "newPassword",
+            showNew,
+            setShowNew
+          )}
+          {renderInput(
+            "password",
+            "Confirm New Password",
+            "confirmPassword",
+            showConfirm,
+            setShowConfirm
+          )}
         </div>
 
         <button
-  onClick={onSubmit}
-  disabled={loading}
-  className={`w-full mt-6 py-2 rounded-md text-white ${
-    loading
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-gradient-to-l from-[#29ABE2] to-[#63CFAC]"
-  }`}
->
-  {loading ? "Saving..." : "Save"}
-</button>
-
+          onClick={onSubmit}
+          disabled={loading}
+          className={`w-full mt-6 py-2 rounded-md text-white ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-l from-[#29ABE2] to-[#63CFAC]"
+          }`}
+        >
+          {loading ? "Saving..." : "Save"}
+        </button>
       </div>
     </div>
   );

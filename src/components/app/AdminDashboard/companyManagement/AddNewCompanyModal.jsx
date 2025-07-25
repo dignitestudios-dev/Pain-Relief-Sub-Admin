@@ -25,6 +25,9 @@ const AddNewCompanyModal = ({
   const [planTypeData, setPlanTypeData] = useState([]);
 
   const [selectedPlan, setSelectedPlan] = useState("");
+  const [pricingId, setPricingId] = useState("");
+  const [selectedPlanId, setSelectedPlanId] = useState("");
+
   const [selectedType, setSelectedType] = useState("");
   const [companyData, setCompanyData] = useState({});
   const [companyImage, setCompanyImage] = useState("");
@@ -35,11 +38,16 @@ const AddNewCompanyModal = ({
     family: false,
   });
 
-  const toggleCategory = (type) => {
-    setSelected((prev) => ({ [type]: !prev[type] }));
+  const toggleCategory = (planType, typeData) => {
+    setErrors((prev) => ({ ...prev, type: null }));
+    setPricingId(typeData?._id);
+    setSelected((prev) => ({ [planType]: !prev[planType] }));
   };
 
-  const handleSelectPlan = (option, index) => {
+  const handleSelectPlan = (option, id, index) => {
+    setErrors((prev) => ({ ...prev, plan: null }));
+
+    setSelectedPlanId(id);
     setSelectedPlan(option);
     setShowPlanDropdown(false);
     const plan = plans[index];
@@ -53,6 +61,8 @@ const AddNewCompanyModal = ({
   };
 
   const handleSelectType = (option) => {
+    setErrors((prev) => ({ ...prev, plan: null }));
+
     setSelectedType(option);
     setShowTypeDropdown(false);
   };
@@ -146,6 +156,7 @@ const AddNewCompanyModal = ({
               <p className="text-red-500 text-xs mt-1">{errors.email}</p>
             )}
           </div>
+
           <div className="space-y-2 gap-1">
             <label className="text-[15px] text-[#212121] font-[400] block mb-1">
               Subscription Plan
@@ -169,7 +180,9 @@ const AddNewCompanyModal = ({
                   {plans?.map((option, index) => (
                     <div
                       key={option?._id}
-                      onClick={() => handleSelectPlan(option?.name, index)}
+                      onClick={() =>
+                        handleSelectPlan(option?.name, option?._id, index)
+                      }
                       className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     >
                       {option?.name}
@@ -178,6 +191,9 @@ const AddNewCompanyModal = ({
                 </div>
               )}
             </div>
+            {errors.plan && (
+              <p className="text-red-500 text-xs -mt-4 mb-2">{errors.plan}</p>
+            )}
           </div>
 
           <div className="space-y-2 gap-1">
@@ -202,7 +218,7 @@ const AddNewCompanyModal = ({
 
               {showTypeDropdown && (
                 <div className="absolute h-[90px] top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
-                  {planTypeData?.map((option, index) => {
+                  {planTypeData?.map((option) => {
                     const key = Object.keys(option)[0];
                     const value = option[key];
 
@@ -229,7 +245,7 @@ const AddNewCompanyModal = ({
                   <div
                     key={type?._id}
                     className="flex items-center gap-2 cursor-pointer"
-                    onClick={() => toggleCategory(type?.planType)}
+                    onClick={() => toggleCategory(type?.planType, type)}
                   >
                     <img
                       src={selected[type?.planType] ? checkBoxOne : checkBoxTwo}
@@ -245,19 +261,60 @@ const AddNewCompanyModal = ({
             </div>
           </div>
 
+          {errors.type && (
+            <p className="text-red-500 text-xs -mt-4 mb-2">{errors.type}</p>
+          )}
+
           <AuthInput
             placeholder="$30"
             type="text"
             name="costPerEmployee"
             label="Cost Per Employee"
-            onChange={(e) =>
-              setCompanyData((prev) => ({ ...prev, price: e.target.value }))
-            }
+            onChange={(e) => {
+              const value = e.target.value;
+
+              // Allow only numbers with optional decimal
+              if (!/^\d*\.?\d*$/.test(value)) return;
+
+              // Prevent leading zero unless it's "0." (for decimals)
+              if (
+                value.length > 1 &&
+                value.toString().startsWith("0") &&
+                !value.toString().startsWith("0.")
+              ) {
+                return;
+              }
+
+              const numberValue = parseFloat(value);
+
+              setCompanyData((prev) => ({
+                ...prev,
+                price: value,
+              }));
+
+              setErrors((prev) => ({
+                ...prev,
+                price:
+                  !value || numberValue <= 0
+                    ? "Please enter a number greater than zero"
+                    : null,
+              }));
+            }}
           />
+          {errors.price && (
+            <p className="text-red-500 text-xs -mt-4 mb-2">{errors.price}</p>
+          )}
 
           <div className="pt-2">
             <Button
-              onClick={() => handleCompany(companyData, companyImage)}
+              onClick={() =>
+                handleCompany(
+                  companyData,
+                  companyImage,
+                  selectedPlanId,
+                  pricingId
+                )
+              }
               text="Add Now"
               type="button"
               loading={companyLoading}

@@ -1,8 +1,34 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
+import { useState } from "react";
 import { CrossImag, TickSign } from "../../../../assets/export";
 import Button from "../../../global/Button";
+import { ErrorToast, SuccessToast } from "../../../global/Toaster";
+import axios from "../../../../axios";
+import { useNavigate } from "react-router";
 
-const DeleteEmployeeModal = ({ onClose, handleClick }) => {
+const DeleteEmployeeModal = ({ id, onClose }) => {
+  const navigate = useNavigate();
+
+  const [delLoading, setDelLoading] = useState(false);
+  const deleteEmployee = async () => {
+    try {
+      setDelLoading(true);
+      const response = await axios.post("/admin/delete-employee-by-company", {
+        employeeId: id,
+      });
+      if (response.status === 200) {
+        SuccessToast("Delete Successfully");
+        navigate(`/app/company-detail/${id}`);
+        onClose();
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setDelLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-md rounded-[20px] shadow-lg p-6">
@@ -35,7 +61,11 @@ const DeleteEmployeeModal = ({ onClose, handleClick }) => {
             No
           </button>
           <div className="w-[210px]">
-            <Button text={"Yes"} onClick={handleClick} />
+            <Button
+              text={"Yes"}
+              onClick={deleteEmployee}
+              loading={delLoading}
+            />
           </div>
         </div>
       </div>

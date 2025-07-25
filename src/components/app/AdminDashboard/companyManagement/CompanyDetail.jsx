@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Button from "../../../global/Button";
-import { CompanyProfile } from "../../../../assets/export";
 import { FiTrash2 } from "react-icons/fi";
 import { BiEdit } from "react-icons/bi";
 import CompanyBasiInfo from "./CompanyBasiInfo";
@@ -8,24 +7,81 @@ import EmployessTable from "./EmployessTable";
 import InVoiceDetail from "./InVoiceDetail";
 import DeleteCompanyModal from "./DeleteCompanyModal";
 import EditCompanyModal from "./EditCompanyModal";
-
-const provider = {
-  name: "John Alex",
-  email: "john.alex@gmail.com",
-  avatar: CompanyProfile,
-  fullName: "Clinic Title",
-  phone: "+000 0000 000",
-  age: "25",
-  gender: "Male",
-  location: "Dallas, TX – 802 PainEase Plaza",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-};
+import { useLocation, useNavigate } from "react-router";
+import { useFetchData } from "../../../../hooks/api/Get";
+import { ErrorToast, SuccessToast } from "../../../global/Toaster";
+import { validateCompanyForm } from "../../../../lib/helpers";
+import axios from "../../../../axios";
 
 const CompanyDetail = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("Basic Info");
   const [deleteModal, setDeleteModal] = useState(false);
   const [companyEmployeeModal, setEditCompanyModal] = useState(false);
+  const [errors, setErrors] = useState({});
+  console.log("🚀 ~ CompanyDetail ~ errors:", errors);
+  const [companyLoading, setCompanyLoading] = useState(false);
+
+  const companyData = location?.state?.companyData;
+  const companyId = companyData?._id;
+
+  const { data: subscriptionData } = useFetchData(
+    `/payment/subscriptions`,
+    {},
+    1,
+    ""
+  );
+
+  const handleCompany = async (
+    companyData,
+    companyImage,
+    selectedPlanId,
+    pricingId
+  ) => {
+    const validationErrors = validateCompanyForm({
+      companyData,
+      companyImage,
+      selectedPlanId,
+      pricingId,
+    });
+
+    setErrors(validationErrors);
+
+    // if (Object.keys(validationErrors).length > 0) return;
+    setCompanyLoading(true);
+    try {
+      const formData = new FormData();
+
+      formData.append("companyId", companyId);
+      formData.append("name", companyData?.name);
+      formData.append("email", companyData?.email);
+      formData.append("costPerEmployee", companyData?.price);
+
+      if (companyImage && typeof companyImage !== "string") {
+        formData.append("profilePicture", companyImage);
+      }
+      if (selectedPlanId) {
+        formData.append("subscriptionPlan", selectedPlanId);
+      }
+      if (pricingId) {
+        formData.append("subscriptionPrice", pricingId);
+      }
+
+      const response = await axios.post("/admin/update-company", formData);
+      if (response.status === 200) {
+        SuccessToast("Company added successfully");
+        navigate("/app/company-managment");
+      }
+    } catch (error) {
+      console.log("🚀 ~ handleCompany ~ error:", error);
+      ErrorToast(error.response.data.message);
+    } finally {
+      setCompanyLoading(false);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
       <h2 className="text-[32px] font-[600] text-[#212121] mb-4">
@@ -35,14 +91,14 @@ const CompanyDetail = () => {
       <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">
         <div className="flex items-center  mb-4">
           <img
-            src={provider.avatar}
+            src={companyData?.profilePicture}
             alt="avatar"
             className="w-[116px] h-[116px] rounded-full border border-[#63CFAC] mr-6 p-0.5"
           />
           <div>
-            <h3 className="text-[32px] font-[600]">{provider.name}</h3>
+            <h3 className="text-[32px] font-[600]">{companyData?.name}</h3>
             <p className="text-[#565656] text-[16px] font-[500] ">
-              {provider.email}
+              {companyData?.email}
             </p>
           </div>
         </div>
@@ -52,12 +108,12 @@ const CompanyDetail = () => {
               Cost Per Employee
             </span>
             <h3 className="font-[600] text-[24px] underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent">
-              $30
+              {companyData?.costPerEmployee}
             </h3>
           </div>
           <div
             onClick={() => setDeleteModal(true)}
-            className="w-[58px] bg-[#FF5D5D] h-[49px]  flex justify-center items-center rounded-[10px]"
+            className="w-[58px] bg-[#FF5D5D] h-[49px] cursor-pointer flex justify-center items-center rounded-[10px]"
           >
             <FiTrash2 size={25} color="white" />
           </div>
@@ -85,19 +141,28 @@ const CompanyDetail = () => {
           </button>
         ))}
       </div>
-      {activeTab === "Basic Info" && <CompanyBasiInfo provider={provider} />}
-      {activeTab === "Employees" && <EmployessTable provider={provider} />}
-      {activeTab === "Invoice" && <InVoiceDetail provider={provider} />}
+      {activeTab === "Basic Info" && (
+        <CompanyBasiInfo companyData={companyData} />
+      )}
+      {activeTab === "Employees" && <EmployessTable id={companyData?._id} />}
+      {activeTab === "Invoice" && (
+        <InVoiceDetail companyData={companyData} id={companyData?._id} />
+      )}
       {deleteModal && (
         <DeleteCompanyModal
-          handleClick={() => setDeleteModal(false)}
+          id={companyData?._id}
           onClose={() => setDeleteModal(false)}
         />
       )}
       {companyEmployeeModal && (
         <EditCompanyModal
-          handleSubmit={() => setEditCompanyModal(false)}
-          onCLose={() => setEditCompanyModal(false)}
+          onClose={() => setEditCompanyModal(false)}
+          companyData={companyData}
+          subscriptionData={subscriptionData}
+          errors={errors}
+          setErrors={setErrors}
+          handleCompany={handleCompany}
+          companyLoading={companyLoading}
         />
       )}
     </div>

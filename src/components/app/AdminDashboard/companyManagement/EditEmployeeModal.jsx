@@ -1,11 +1,23 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useRef, useState } from "react";
 import { CrossImag, ProfileAdd } from "../../../../assets/export";
 import AuthInput from "../../../global/AuthInput";
 import { IoChevronDown } from "react-icons/io5";
 import Button from "../../../global/Button";
 
-const EditEmployeeModal = ({ onClose,handleSubmit }) => {
+const EditEmployeeModal = ({
+  onClose,
+  values,
+  errors,
+  touched,
+  handleChange,
+  handleBlur,
+  setFieldValue,
+  handleSubmit,
+  loading,
+}) => {
   const [imagePreview, setImagePreview] = useState(null);
+  console.log("🚀 ~ imagePreview:", imagePreview);
   const [genderDropdown, setGenderDropdown] = useState(false);
   const [selectedGender, setSelectedGender] = useState("Gender");
   const fileInputRef = useRef(null);
@@ -13,6 +25,7 @@ const EditEmployeeModal = ({ onClose,handleSubmit }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setFieldValue("profilePicture", file);
       setImagePreview(URL.createObjectURL(file));
     }
   };
@@ -34,37 +47,46 @@ const EditEmployeeModal = ({ onClose,handleSubmit }) => {
         </div>
         <div className="border-t border-[#E5E5E5] my-2"></div>
 
-        {/* Upload */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-[72px] h-[72px] rounded-full overflow-hidden bg-[#F2F2F2]">
-            <img
-              src={imagePreview || ProfileAdd}
-              alt="upload"
-              className="w-full h-full object-cover"
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-[72px] h-[72px] rounded-full overflow-hidden bg-[#F2F2F2]">
+              <img
+                src={values?.profilePicture || ProfileAdd}
+                alt="upload"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="text-[14px] font-medium underline bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
+            >
+              Upload Picture
+            </button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              ref={fileInputRef}
+              className="hidden"
             />
           </div>
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="text-[14px] font-medium underline bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent"
-          >
-            Upload Picture
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            ref={fileInputRef}
-            className="hidden"
-          />
-        </div>
-
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div></div>
           <AuthInput
             label={"Full Name (required)"}
-            placeholder="Enter your name"
+            placeholder="Enter employee name"
             type="text"
             name="fullName"
+            value={values.fullName}
+            maxLength={50}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.fullName}
+            touched={touched.fullName}
           />
+
           <div className="w-full">
             <label className="text-[15px] text-[#212121] font-[400]">
               Gender (required)
@@ -99,6 +121,12 @@ const EditEmployeeModal = ({ onClose,handleSubmit }) => {
               placeholder="Enter your email"
               type="email"
               name="email"
+              value={values.email}
+              maxLength={50}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.email}
+              touched={touched.email}
             />
             <div className="mt-3">
               <AuthInput
@@ -106,27 +134,42 @@ const EditEmployeeModal = ({ onClose,handleSubmit }) => {
                 placeholder="Enter your phone number"
                 type="text"
                 name="phone"
+                value={values.phone}
+                maxLength={50}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.phone}
+                touched={touched.phone}
               />
             </div>
           </div>
+
           <div>
             <label className="text-sm text-[#212121] font-medium block mb-1">
               Description
             </label>
             <textarea
-              name="description"
-              rows={3}
               placeholder="Description"
-              className="w-full border border-[#D9D9D9] rounded-[8px] px-3 py-2 text-sm text-[#212121] placeholder-[#565656] focus:outline-none focus:ring-1 focus:ring-[#55C9FA]"
+              className="border border-[#D9D9D9] focus:outline-none focus:ring-2 placeholder:text-[#565656]
+                  focus:ring-blue-300 w-full rounded-[12px] p-4 text-[16px] h-[150px]"
+              id="descriptions"
+              value={values.descriptions}
+              rows={6}
+              name="descriptions"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              maxLength={250}
             ></textarea>
+            {touched.descriptions && errors.descriptions && (
+              <p className="text-red-600 text-xs mt-1">{errors.descriptions}</p>
+            )}
+          </div>
+          <div className="flex justify-end">
+            <div className="w-[234px]">
+              <Button loading={loading} type="submit" text={"Add Employee"} />
+            </div>
           </div>
         </form>
-
-        <div className="flex justify-end">
-          <div className="w-[234px]">
-            <Button text={"Save"} onClick={handleSubmit} />
-          </div>
-        </div>
       </div>
     </div>
   );
