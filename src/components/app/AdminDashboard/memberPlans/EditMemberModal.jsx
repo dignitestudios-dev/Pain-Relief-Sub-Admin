@@ -8,13 +8,13 @@ import { ErrorToast, SuccessToast } from "../../../global/Toaster";
 import axios from "../../../../axios";
 
 const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
-  console.log("🚀 ~ EditMemberModal ~ memberPlanDetails:", memberPlanDetails);
   const [duration, setDuration] = useState("Monthly");
   const [benefitInput, setBenefitInput] = useState("");
   const [benefits, setBenefits] = useState([]);
   const [planName, setPlanName] = useState("");
   const [priceLoading, setPriceLoading] = useState(false);
   const [addLoading, setAddLoading] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   const [selectedMonthlyCategory, setSelectedMonthlyCategory] = useState([
     "individual",
@@ -289,7 +289,10 @@ const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
               {["Monthly", "Yearly"].map((type) => (
                 <button
                   key={type}
-                  onClick={() => setDuration(type)}
+                  onClick={() => {
+                    setDuration(type);
+                    type === "Yearly" && setIsClicked(true);
+                  }}
                   className={`w-[150px] h-[40px] rounded-md font-medium text-sm ${
                     duration === type
                       ? "bg-gradient-to-r from-[#29ABE2] to-[#63CFAC] text-white"
@@ -300,6 +303,33 @@ const EditMemberModal = ({ onClose, memberPlanDetails, setUpdate }) => {
                 </button>
               ))}
             </div>
+            {/* <div className="flex gap-3 mb-4">
+              <button
+                onClick={() => {
+                  setDuration("Monthly");
+                }}
+                className={`w-[150px] h-[40px] rounded-md font-medium text-sm ${
+                  duration === "Monthly"
+                    ? "bg-gradient-to-r from-[#29ABE2] to-[#63CFAC] text-white"
+                    : "bg-[#E8E8E8] text-[#212121]"
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => {
+                  setDuration("Yearly");
+                  setIsClicked(true);
+                }}
+                className={`w-[150px] h-[40px] rounded-md font-medium text-sm ${
+                  duration === "Yearly"
+                    ? "bg-gradient-to-r from-[#29ABE2] to-[#63CFAC] text-white"
+                    : "bg-[#E8E8E8] text-[#212121]"
+                }`}
+              >
+                Yearly
+              </button>
+            </div> */}
             {duration === "Monthly" ? (
               <div className="space-y-3">
                 <div>

@@ -21,9 +21,6 @@ const EditCompanyModal = ({
   companyLoading,
   handleCompany,
 }) => {
-  console.log("🚀 ~ EditCompanyModal ~ subscriptionData:", subscriptionData);
-  console.log("🚀 ~ EditCompanyModal ~ companyData:", companyData);
-
   const [isEdit, setIsEdit] = useState(false);
 
   const [showPlanDropdown, setShowPlanDropdown] = useState(false);
@@ -202,7 +199,7 @@ const EditCompanyModal = ({
                   </div>
 
                   {showPlanDropdown && (
-                    <div className="absolute h-[90px] top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
+                    <div className="absolute h-[120px] overflow-auto top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
                       {subscriptionData?.map((option, index) => (
                         <div
                           key={option?._id}
@@ -339,7 +336,7 @@ const EditCompanyModal = ({
               <div>
                 <h2 className="text-[14px] font-[500] my-2">Plan Categories</h2>
                 <div className="flex gap-8 items-center">
-                  {["individual", "couple", "family"].map((type) => (
+                  {["individual", "couples", "family"].map((type) => (
                     <div
                       key={type}
                       className="flex items-center gap-2 cursor-pointer"
@@ -350,7 +347,7 @@ const EditCompanyModal = ({
                         className="w-4 h-4"
                       />
                       <span className="text-sm font-medium capitalize">
-                        {type}
+                        {type === "couples" ? "Couple" : type}
                       </span>
                     </div>
                   ))}

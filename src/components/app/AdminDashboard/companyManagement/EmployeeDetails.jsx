@@ -10,10 +10,12 @@ import { addEmployeeSchema } from "../../../../schema/editForm/editFormSchema";
 import { useFormik } from "formik";
 import axios from "../../../../axios";
 import { ErrorToast, SuccessToast } from "../../../global/Toaster";
+import { ProfileAdd } from "../../../../assets/export";
 
 const EmployeeDetails = () => {
   const location = useLocation();
   const employeeData = location.state?.employeeData;
+  const company = location.state?.company;
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [editEmployeeModal, setEditEmployeeModal] = useState(false);
@@ -81,13 +83,17 @@ const EmployeeDetails = () => {
       <div className="flex justify-between items-center  rounded-lg shadow-sm mb-10  bg-[#FAFAFA] p-4">
         <div className="flex items-center  mb-4">
           <img
-            src={employeeData?.profilePicture}
+            src={employeeData?.profilePicture ?? ProfileAdd}
             alt="avatar"
             className="w-[116px] h-[116px] rounded-full border border-[#63CFAC] mr-6 p-0.5"
           />
           <div>
             <h3 className="text-[32px] font-[600]">
-              {employeeData?.firstName + " " + employeeData?.lastName}
+              {employeeData?.firstName || employeeData?.lastName
+                ? [employeeData?.firstName, employeeData?.lastName]
+                    .filter(Boolean)
+                    .join(" ")
+                : "--"}
             </h3>
             <p className="text-[#565656] text-[16px] font-[500] ">
               {employeeData?.email}
@@ -100,7 +106,10 @@ const EmployeeDetails = () => {
               Current Plan
             </span>
             <h3 className="font-[600] text-[24px] underline cursor-pointer bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent">
-              <span className="text-black">Basic Plan</span> (individual)
+              <span className="text-black">
+                {company?.subscriptionPlan?.name}
+              </span>{" "}
+              {/* ({company?.costPerEmployee}) */}
             </h3>
           </div>
           <div

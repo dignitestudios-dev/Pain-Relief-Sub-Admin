@@ -90,7 +90,6 @@ const EmployeesTable = ({ id }) => {
             // status: item.EmployeeStatus || "",
             // company: item.EmployeeCompany || "",
           }));
-          console.log("🚀 ~ parsedData ~ parsedData:", parsedData);
           setData(parsedData);
         },
       });
@@ -239,12 +238,17 @@ const EmployeesTable = ({ id }) => {
                     {getDateFormat(employee.createdAt)}
                   </td>
 
-                  <td className="py-3 px-4">{employee.role}</td>
+                  <td className="py-3 px-4">
+                    {EmployeeData?.company?.subscriptionPlan?.name}
+                  </td>
                   <td
                     className="py-3 px-4 bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent  cursor-pointer"
                     onClick={() =>
                       navigate(`/app/employee-detail/${employee._id}`, {
-                        state: { employeeData: employee },
+                        state: {
+                          employeeData: employee,
+                          company: EmployeeData?.company,
+                        },
                       })
                     }
                   >

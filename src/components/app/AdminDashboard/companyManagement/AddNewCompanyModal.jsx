@@ -176,7 +176,7 @@ const AddNewCompanyModal = ({
               </div>
 
               {showPlanDropdown && (
-                <div className="absolute h-[90px] top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
+                <div className="absolute h-[120px] overflow-auto top-full left-0 mt-1 w-full bg-white border rounded-md shadow z-50">
                   {plans?.map((option, index) => (
                     <div
                       key={option?._id}

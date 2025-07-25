@@ -7,7 +7,7 @@ const CompanyBasiInfo = ({ companyData }) => {
       <span className="w-full border border-b flex"></span>
       <InfoRow label="Full Name" value={companyData?.name} />
       <InfoRow label="Email Address" value={companyData?.email} />
-      <InfoRow label="Mobile Number" value={companyData?.email} />
+      {/* <InfoRow label="Mobile Number" value={companyData?.email} /> */}
       <InfoRow
         label="Subscription Plan"
         value={companyData?.subscriptionPlan?.name}

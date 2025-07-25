@@ -7,10 +7,16 @@ const EmployeeBasicInfo = ({ employeeData }) => {
       <span className="w-full border border-b flex"></span>
       <InfoRow
         label="Full Name"
-        value={employeeData.firstName + employeeData.lastName}
+        value={
+          employeeData?.firstName || employeeData?.lastName
+            ? [employeeData?.firstName, employeeData?.lastName]
+                .filter(Boolean)
+                .join(" ")
+            : "--"
+        }
       />
       <InfoRow label="Email Address" value={employeeData.email} />
-      <InfoRow label="Mobile Number" value={employeeData.phone} />
+      <InfoRow label="Mobile Number" value={employeeData?.phone ?? "--"} />
       {/* <InfoRow label="Age" value={employeeData.age + "yrs old"} /> */}
       {/* <InfoRow label="Number of Employees" value={"15"} />
       <InfoRow label="Gender" value={employeeData.gender || "--"} />
@@ -18,7 +24,7 @@ const EmployeeBasicInfo = ({ employeeData }) => {
       <div>
         <p className="font-medium mb-1">Description</p>
         <p className="text-gray-600 whitespace-pre-line">
-          {employeeData.description}
+          {employeeData.description ?? "--"}
         </p>
       </div>
     </div>

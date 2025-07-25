@@ -12,6 +12,10 @@ const AddMemberPlanModal = ({ onClose, setUpdate }) => {
 
   const [duration, setDuration] = useState("Monthly");
   const [planName, setPlanName] = useState("");
+  const [planErrors, setPlanErrors] = useState({
+    name: "",
+    benefit: "",
+  });
 
   const [benefitInput, setBenefitInput] = useState("");
   const [benefits, setBenefits] = useState([]);
@@ -46,6 +50,22 @@ const AddMemberPlanModal = ({ onClose, setUpdate }) => {
   };
 
   const AddSubscriptionPlan = async () => {
+    let errors = {
+      name: "",
+      benefit: "",
+    };
+
+    if (!planName.trim()) {
+      errors.name = "Plan name is required";
+    }
+
+    if (benefits.length === 0) {
+      errors.benefit = "Benefit is required";
+    }
+    if (errors.name || errors.benefit) {
+      setPlanErrors(errors);
+      return;
+    }
     const payload = {
       name: planName,
       features: benefits,
@@ -53,6 +73,7 @@ const AddMemberPlanModal = ({ onClose, setUpdate }) => {
 
     try {
       setAddLoading(true);
+
       const response = await axios.post("/payment/subscription", payload);
       if (response.status === 200) {
         SuccessToast("Plan Added Successfully");
@@ -190,19 +211,37 @@ const AddMemberPlanModal = ({ onClose, setUpdate }) => {
 
         {isAddForm ? (
           <div className="space-y-4">
-            <AuthInput
-              onChange={(e) => setPlanName(e.target.value)}
-              type={"text"}
-              placeholder={" Plan Name"}
-            />
+            <div>
+              <AuthInput
+                onChange={(e) => {
+                  setPlanName(e.target.value);
+                  setPlanErrors((prev) => ({ ...prev, name: "" }));
+                }}
+                type={"text"}
+                placeholder={" Plan Name"}
+              />
+
+              {planErrors.name && (
+                <p className="text-red-500 text-xs mt-1 ">{planErrors.name}</p>
+              )}
+            </div>
+
             <div className="flex gap-2">
               <div className="w-full">
                 <AuthInput
                   type={"text"}
                   value={benefitInput}
-                  onChange={(e) => setBenefitInput(e.target.value)}
+                  onChange={(e) => {
+                    setBenefitInput(e.target.value);
+                    setPlanErrors((prev) => ({ ...prev, benefit: "" }));
+                  }}
                   placeholder={"Benefits"}
                 />
+                {planErrors.benefit && (
+                  <p className="text-red-500 text-xs mt-1 ">
+                    {planErrors.benefit}
+                  </p>
+                )}
               </div>
 
               <button
