@@ -53,11 +53,11 @@ const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
             <thead>
               <tr className="bg-gradient-to-l to-[#B9E9DB] from-[#A5DBF1] text-[14px] capitalize font-[400] tracking-wide text-gray-700">
                 <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">employee Name</th>
+                {/* <th className="py-3 px-4">employee Name</th> */}
                 <th className="py-3 px-4">Email Address</th>
-                <th className="py-3 px-4">Phone Number</th>
+                {/* <th className="py-3 px-4">Phone Number</th>
                 <th className="py-3 px-4">Company</th>
-                <th className="py-3 px-4">Membership Plan</th>
+                <th className="py-3 px-4">Membership Plan</th> */}
               </tr>
             </thead>
             <tbody>
@@ -67,17 +67,17 @@ const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
                   className="border-b last:border-0 hover:bg-gray-50"
                 >
                   <td className="py-3 px-4">{index + 1}</td>
-                  <td className="py-3 px-4">
+                  {/* <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       <span className="text-gray-900 font-medium">
                         {employee.name}
                       </span>
                     </div>
-                  </td>
+                  </td> */}
                   <td className="py-3 px-4">{employee.email}</td>
-                  <td className="py-3 px-4">{employee.phone}</td>
+                  {/* <td className="py-3 px-4">{employee.phone}</td>
                   <td className="py-3 px-4">{employee.company}</td>
-                  <td className="py-3 px-4">{employee.status}</td>
+                  <td className="py-3 px-4">{employee.status}</td> */}
                 </tr>
               ))}
             </tbody>

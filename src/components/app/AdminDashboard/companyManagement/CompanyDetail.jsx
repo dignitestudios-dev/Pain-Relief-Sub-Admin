@@ -21,7 +21,7 @@ const CompanyDetail = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [companyEmployeeModal, setEditCompanyModal] = useState(false);
   const [errors, setErrors] = useState({});
-  console.log("🚀 ~ CompanyDetail ~ errors:", errors);
+
   const [companyLoading, setCompanyLoading] = useState(false);
 
   const companyData = location?.state?.companyData;

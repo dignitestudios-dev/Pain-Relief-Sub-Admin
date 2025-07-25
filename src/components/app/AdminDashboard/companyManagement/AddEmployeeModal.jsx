@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState } from "react";
-import { CrossImag, ProfileAdd } from "../../../../assets/export";
+// import { useRef, useState } from "react";
+import { CrossImag } from "../../../../assets/export";
 import AuthInput from "../../../global/AuthInput";
-import { IoChevronDown } from "react-icons/io5";
+// import { IoChevronDown } from "react-icons/io5";
 import Button from "../../../global/Button";
 
 const AddEmployeeModal = ({
@@ -12,22 +12,22 @@ const AddEmployeeModal = ({
   touched,
   handleChange,
   handleBlur,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
   loading,
 }) => {
-  const [imagePreview, setImagePreview] = useState(null);
-  const [genderDropdown, setGenderDropdown] = useState(false);
-  const [selectedGender, setSelectedGender] = useState("Gender");
-  const fileInputRef = useRef(null);
+  // const [imagePreview, setImagePreview] = useState(null);
+  // const [genderDropdown, setGenderDropdown] = useState(false);
+  // const [selectedGender, setSelectedGender] = useState("Gender");
+  // const fileInputRef = useRef(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-      setFieldValue("profilePicture", file);
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setImagePreview(URL.createObjectURL(file));
+  //     setFieldValue("profilePicture", file);
+  //   }
+  // };
 
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-4">
@@ -50,7 +50,7 @@ const AddEmployeeModal = ({
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          <div className="flex items-center gap-4 mb-6">
+          {/* <div className="flex items-center gap-4 mb-6">
             <div className="w-[72px] h-[72px] rounded-full overflow-hidden bg-[#F2F2F2]">
               <img
                 src={imagePreview || ProfileAdd}
@@ -71,8 +71,8 @@ const AddEmployeeModal = ({
               ref={fileInputRef}
               className="hidden"
             />
-          </div>
-          <div></div>
+          </div> */}
+          {/* <div></div>
           <AuthInput
             label={"Full Name (required)"}
             placeholder="Enter employee name"
@@ -84,9 +84,9 @@ const AddEmployeeModal = ({
             onBlur={handleBlur}
             error={errors.fullname}
             touched={touched.fullname}
-          />
+          /> */}
 
-          <div className="w-full">
+          {/* <div className="w-full">
             <label className="text-[15px] text-[#212121] font-[400]">
               Gender (required)
             </label>
@@ -113,7 +113,7 @@ const AddEmployeeModal = ({
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
           <div className="">
             <AuthInput
               label={"Email Address (required)"}
@@ -127,7 +127,7 @@ const AddEmployeeModal = ({
               error={errors.email}
               touched={touched.email}
             />
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <AuthInput
                 label={"Phone Number"}
                 placeholder="Enter your phone number"
@@ -140,10 +140,10 @@ const AddEmployeeModal = ({
                 error={errors.phone}
                 touched={touched.phone}
               />
-            </div>
+            </div> */}
           </div>
 
-          <div>
+          {/* <div>
             <label className="text-sm text-[#212121] font-medium block mb-1">
               Description
             </label>
@@ -162,7 +162,7 @@ const AddEmployeeModal = ({
             {touched.descriptions && errors.descriptions && (
               <p className="text-red-600 text-xs mt-1">{errors.descriptions}</p>
             )}
-          </div>
+          </div> */}
           <div className="flex justify-end">
             <div className="w-[234px]">
               <Button loading={loading} type="submit" text={"Add Employee"} />

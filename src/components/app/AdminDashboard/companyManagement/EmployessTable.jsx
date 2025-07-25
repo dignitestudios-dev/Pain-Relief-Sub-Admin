@@ -67,11 +67,11 @@ const EmployeesTable = ({ id }) => {
 
   const [data, setData] = useState([
     {
-      name: "",
+      // name: "",
       email: "",
-      phone: "",
-      company: "",
-      status: "",
+      // phone: "",
+      // company: "",
+      // status: "",
     },
   ]);
 
@@ -84,11 +84,11 @@ const EmployeesTable = ({ id }) => {
         skipEmptyLines: true,
         complete: (results) => {
           const parsedData = results?.data?.map((item) => ({
-            name: item.EmployeeName || "",
+            // name: item.EmployeeName || "",
             email: item.EmployeeEmail || "",
-            phone: item.EmployeePhone || "",
-            status: item.EmployeeStatus || "",
-            company: item.EmployeeCompany || "",
+            // phone: item.EmployeePhone || "",
+            // status: item.EmployeeStatus || "",
+            // company: item.EmployeeCompany || "",
           }));
           console.log("🚀 ~ parsedData ~ parsedData:", parsedData);
           setData(parsedData);
@@ -115,20 +115,20 @@ const EmployeesTable = ({ id }) => {
     },
     validationSchema: addEmployeeSchema,
     onSubmit: async (values, action) => {
-      const [firstName, ...rest] = values.fullname.trim().split(" ");
-      const lastName = rest.length > 0 ? rest.join(" ") : "";
+      // const [firstName, ...rest] = values.fullname.trim().split(" ");
+      // const lastName = rest.length > 0 ? rest.join(" ") : "";
       const formData = new FormData();
 
       formData.append("companyId", id);
-      formData.append("firstName", firstName);
-      formData.append("lastName", lastName);
+      // formData.append("firstName", firstName);
+      // formData.append("lastName", lastName);
 
       formData.append("email", values.email);
-      formData.append("phone", values.phone);
+      // formData.append("phone", values.phone);
 
-      if (values.profilePicture) {
-        formData.append("profilePicture", values.profilePicture);
-      }
+      // if (values.profilePicture) {
+      //   formData.append("profilePicture", values.profilePicture);
+      // }
 
       try {
         setLoading(true);
