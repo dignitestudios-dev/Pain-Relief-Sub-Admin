@@ -31,7 +31,7 @@ const AddEmployeeModal = ({
 
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-4xl rounded-[20px] shadow-lg p-6">
+      <div className="bg-white w-full max-w-xl rounded-[20px] shadow-lg p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[20px] font-[600] text-[#212121]">
@@ -48,7 +48,7 @@ const AddEmployeeModal = ({
 
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="grid grid-cols-1 md:grid-cols-1 gap-4"
         >
           {/* <div className="flex items-center gap-4 mb-6">
             <div className="w-[72px] h-[72px] rounded-full overflow-hidden bg-[#F2F2F2]">

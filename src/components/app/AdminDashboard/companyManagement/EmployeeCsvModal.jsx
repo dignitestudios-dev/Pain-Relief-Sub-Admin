@@ -6,6 +6,7 @@ import { ErrorToast, SuccessToast } from "../../../global/Toaster";
 import { useState } from "react";
 
 const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
+  console.log("🚀 ~ EmployeeCsvModal ~ data:", data);
   const [uploading, setUploading] = useState(false);
 
   const handleCsvUpload = async () => {

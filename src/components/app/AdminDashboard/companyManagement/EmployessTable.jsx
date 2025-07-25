@@ -85,7 +85,7 @@ const EmployeesTable = ({ id }) => {
         complete: (results) => {
           const parsedData = results?.data?.map((item) => ({
             // name: item.EmployeeName || "",
-            email: item.EmployeeEmail || "",
+            email: item.email || "",
             // phone: item.EmployeePhone || "",
             // status: item.EmployeeStatus || "",
             // company: item.EmployeeCompany || "",
@@ -203,10 +203,10 @@ const EmployeesTable = ({ id }) => {
             <thead>
               <tr className="bg-gradient-to-l to-[#B9E9DB] from-[#A5DBF1] text-[14px] capitalize font-[400] tracking-wide text-gray-700">
                 <th className="py-3 px-4">#</th>
-                <th className="py-3 px-4">employee Name</th>
+                {/* <th className="py-3 px-4">employee Name</th> */}
                 <th className="py-3 px-4">Email Address</th>
-                <th className="py-3 px-4">Phone Number</th>
-                <th className="py-3 px-4">no of employee</th>
+                {/* <th className="py-3 px-4">Phone Number</th> */}
+                <th className="py-3 px-4">Onboarding Date</th>
                 <th className="py-3 px-4">Membership Plan</th>
 
                 <th className="py-3 px-4">Action</th>
@@ -219,7 +219,7 @@ const EmployeesTable = ({ id }) => {
                   className="border-b last:border-0 hover:bg-gray-50"
                 >
                   <td className="py-3 px-4">{index + 1}</td>
-                  <td className="py-3 px-4">
+                  {/* <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       <img
                         src={employee.profilePicture}
@@ -232,9 +232,9 @@ const EmployeesTable = ({ id }) => {
                           .join(" ")}
                       </span>
                     </div>
-                  </td>
+                  </td> */}
                   <td className="py-3 px-4">{employee.email}</td>
-                  <td className="py-3 px-4">{employee.phone}</td>
+                  {/* <td className="py-3 px-4">{employee.phone}</td> */}
                   <td className="py-3 px-4">
                     {getDateFormat(employee.createdAt)}
                   </td>
@@ -273,6 +273,11 @@ const EmployeesTable = ({ id }) => {
       )}
       {accountCreatedModal && (
         <AccountCreatedModal
+          onClose={() => {
+            setUpdate((prev) => !prev);
+            setAccountCreatedModal(false);
+            setAddNewEmployeeModal(false);
+          }}
           handleClick={() => {
             setAddNewEmployeeModal(false);
             setAccountCreatedModal(false);

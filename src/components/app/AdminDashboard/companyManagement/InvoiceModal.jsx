@@ -1,76 +1,93 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
 import { CrossImag } from "../../../../assets/export";
 import Button from "../../../global/Button";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
 
-const InvoiceModal = ({ onClose }) => {
+const InvoiceModal = ({ onClose, invoiceData }) => {
+  const invoiceRef = useRef();
+
+  const handleDownload = async () => {
+    const element = invoiceRef.current;
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`invoice-${invoiceData?.invoiceId || "download"}.pdf`);
+  };
+
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-[20px] shadow-lg p-6">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-[20px] font-[600] text-[#212121]">
-            Invoice Detail
-          </h2>
-          <img
-            src={CrossImag}
-            alt="close"
-            onClick={onClose}
-            className="w-5 h-5 cursor-pointer"
-          />
-        </div>
+      <div className="bg-white  w-[620px] rounded-[20px] shadow-lg p-6">
+        <div ref={invoiceRef} className=" p-6 rounded-md w-[580px]">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-[20px] font-[600] text-[#212121]">
+              Invoice Detail
+            </h2>
+            <img
+              src={CrossImag}
+              alt="close"
+              onClick={onClose}
+              className="w-5 h-5 cursor-pointer"
+            />
+          </div>
 
-        <div className="border-t border-[#E5E5E5] my-2"></div>
+          <div className="border-t border-[#E5E5E5] my-2"></div>
 
-        {/* Detail Rows */}
-        <div className="space-y-4  text-[14px] text-[#212121]">
-          <div className="flex border-b justify-between">
-            <span>Invoice ID:</span>
-            <span className="text-[#212121] font-medium">#A4fc5445</span>
+          <div className="space-y-4  text-[14px] text-[#212121]">
+            <div className="flex border-b justify-between">
+              <span>Status:</span>
+              <span className="text-[#212121] font-medium capitalize">
+                {invoiceData?.status}
+              </span>
+            </div>
+            <div className="flex border-b justify-between">
+              <span>Subscription Plan</span>
+              <span className="text-[#212121] font-medium capitalize">
+                {invoiceData?.planName}
+              </span>
+            </div>
+            <div className="flex border-b justify-between">
+              <span>Plan Category</span>
+              <span className="text-[#212121] font-medium">Individual</span>
+            </div>
+            <div className="flex border-b justify-between">
+              <span>Total Employees</span>
+              <span className="text-[#212121] font-medium">
+                {invoiceData?.employeeCount}
+              </span>
+            </div>
+            <div className="flex border-b justify-between">
+              <span>Cost Per Employee</span>
+              <span className="text-[#212121] font-medium">
+                ${invoiceData?.amountPerEmployee}
+              </span>
+            </div>
+            <div className="flex justify-between font-[600] pt-2">
+              <span>Total Amount</span>
+              <span className="text-[#29ABE2] font-[600]">
+                ${invoiceData?.totalTransaction}
+              </span>
+            </div>
           </div>
-          <div className="flex border-b justify-between">
-            <span>Status:</span>
-            <span className="text-[#212121] font-medium">Pending</span>
-          </div>
-          <div className="flex border-b justify-between">
-            <span>Subscription Plan</span>
-            <span className="text-[#212121] font-medium">Basic</span>
-          </div>
-          <div className="flex border-b justify-between">
-            <span>Plan Category</span>
-            <span className="text-[#212121] font-medium">Individual</span>
-          </div>
-          <div className="flex border-b justify-between">
-            <span>Billing Date</span>
-            <span className="text-[#212121] font-medium">May 1, 2025</span>
-          </div>
-          <div className="flex border-b justify-between">
-            <span>Next Billing Date</span>
-            <span className="text-[#212121] font-medium">
-              February 1, 2025{" "}
-              <span className="text-[#29ABE2] text-[12px]">(for monthly)</span>
-            </span>
-          </div>
-          <div className="flex border-b justify-between">
-            <span>Total Employees</span>
-            <span className="text-[#212121] font-medium">05</span>
-          </div>
-          <div className="flex border-b justify-between">
-            <span>Cost Per Employee</span>
-            <span className="text-[#212121] font-medium">$30</span>
-          </div>
-          <div className="flex  justify-between font-[600] pt-2">
-            <span>Total Amount</span>
-            <span className="text-[#29ABE2] font-[600]">$150</span>
-          </div>
-        </div>
 
-        {/* Buttons */}
-        <div className="flex justify-between mt-6 gap-4">
-          <button className="w-[205px] border border-[#63CFAC] bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent rounded-lg py-2 font-medium">
-            Mark As Paid
-          </button>
-          <div className="w-[205px]">
-            <Button text={"Downloads Invoice"} />
+          <div className="flex justify-between mt-6 gap-4">
+            <div className="w-[205px]">
+              <button
+                onClick={handleDownload}
+                className="w-full border border-[#63CFAC] bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-white rounded-lg py-2 font-medium"
+              >
+                Download Invoice
+              </button>
+            </div>
           </div>
         </div>
       </div>

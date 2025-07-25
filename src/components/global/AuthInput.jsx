@@ -13,6 +13,7 @@ const AuthInput = ({
   onBlur,
   error,
   label,
+  disabled = false,
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
@@ -33,6 +34,7 @@ const AuthInput = ({
       >
         <div className="w-full ">
           <input
+            disabled={disabled}
             placeholder={placeholder}
             type={isPassVisible ? "text" : type}
             value={value}

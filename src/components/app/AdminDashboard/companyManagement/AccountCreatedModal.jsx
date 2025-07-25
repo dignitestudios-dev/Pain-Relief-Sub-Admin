@@ -23,13 +23,13 @@ const AccountCreatedModal = ({ onClose, handleClick }) => {
             Account Created
           </h2>
           <p className="text-center text-[16px] font-[400] ">
-            Login credentials have been successfully generated. The Network can
-            now access their account and manage their profile.
+            Login credentials have been successfully generated. The user can now
+            access their account and manage their profile.
           </p>
         </div>
-        <div>
-          <Button text={"Send"} onClick={handleClick} />
-        </div>
+        {/* <div>
+          <Button text={"Ok"} onClick={handleClick} />
+        </div> */}
       </div>
     </div>
   );

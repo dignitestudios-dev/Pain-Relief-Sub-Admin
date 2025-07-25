@@ -169,6 +169,7 @@ const EditCompanyModal = ({
           />
 
           <AuthInput
+            disabled={true}
             label="Email"
             placeholder="Enter your email"
             type="email"
