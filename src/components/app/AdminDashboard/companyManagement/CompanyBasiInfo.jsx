@@ -26,9 +26,9 @@ const CompanyBasiInfo = ({ companyData }) => {
 };
 const InfoRow = ({ label, value, multi, last }) => (
   <div className={`py-2 ${!last ? "border-b border-gray-300" : ""}`}>
-    <p className="text-[#565656] text-[14px] font-[500] mb-1">{label}</p>
+    <p className="text-[#565656] text-[14px] font-[500] mb-1 ">{label}</p>
     <p
-      className={`text-black font-[500] text-[16px] ${
+      className={`text-black font-[500] text-[16px] capitalize ${
         multi ? "whitespace-pre-line" : ""
       }`}
     >

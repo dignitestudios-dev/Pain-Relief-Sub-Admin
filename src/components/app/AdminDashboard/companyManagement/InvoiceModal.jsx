@@ -46,7 +46,7 @@ const InvoiceModal = ({ onClose, invoiceData }) => {
 
           <div className="border-t border-[#E5E5E5] my-2"></div>
 
-          <div className="space-y-4  text-[14px] text-[#212121]">
+          <div className="space-y-4  text-[14px] text-[#212121] capitalize">
             <div className="flex border-b justify-between py-2">
               <span>Status:</span>
               <span className="text-[#212121] font-medium capitalize">

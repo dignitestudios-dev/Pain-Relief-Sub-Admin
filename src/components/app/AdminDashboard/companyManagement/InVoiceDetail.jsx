@@ -55,7 +55,7 @@ const InVoiceDetail = ({ id }) => {
                   {data?.map((company, index) => (
                     <tr
                       key={index}
-                      className="border-b last:border-0 hover:bg-gray-50"
+                      className="border-b last:border-0 hover:bg-gray-50 capitalize"
                     >
                       <td className="py-3 px-4">{index + 1}</td>
 

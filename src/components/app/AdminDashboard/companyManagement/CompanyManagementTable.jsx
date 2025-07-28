@@ -20,7 +20,10 @@ const CompanyManagementTable = ({ companyData }) => {
         </thead>
         <tbody>
           {companyData?.map((company, index) => (
-            <tr key={index} className="border-b last:border-0 hover:bg-gray-50">
+            <tr
+              key={index}
+              className="border-b last:border-0 hover:bg-gray-50 capitalize"
+            >
               <td className="py-3 px-4">
                 <div className="flex items-center gap-3">
                   <img
