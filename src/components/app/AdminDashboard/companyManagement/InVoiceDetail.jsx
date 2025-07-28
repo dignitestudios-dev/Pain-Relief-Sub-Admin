@@ -16,7 +16,6 @@ const InVoiceDetail = ({ id }) => {
     1,
     ""
   );
-  console.log("🚀 ~ InVoiceDetail ~ data:", data);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm max-w-7xl mx-auto">

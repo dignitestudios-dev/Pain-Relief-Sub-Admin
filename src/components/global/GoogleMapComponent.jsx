@@ -27,7 +27,6 @@ const GoogleMapComponent = ({
   distance = 8,
   showRadius = true,
 }) => {
-  console.log("🚀 ~ editAddress:", coords, "`~~ address ~~", address);
   const radiusInMeters = distance * 1609.34;
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,

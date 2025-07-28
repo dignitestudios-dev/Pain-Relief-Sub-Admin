@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+/* eslint-disable react/prop-types */
+import { createContext, useState } from "react";
 import Cookies from "js-cookie";
 
 const AppContext = createContext();
@@ -11,7 +12,6 @@ const AppProvider = ({ children }) => {
   });
 
   const loginAuth = (userData) => {
-    console.log(userData, "userData==>");
     Cookies.set("token", userData?.token);
     Cookies.set("user", JSON.stringify(userData?.user));
     setToken(userData?.token);

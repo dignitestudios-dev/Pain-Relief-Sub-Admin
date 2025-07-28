@@ -25,7 +25,6 @@ const Sidebar = () => {
 
   const role = parsedUser?.role;
 
-  console.log(role);
   useEffect(() => {
     setActiveLink(location.pathname);
   }, [location.pathname]);

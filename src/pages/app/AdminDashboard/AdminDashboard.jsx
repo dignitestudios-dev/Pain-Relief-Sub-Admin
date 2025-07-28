@@ -19,13 +19,11 @@ const AdminDashboard = () => {
     1
   );
 
-  const { data: totalCount, loading: loadit } = useFetchData(
+  const { data: totalCount } = useFetchData(
     `/admin/total-dashboard-count`,
     {},
     1
   );
-  console.log("🚀 ~ AdminDashboard ~ loadit:", loadit);
-  console.log("🚀 ~ AdminDashboard ~ totalCount:", totalCount);
 
   return (
     <div

@@ -16,8 +16,6 @@ const EditEmployeeModal = ({
   handleSubmit,
   loading,
 }) => {
-  const [imagePreview, setImagePreview] = useState(null);
-  console.log("🚀 ~ imagePreview:", imagePreview);
   const [genderDropdown, setGenderDropdown] = useState(false);
   const [selectedGender, setSelectedGender] = useState("Gender");
   const fileInputRef = useRef(null);
@@ -26,7 +24,7 @@ const EditEmployeeModal = ({
     const file = e.target.files[0];
     if (file) {
       setFieldValue("profilePicture", file);
-      setImagePreview(URL.createObjectURL(file));
+      // setImagePreview(URL.createObjectURL(file));
     }
   };
 

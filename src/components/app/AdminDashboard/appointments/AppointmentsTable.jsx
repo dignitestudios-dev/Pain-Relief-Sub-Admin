@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { getDateFormat } from "../../../../lib/helpers";
 
 const AppointmentsTable = ({ data }) => {
-  console.log("🚀 ~ AppointmentsTable ~ data:", data);
   const navigate = useNavigate();
 
   return (

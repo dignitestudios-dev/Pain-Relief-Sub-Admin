@@ -5,19 +5,18 @@ import Button from "../../../global/Button";
 import { ErrorToast, SuccessToast } from "../../../global/Toaster";
 import { useState } from "react";
 
-const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
+const ProviderCsvModal = ({ onClose, data, csvUploadFile, setUpdate }) => {
   const [uploading, setUploading] = useState(false);
 
   const handleCsvUpload = async () => {
     try {
       const formData = new FormData();
 
-      formData.append("companyId", id);
       formData.append("csvFile", csvUploadFile);
       setUploading(true);
 
       const response = await axios.post(
-        "admin/import-users-from-csv",
+        "admin/upload-provider-from-csv",
         formData
       );
       if (response.status === 200) {
@@ -38,7 +37,7 @@ const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[20px] font-[600] text-[#212121]">
-            Employees Data
+            Provider(s) Data
           </h2>
           <img
             src={CrossImag}
@@ -52,11 +51,7 @@ const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
             <thead>
               <tr className="bg-gradient-to-l to-[#B9E9DB] from-[#A5DBF1] text-[14px] capitalize font-[400] tracking-wide text-gray-700">
                 <th className="py-3 px-4">#</th>
-                {/* <th className="py-3 px-4">employee Name</th> */}
                 <th className="py-3 px-4">Email Address</th>
-                {/* <th className="py-3 px-4">Phone Number</th>
-                <th className="py-3 px-4">Company</th>
-                <th className="py-3 px-4">Membership Plan</th> */}
               </tr>
             </thead>
             <tbody>
@@ -66,17 +61,8 @@ const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
                   className="border-b last:border-0 hover:bg-gray-50"
                 >
                   <td className="py-3 px-4">{index + 1}</td>
-                  {/* <td className="py-3 px-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-gray-900 font-medium">
-                        {employee.name}
-                      </span>
-                    </div>
-                  </td> */}
+
                   <td className="py-3 px-4">{employee.email}</td>
-                  {/* <td className="py-3 px-4">{employee.phone}</td>
-                  <td className="py-3 px-4">{employee.company}</td>
-                  <td className="py-3 px-4">{employee.status}</td> */}
                 </tr>
               ))}
             </tbody>
@@ -95,4 +81,4 @@ const EmployeeCsvModal = ({ onClose, data, id, csvUploadFile, setUpdate }) => {
   );
 };
 
-export default EmployeeCsvModal;
+export default ProviderCsvModal;

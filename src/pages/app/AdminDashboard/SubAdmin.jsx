@@ -73,10 +73,6 @@ const SubAdmin = () => {
           SuccessToast("Added Successfully");
         } catch (error) {
           ErrorToast(error?.response?.data?.message);
-          console.error(
-            "Error creating sub admin:",
-            error?.response?.data?.message
-          );
         } finally {
           setBtnLoading(false);
         }

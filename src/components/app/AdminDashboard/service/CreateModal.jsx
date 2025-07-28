@@ -1,9 +1,19 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
 import AuthInput from "../../../global/AuthInput";
 import { CrossImag } from "../../../../assets/export";
 import Button from "../../../global/Button";
 
-const CreateModal = ({ onCLose }) => {
+const CreateModal = ({
+  onCLose,
+  values,
+  errors,
+  touched,
+  handleChange,
+  handleBlur,
+  handleSubmit,
+  loading,
+}) => {
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-1">
       <div
@@ -22,15 +32,21 @@ const CreateModal = ({ onCLose }) => {
             />
           </div>
         </div>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <AuthInput
-              placeholder="Enter email here"
+              label={"Email Address (required)"}
+              placeholder="Enter your email"
               type="email"
               name="email"
+              value={values.email}
               maxLength={50}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.email}
+              touched={touched.email}
             />
-            <AuthInput
+            {/* <AuthInput
               placeholder="Password"
               type="password"
               name="password"
@@ -41,8 +57,8 @@ const CreateModal = ({ onCLose }) => {
               type="password"
               name="password"
               maxLength={50}
-            />
-            <Button text={"Create"} />
+            /> */}
+            <Button loading={loading} type="submit" text={"Create"} />
           </div>
         </form>
       </div>

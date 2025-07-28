@@ -78,15 +78,10 @@ const AddMemberPlanModal = ({ onClose, setUpdate }) => {
       if (response.status === 200) {
         SuccessToast("Plan Added Successfully");
         setIsAddForm(false);
-        console.log("response?.data", response?.data);
         setSubscriptionPlanId(response?.data?.data);
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
-      console.error(
-        "Error creating sub admin:",
-        error?.response?.data?.message
-      );
     } finally {
       setAddLoading(false);
     }
@@ -171,7 +166,6 @@ const AddMemberPlanModal = ({ onClose, setUpdate }) => {
       yearly,
     };
 
-    console.log("🚀 ~ handleSubmit ~ payload:", payload);
     // POST result to API
     try {
       setPriceLoading(true);

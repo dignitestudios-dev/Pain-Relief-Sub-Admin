@@ -55,9 +55,8 @@ const EmployeesTable = ({ id }) => {
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
+      console.log("🚀 ~ getTemplate ~ error:", error);
       ErrorToast("Downloading Fail");
-
-      console.log("🚀 ~ handleXlsxDownload ~ error:", error);
     } finally {
       setCsvLoading(false);
     }
@@ -142,7 +141,6 @@ const EmployeesTable = ({ id }) => {
           action.resetForm();
         }
       } catch (error) {
-        console.log("🚀 ~ onSubmit: ~ error:", error);
         ErrorToast(error?.response?.data?.message);
       } finally {
         setLoading(false);

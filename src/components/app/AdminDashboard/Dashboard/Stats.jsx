@@ -3,7 +3,6 @@
 import { ChartImg } from "../../../../assets/export";
 
 export default function Stats({ totalCount }) {
-  console.log("🚀 ~ Stats ~ totalCount:", totalCount);
   const StatsData = [
     {
       title: "Total Members",

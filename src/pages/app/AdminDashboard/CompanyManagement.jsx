@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import CompanyManagementTable from "../../../components/app/AdminDashboard/companyManagement/CompanyManagementTable";
 import AddNewCompanyModal from "../../../components/app/AdminDashboard/companyManagement/AddNewCompanyModal";
 import { useFetchData } from "../../../hooks/api/Get";
@@ -11,6 +11,8 @@ import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
 
 const CompanyManagement = () => {
+  const debounceRef = useRef();
+
   const [search, setSearch] = useState("");
   const [addNewCompany, setAddNewCompany] = useState(false);
   const [addBankDetail, setAddBankDetail] = useState(false);
@@ -18,10 +20,18 @@ const CompanyManagement = () => {
   const [errors, setErrors] = useState({});
   const [update, setUpdate] = useState(false);
 
+  const handleSearch = useCallback((value) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      setSearch(value);
+    }, 500);
+  }, []);
+
   const { data } = useFetchData(`/payment/subscriptions`, {}, 1, "");
   const { data: companyData, loading } = useFetchData(
     "/admin/get-all-companies",
-    {},
+    { search },
     1,
     update
   );
@@ -59,7 +69,6 @@ const CompanyManagement = () => {
         setUpdate((prev) => !prev);
       }
     } catch (error) {
-      console.log("🚀 ~ handleCompany ~ error:", error);
       ErrorToast(error.response.data.message);
     } finally {
       setCompanyLoading(false);
@@ -85,8 +94,7 @@ const CompanyManagement = () => {
                 type="text"
                 placeholder="Search"
                 className="w-full text-sm bg-transparent border-none outline-none placeholder-gray-400"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
             <div className="w-[179px]">

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 
+// eslint-disable-next-line react/prop-types
 const QrCode = ({ referralCode }) => {
   const [copied, setCopied] = useState(false);
 

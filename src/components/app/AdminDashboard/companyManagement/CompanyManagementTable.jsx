@@ -2,7 +2,6 @@
 import { useNavigate } from "react-router";
 
 const CompanyManagementTable = ({ companyData }) => {
-  console.log("🚀 ~ CompanyManagementTable ~ companyData:", companyData);
   const navigate = useNavigate();
 
   return (

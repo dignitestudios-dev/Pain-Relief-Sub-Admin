@@ -3,7 +3,6 @@
 import { useNavigate } from "react-router";
 
 const MemberTable = ({ data }) => {
-  console.log("🚀 ~ MemberTable ~ data:", data);
   const navigate = useNavigate();
 
   return (

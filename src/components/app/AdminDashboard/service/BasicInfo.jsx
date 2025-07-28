@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 const BasicInfo = ({ provider }) => {
-  console.log(provider, "provider==>");
   return (
     <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-6">
       <p className="text-[24px] font-[600] ">Clinic Profile</p>

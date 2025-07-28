@@ -2,7 +2,6 @@
 import { useNavigate } from "react-router";
 
 const ServiceList = ({ data }) => {
-  console.log("🚀 ~ ServiceList ~ data:", data);
   const navigate = useNavigate();
 
   const handleViewDetail = (userId) => {

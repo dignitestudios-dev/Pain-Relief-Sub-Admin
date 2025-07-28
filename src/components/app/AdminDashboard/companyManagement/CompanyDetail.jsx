@@ -75,7 +75,6 @@ const CompanyDetail = () => {
         navigate("/app/company-managment");
       }
     } catch (error) {
-      console.log("🚀 ~ handleCompany ~ error:", error);
       ErrorToast(error.response.data.message);
     } finally {
       setCompanyLoading(false);

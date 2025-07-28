@@ -14,7 +14,6 @@ const SubAdminDetail = () => {
 
   const { state } = useLocation();
   const user = state?.user;
-  console.log("🚀 ~ SubAdminDetail ~ user:", user);
 
   const { values, handleChange, handleSubmit, errors, touched, handleBlur } =
     useFormik({
@@ -36,7 +35,6 @@ const SubAdminDetail = () => {
           setEditModal(false);
           SuccessToast("Updated Successfully");
         } catch (err) {
-          console.error(err);
           ErrorToast(err.response.data.message);
         } finally {
           setBtnLoading(false);

@@ -25,7 +25,6 @@ ChartJS.register(
 );
 
 const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
-  console.log("🚀 ~ SubscriptionSalesChart ~ graphData:", graphData);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 

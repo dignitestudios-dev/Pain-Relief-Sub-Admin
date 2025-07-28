@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
-
 import { IoSearch } from "react-icons/io5";
+import Papa from "papaparse";
 
 import ServiceList from "../../../components/app/AdminDashboard/service/ServiceList";
 import PainReleifList from "../../../components/app/AdminDashboard/service/PainReleifList";
@@ -8,6 +8,13 @@ import CreateModal from "../../../components/app/AdminDashboard/service/CreateMo
 import { useFetchData } from "../../../hooks/api/Get";
 import TableLoader from "../../../components/global/TableLoader";
 import Pagination from "../../../components/global/Pagination";
+import Button from "../../../components/global/Button";
+import { FaPlus } from "react-icons/fa";
+import { addEmployeeSchema } from "../../../schema/editForm/editFormSchema";
+import axios from "../../../axios";
+import { useFormik } from "formik";
+import { ErrorToast, SuccessToast } from "../../../components/global/Toaster";
+import ProviderCsvModal from "../../../components/app/AdminDashboard/service/ProviderCsvModal";
 const Service = () => {
   const debounceRef = useRef();
 
@@ -15,6 +22,11 @@ const Service = () => {
   const [activeTab, setActiveTab] = useState("network");
   const [isPainRelief, setIsPainRelief] = useState(false);
   const [createModal, setCreateModal] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [csvUploadFile, setCsvUploadFile] = useState("");
+
+  const [update, setUpdate] = useState(false);
+
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
   const handleSearch = useCallback((value) => {
@@ -31,8 +43,68 @@ const Service = () => {
   const { data, loading, pagination } = useFetchData(
     `admin/get-providers`,
     { isPainReliefCoach: isPainRelief, status: status, search },
-    page
+    page,
+    update
   );
+
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: addEmployeeSchema,
+    onSubmit: async (values, action) => {
+      try {
+        setBtnLoading(true);
+        const response = await axios.post("admin/create-provider", {
+          email: values.email,
+        });
+        if (response.status === 200) {
+          SuccessToast("Added Successfully");
+          setCreateModal(false);
+          setUpdate((prev) => !prev);
+          action.resetForm();
+        }
+      } catch (error) {
+        ErrorToast(error?.response?.data?.message);
+      } finally {
+        setBtnLoading(false);
+      }
+    },
+  });
+
+  const [csvUploaded, setCsvUploaded] = useState(false);
+
+  const [csvData, setCsvData] = useState([
+    {
+      email: "",
+    },
+  ]);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setCsvUploadFile(file);
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const parsedData = results?.data?.map((item) => ({
+            email: item.email || "",
+          }));
+          setCsvData(parsedData);
+        },
+      });
+      setCsvUploaded(true);
+    }
+  };
 
   return (
     <div>
@@ -81,14 +153,27 @@ const Service = () => {
             Pain Relief Coach
           </button>
         </div>
-        {/* <div className="flex items-center gap-8 ">
+        <div className="flex items-center gap-8 ">
           <div className="w-[122px]">
-            <Button text={"CSV Import"} />
+            <input
+              type="file"
+              id="input"
+              className="hidden"
+              accept=".csv"
+              onChange={handleFileChange}
+            />
+            <Button
+              text={"CSV Import"}
+              onClick={() => {
+                document.getElementById("input").click();
+              }}
+              type="button"
+            />
           </div>
           <div className="w-[61px]">
             <Button text={<FaPlus />} onClick={() => setCreateModal(true)} />
           </div>
-        </div> */}
+        </div>
       </div>
       <div>
         <div className="flex ml-5  gap-4 mt-2">
@@ -168,7 +253,28 @@ const Service = () => {
               </div>{" "}
             </>
           )}
-          {createModal && <CreateModal onCLose={() => setCreateModal(false)} />}
+          {createModal && (
+            <CreateModal
+              onCLose={() => setCreateModal(false)}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              handleSubmit={handleSubmit}
+              setFieldValue={setFieldValue}
+              loading={btnLoading}
+            />
+          )}
+          {csvUploaded && (
+            <ProviderCsvModal
+              setUpdate={setUpdate}
+              onClose={() => setCsvUploaded(false)}
+              data={csvData}
+              setData={setCsvData}
+              csvUploadFile={csvUploadFile}
+            />
+          )}
         </>
       )}
     </div>
