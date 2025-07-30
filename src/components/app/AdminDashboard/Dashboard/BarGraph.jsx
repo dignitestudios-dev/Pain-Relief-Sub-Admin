@@ -131,7 +131,7 @@ const ReferralBarChart = ({ data }) => {
           },
           y: {
             beginAtZero: true,
-            max: 5,
+            max: 50, // ✅ Updated max value
             grid: {
               color: "#F3F4F6",
               borderDash: [2, 2],
@@ -146,11 +146,12 @@ const ReferralBarChart = ({ data }) => {
                 weight: "500",
               },
               padding: 16,
-              callback: (value) => `${value}`,
-              stepSize: 1,
+              callback: (value) => `${value}`, // ✅ Direct numeric values
+              stepSize: 10, // ✅ Adjusted step size (0, 10, 20, 30, 40, 50)
             },
           },
         },
+
         interaction: {
           intersect: true,
           mode: "index",

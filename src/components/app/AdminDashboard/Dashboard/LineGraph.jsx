@@ -153,7 +153,7 @@ const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
             },
             y: {
               beginAtZero: true,
-              max: 100000,
+              max: 500, // ✅ Updated max value
               grid: {
                 color: "#F3F4F6",
                 borderDash: [2, 2],
@@ -169,11 +169,9 @@ const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
                 },
                 padding: 16,
                 callback: function (value) {
-                  if (value === 0) return "0";
-                  if (value >= 1000) return `${value / 1000}K`;
                   return value;
                 },
-                stepSize: 20000,
+                stepSize: 100,
               },
             },
           },
