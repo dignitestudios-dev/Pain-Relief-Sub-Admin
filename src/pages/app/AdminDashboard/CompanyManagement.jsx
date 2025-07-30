@@ -9,6 +9,7 @@ import { validateCompanyForm } from "../../../lib/helpers";
 import Button from "../../../components/global/Button";
 import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
+import Pagination from "../../../components/global/Pagination";
 
 const CompanyManagement = () => {
   const debounceRef = useRef();
@@ -20,6 +21,12 @@ const CompanyManagement = () => {
   const [errors, setErrors] = useState({});
   const [update, setUpdate] = useState(false);
 
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   const handleSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -29,12 +36,11 @@ const CompanyManagement = () => {
   }, []);
 
   const { data } = useFetchData(`/payment/subscriptions`, {}, 1, "");
-  const { data: companyData, loading } = useFetchData(
-    "/admin/get-all-companies",
-    { search },
-    1,
-    update
-  );
+  const {
+    data: companyData,
+    loading,
+    pagination,
+  } = useFetchData("/admin/get-all-companies", { search }, page, update);
 
   const handleCompany = async (
     companyData,
@@ -108,7 +114,17 @@ const CompanyManagement = () => {
         {loading ? (
           <TableLoader />
         ) : (
-          <CompanyManagementTable companyData={companyData} />
+          <>
+            <CompanyManagementTable companyData={companyData} />
+            <div className="flex justify-end">
+              <Pagination
+                currentPage={pagination?.currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={handlePageChange}
+                setCurrentPage={page}
+              />
+            </div>
+          </>
         )}
       </div>
       {addNewCompany && (

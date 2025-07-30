@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import { CrossImag } from "../../../../assets/export";
-import Button from "../../../global/Button";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";

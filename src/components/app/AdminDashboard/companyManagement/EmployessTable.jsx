@@ -12,6 +12,7 @@ import { addEmployeeSchema } from "../../../../schema/editForm/editFormSchema";
 import { useFetchData } from "../../../../hooks/api/Get";
 import { getDateFormat } from "../../../../lib/helpers";
 import TableLoader from "../../../global/TableLoader";
+import Pagination from "../../../global/Pagination";
 
 const EmployeesTable = ({ id }) => {
   const navigate = useNavigate();
@@ -22,12 +23,17 @@ const EmployeesTable = ({ id }) => {
   const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(false);
 
-  const { data: EmployeeData, loading: EmployeLoading } = useFetchData(
-    `/admin/get-employees-by-company/${id}`,
-    {},
-    1,
-    update
-  );
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
+  const {
+    data: EmployeeData,
+    loading: EmployeLoading,
+    pagination,
+  } = useFetchData(`/admin/get-employees-by-company/${id}`, {}, page, update);
 
   const [csvLoading, setCsvLoading] = useState(false);
   const getTemplate = async () => {
@@ -256,6 +262,14 @@ const EmployeesTable = ({ id }) => {
               ))}
             </tbody>
           </table>
+          {/* <div className="flex justify-end">
+            <Pagination
+              currentPage={pagination?.currentPage}
+              totalPages={pagination?.totalPages}
+              onPageChange={handlePageChange}
+              setCurrentPage={page}
+            />
+          </div> */}
         </div>
       )}
 

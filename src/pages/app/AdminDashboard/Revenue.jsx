@@ -93,7 +93,8 @@ const Revenue = () => {
           ? "yearly"
           : "",
     },
-    page
+    page,
+    ""
   );
 
   const [csvLoading, setCsvLoading] = useState(false);
