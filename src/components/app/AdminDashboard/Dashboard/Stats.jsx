@@ -24,13 +24,13 @@ export default function Stats({ totalCount }) {
       title: "Total Companies",
       value: totalCount?.companyCount || 55,
     },
-    {
-      title: "Total Revenue",
-      value: totalCount?.revenueCount || 74,
-    },
+    // {
+    //   title: "Total Revenue",
+    //   value: totalCount?.revenueCount || 74,
+    // },
   ];
   return (
-    <div className="grid grid-cols-6 gap-3 mt-5 items-center">
+    <div className="grid grid-cols-5 gap-3 mt-5 items-center">
       {StatsData?.map((item, i) => (
         <div
           key={i}

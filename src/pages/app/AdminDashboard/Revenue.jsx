@@ -9,6 +9,7 @@ import TableLoader from "../../../components/global/TableLoader";
 import Pagination from "../../../components/global/Pagination";
 import axios from "../../../axios";
 import { ErrorToast } from "../../../components/global/Toaster";
+import { ChartImg } from "../../../assets/export";
 
 const Revenue = () => {
   const debounceRef = useRef();
@@ -129,6 +130,13 @@ const Revenue = () => {
       setCsvLoading(false);
     }
   };
+
+  const { data: totalCount } = useFetchData(
+    `/admin/total-dashboard-count`,
+    {},
+    1
+  );
+  console.log("🚀 ~ Revenue ~ totalCount:", totalCount);
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -184,6 +192,7 @@ const Revenue = () => {
           </div>
         </div>
       </div>
+
       {filterDropDown && (
         <FilterDropRevenue
           onClose={() => setFilterDropDown(false)}
@@ -195,6 +204,19 @@ const Revenue = () => {
           selectedTypes={selectedTypes}
         />
       )}
+      <div className="bg-[#FAFAFA] rounded-[12px] border border-gray-100 mb-2 p-3 py-5 justify-between flex items-end  w-[340px]">
+        <div className="flex flex-col w-[220px]">
+          <span className="font-[500] text-[16px] text-[#565656] ">
+            Total Revenue
+          </span>
+          <h3 className="font-[600] text-[24px] text-[#212121] ">
+            {totalCount?.revenueCount}
+          </h3>
+        </div>
+        <div>
+          <img src={ChartImg} className="w-[60px]" alt="" />
+        </div>
+      </div>
       {loading ? (
         <TableLoader />
       ) : (
