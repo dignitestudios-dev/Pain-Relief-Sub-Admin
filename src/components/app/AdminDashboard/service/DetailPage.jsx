@@ -10,6 +10,7 @@ import { ErrorToast, SuccessToast } from "../../../global/Toaster";
 import { RiLoader5Line } from "react-icons/ri";
 import axios from "../../../../axios";
 import ServiceRequestModal from "./ServiceRequestModal";
+import ReferalTable from "../member/ReferalTable";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,12 @@ const DetailPage = () => {
   const [disableRequestModal, setDisableRequestModal] = useState(null);
 
   const { data, loading } = useFetchById(`/admin/get-provider/${id}`, update);
+  console.log("🚀 ~ DetailPage ~ data:", data);
+  const { data: referralData } = useFetchById(
+    `/admin/provider-referral/${id}`,
+    update
+  );
+  console.log("🚀 ~ DetailPage ~ referralData:", referralData);
 
   const handleRequest = async (status) => {
     try {
@@ -148,7 +155,11 @@ const DetailPage = () => {
           </div>
 
           <div className="flex gap-4 rounded-md shadow p-2 mb-6">
-            {["Basic Info", "Medical License"].map((tab) => (
+            {[
+              "Basic Info",
+              "Medical License",
+              data?.profileStatus === "approved" && "Referral Friends",
+            ].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -168,9 +179,15 @@ const DetailPage = () => {
             <MedicalLicense provider={data} />
           )}
 
-          {/* {activeTab === "Family Members" && <FamilyMember />}
+          {/* {activeTab === "Family Members" && <FamilyMember />} */}
 
-      {activeTab === "Referral Friends" && <ReferalTable />} */}
+          {activeTab === "Referral Friends" && (
+            <ReferalTable
+              referralData={referralData}
+              userId={id}
+              user={"provider"}
+            />
+          )}
         </>
       )}
 

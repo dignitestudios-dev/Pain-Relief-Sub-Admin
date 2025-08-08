@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ChangePasswordModal from "../../../components/app/SubAdminDashboard/ChangePasswordModal";
 import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../../components/global/Toaster";
 import { ClipLoader } from "react-spinners";
+import { AppContext } from "../../../context/AppContext";
 
 const Profile = () => {
+  const { user } = useContext(AppContext);
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -123,6 +126,7 @@ const Profile = () => {
       });
 
       if (response.data.success) {
+        console.log("data--> ", response.data);
         SuccessToast("Profile updated successfully.");
         setProfileData((prev) => ({
           ...prev,
@@ -155,7 +159,9 @@ const Profile = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow mx-auto">
-      <h2 className="text-[24px] font-bold mb-4">Sub Admin Details</h2>
+      <h2 className="text-[24px] font-bold mb-4">
+        {user?.role === "admin" ? "Admin Details" : "Sub Admin Details"}
+      </h2>
 
       {/* Header */}
       <div className="flex items-center justify-between bg-[#FAFAFA] rounded-lg p-6 shadow-sm mb-6">
@@ -190,7 +196,7 @@ const Profile = () => {
       {/* Basic Info */}
       <div className="bg-[#FAFAFA] p-6 rounded-md text-sm space-y-3">
         <p className="text-[24px] font-bold pb-4 border-b border-[#EAEAEA]">
-          Sub Admin Info
+          {user?.role === "admin" ? "Admin Info" : "Sub Admin Info"}
         </p>
         <InfoRow label="Full Name" value={profileData.firstName} />
         <InfoRow label="Email Address" value={profileData.email} />
@@ -215,7 +221,9 @@ const Profile = () => {
             </button>
 
             <h2 className="text-xl font-bold mb-4 border-b pb-2">
-              Edit Sub Admin Details
+              {user?.role === "admin"
+                ? "Sub Admin Details"
+                : "Edit Sub Admin Details"}
             </h2>
 
             <div className="flex items-center gap-4 mb-4">

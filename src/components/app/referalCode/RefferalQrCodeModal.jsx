@@ -3,6 +3,7 @@ import BrochureSection from "./BrochureSection";
 import QrCode from "./QrCode";
 
 const RefferalQrCodeModal = ({ onClick, referralCode }) => {
+  console.log("🚀 ~ RefferalQrCodeModal ~ referralCode:", referralCode);
   const [tabActive, setTabActive] = useState("Brochure");
   const tabs = ["Brochure", "QR Code"];
 

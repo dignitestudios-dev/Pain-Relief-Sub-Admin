@@ -3,9 +3,14 @@
 import { useState } from "react";
 import axios from "../../../../axios";
 import { ErrorToast } from "../../../global/Toaster";
+import RefferalQrCodeModal from "../../referalCode/RefferalQrCodeModal";
+import { useFetchById } from "../../../../hooks/api/Get";
 
-const ReferalTable = ({ referralData, userId }) => {
+const ReferalTable = ({ referralData, userId, user }) => {
+  console.log("🚀 ~ ReferalTable ~ referralData:", referralData);
   const [csvLoading, setCsvLoading] = useState(false);
+  const [voucherModal, setVoucherModal] = useState(false);
+
   const handleCsv = async () => {
     try {
       setCsvLoading(true);
@@ -41,23 +46,40 @@ const ReferalTable = ({ referralData, userId }) => {
       setCsvLoading(false);
     }
   };
+
+  const { data: ReferralCode } = useFetchById(
+    `/admin/generate-referral-link-admin?providerId=${userId}`
+  );
+
   return (
     <div className="p-3 bg-[#FAFAFA] rounded-lg shadow">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-[24px] font-[500] ">
           Referral Friend ({referralData?.length}){" "}
         </h2>
-        {referralData?.length > 0 && (
-          <button
-            onClick={handleCsv}
-            disabled={csvLoading}
-            className="text-blue-500 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <p className="bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent text-[14px] font-[500] text-end">
-              {csvLoading ? "Exporting..." : "Export CSV"}
-            </p>
-          </button>
-        )}
+        <div className="flex items-center w-[300px] justify-between">
+          {user === "provider" && (
+            <div
+              onClick={() => setVoucherModal(true)}
+              className="text-blue-500 cursor-pointer"
+            >
+              <p className="text-[#63CFAC] text-[14px] font-[500] text-end underline">
+                Download Brochure/QR Code
+              </p>
+            </div>
+          )}
+          {referralData?.length > 0 && (
+            <button
+              onClick={handleCsv}
+              disabled={csvLoading}
+              className="text-blue-500 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <p className="bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] bg-clip-text text-transparent text-[14px] font-[500] text-end">
+                {csvLoading ? "Exporting..." : "Export CSV"}
+              </p>
+            </button>
+          )}
+        </div>
       </div>
       {referralData?.length > 0 ? (
         <div className="bg-[#FAFAFA] p-2 rounded-md">
@@ -106,6 +128,12 @@ const ReferalTable = ({ referralData, userId }) => {
         </div>
       ) : (
         <div>No record found</div>
+      )}
+      {voucherModal && (
+        <RefferalQrCodeModal
+          onClick={() => setVoucherModal(false)}
+          referralCode={ReferralCode}
+        />
       )}
     </div>
   );
