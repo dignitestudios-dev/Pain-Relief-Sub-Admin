@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ReferralBarChart from "../../../components/app/AdminDashboard/Dashboard/BarGraph";
 import SubscriptionSalesChart from "../../../components/app/AdminDashboard/Dashboard/LineGraph";
 import Stats from "../../../components/app/AdminDashboard/Dashboard/Stats";
 import { useFetchData } from "../../../hooks/api/Get";
+import { AppContext } from "../../../context/AppContext";
 
 const AdminDashboard = () => {
+  const { user } = useContext(AppContext);
+  console.log("🚀 ~ AdminDashboard ~ user:", user);
   const [year, setYear] = useState(new Date());
 
   const { data, loading } = useFetchData(
@@ -32,7 +35,7 @@ const AdminDashboard = () => {
     >
       <div>
         <span className="font-[500] text-[16px] text-[#565656] ">
-          Hello John Doe,
+          Hello {user?.firstName},
         </span>
         <h3 className="text-[#212121] text-[32px] font-[600] ">
           Welcome to Pain Relief!

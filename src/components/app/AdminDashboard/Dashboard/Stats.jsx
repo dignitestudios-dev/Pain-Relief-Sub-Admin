@@ -21,9 +21,13 @@ export default function Stats({ totalCount }) {
       value: totalCount?.referralCount,
     },
     {
-      title: "Total Companies",
-      value: totalCount?.companyCount || 55,
+      title: "Monthly Revenue",
+      value: totalCount?.companyMonthlyRevenueCount,
     },
+    // {
+    //   title: "Total Companies",
+    //   value: totalCount?.companyCount || 55,
+    // },
     // {
     //   title: "Total Revenue",
     //   value: totalCount?.revenueCount || 74,

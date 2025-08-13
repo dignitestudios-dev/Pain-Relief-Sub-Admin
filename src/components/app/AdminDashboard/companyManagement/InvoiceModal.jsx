@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { CrossImag } from "../../../../assets/export";
+import { CrossImag, Logo } from "../../../../assets/export";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePDF from "../../AdminDashboard/companyManagement/InvoicePDF";
 
@@ -19,6 +19,17 @@ const InvoiceModal = ({ onClose, invoiceData }) => {
         </div>
 
         <div className=" p-6 rounded-md w-[580px]">
+          <div className="flex gap-4 items-center mb-4">
+            <img src={Logo} alt="logo" className="w-14 h-14" />
+            <div>
+              <h2 className="text-[20px] font-[600] text-[#212121]">
+                Pain Relief USA
+              </h2>
+              <p className="text-sm text-gray-500">
+                contact email - support@painreliefusa.com
+              </p>
+            </div>
+          </div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[20px] font-[600] text-[#212121]">
               Invoice Detail

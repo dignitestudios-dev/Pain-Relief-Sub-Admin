@@ -55,9 +55,13 @@ const InvoicePDF = ({ invoiceData }) => (
       {/* Header */}
       <View style={styles.header}>
         <Image style={styles.logo} src={Logo} />
-        <Text style={styles.companyName}>Pain Relief USA</Text>
+        <View>
+          <Text style={styles.companyName}>Pain Relief USA</Text>
+          <Text style={{ fontSize: 12, color: "#555" }}>
+            support@painreliefusa.com
+          </Text>
+        </View>
       </View>
-
       {/* Title */}
       <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
         Invoice Detail

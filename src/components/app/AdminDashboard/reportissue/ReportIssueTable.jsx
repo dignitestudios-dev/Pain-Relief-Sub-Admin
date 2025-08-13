@@ -117,6 +117,11 @@ const ReportIssueTable = ({ data, delLoading, setDelRequestModal }) => {
               </div>
 
               <div>
+                <span className="font-medium text-gray-600">Email:</span>{" "}
+                {selectedIssue.userDetails?.email}
+              </div>
+
+              <div>
                 <span className="font-medium text-gray-600">Date:</span>{" "}
                 {getDateFormat(selectedIssue.date)}
               </div>
