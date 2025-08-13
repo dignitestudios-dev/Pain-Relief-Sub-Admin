@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { getDateFormat } from "../../../../lib/helpers";
 
-const RevenueTable = ({ data }) => {
+const RevenueTable = ({ data, role }) => {
   return (
     <div>
       {/* Header and Tabs */}
@@ -9,7 +10,9 @@ const RevenueTable = ({ data }) => {
         <table className="min-w-full table-auto text-left text-sm text-gray-700">
           <thead>
             <tr className="bg-gradient-to-l to-[#B9E9DB] from-[#A5DBF1] text-gray-700 text-[14px] capitalize font-[500] tracking-wide">
-              <th className="py-3 px-2">User Name</th>
+              <th className="py-3 px-2">
+                {role === "user" ? "User Name" : "Company Name"}
+              </th>
               <th className="py-3 px-2">Main Plan</th>
               <th className="py-3 px-2">Category</th>
               <th className="py-3 px-2">Plan Date</th>

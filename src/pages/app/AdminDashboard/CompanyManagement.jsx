@@ -10,6 +10,7 @@ import Button from "../../../components/global/Button";
 import { IoSearch } from "react-icons/io5";
 import TableLoader from "../../../components/global/TableLoader";
 import Pagination from "../../../components/global/Pagination";
+import { ChartImg } from "../../../assets/export";
 
 const CompanyManagement = () => {
   const debounceRef = useRef();
@@ -81,6 +82,12 @@ const CompanyManagement = () => {
     }
   };
 
+  const { data: totalCount } = useFetchData(
+    `/admin/total-dashboard-count`,
+    {},
+    1
+  );
+
   return (
     <div>
       <div className="bg-white p-6 rounded-lg shadow-sm max-w-7xl mx-auto">
@@ -109,6 +116,19 @@ const CompanyManagement = () => {
                 onClick={() => setAddNewCompany(true)}
               />
             </div>
+          </div>
+        </div>
+        <div className="bg-[#FAFAFA] rounded-[12px] border border-gray-100 mb-2 p-3 py-5 justify-between flex items-end  w-[340px]">
+          <div className="flex flex-col w-[220px]">
+            <span className="font-[500] text-[16px] text-[#565656] ">
+              Total Revenue
+            </span>
+            <h3 className="font-[600] text-[24px] text-[#212121] ">
+              {totalCount?.companyRevenueCount}
+            </h3>
+          </div>
+          <div>
+            <img src={ChartImg} className="w-[60px]" alt="" />
           </div>
         </div>
         {loading ? (

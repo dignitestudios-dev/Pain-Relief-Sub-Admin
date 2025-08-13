@@ -99,6 +99,12 @@ export const sidebarDataAdmin = [
     icon: revenue,
     activeIcon: revenueWhite,
   },
+  // {
+  //   title: "Company Revenue",
+  //   url: "/app/company-revenue",
+  //   icon: revenue,
+  //   activeIcon: revenueWhite,
+  // },
   {
     title: "Company Management ",
     url: "/app/company-managment",

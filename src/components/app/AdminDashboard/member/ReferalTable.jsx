@@ -7,7 +7,7 @@ import RefferalQrCodeModal from "../../referalCode/RefferalQrCodeModal";
 import { useFetchById } from "../../../../hooks/api/Get";
 
 const ReferalTable = ({ referralData, userId, user }) => {
-  console.log("🚀 ~ ReferalTable ~ referralData:", referralData);
+  console.log("🚀 ~ ReferalTable ~ user:", user);
   const [csvLoading, setCsvLoading] = useState(false);
   const [voucherModal, setVoucherModal] = useState(false);
 
@@ -58,7 +58,7 @@ const ReferalTable = ({ referralData, userId, user }) => {
           Referral Friend ({referralData?.length}){" "}
         </h2>
         <div className="flex items-center w-[300px] justify-between">
-          {user === "provider" && (
+          {user === "provider" ? (
             <div
               onClick={() => setVoucherModal(true)}
               className="text-blue-500 cursor-pointer"
@@ -67,6 +67,8 @@ const ReferalTable = ({ referralData, userId, user }) => {
                 Download Brochure/QR Code
               </p>
             </div>
+          ) : (
+            <div></div>
           )}
           {referralData?.length > 0 && (
             <button

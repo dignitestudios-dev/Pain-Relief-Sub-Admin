@@ -1,17 +1,15 @@
 import { useCallback, useRef, useState } from "react";
-import RevenueTable from "../../../components/app/AdminDashboard/revenue/RevenueTable";
 import { useFetchData } from "../../../hooks/api/Get";
-import FilterDropRevenue from "../../../components/app/AdminDashboard/revenue/FilterDropRevenue";
-import { CiFilter } from "react-icons/ci";
-import Button from "../../../components/global/Button";
 import { IoSearch } from "react-icons/io5";
-import TableLoader from "../../../components/global/TableLoader";
-import Pagination from "../../../components/global/Pagination";
-import axios from "../../../axios";
-import { ErrorToast } from "../../../components/global/Toaster";
+import Button from "../../../components/global/Button";
+import { CiFilter } from "react-icons/ci";
+import FilterDropRevenue from "../../../components/app/AdminDashboard/revenue/FilterDropRevenue";
 import { ChartImg } from "../../../assets/export";
+import TableLoader from "../../../components/global/TableLoader";
+import RevenueTable from "../../../components/app/AdminDashboard/revenue/RevenueTable";
+import Pagination from "../../../components/global/Pagination";
 
-const Revenue = () => {
+const CompanyRevenue = () => {
   const debounceRef = useRef();
   const [typeValue, setTypeValue] = useState("");
   const tabs = ["All", "Standard Plan", "Premium Plan"];
@@ -98,69 +96,12 @@ const Revenue = () => {
     ""
   );
 
-  const [csvLoading, setCsvLoading] = useState(false);
-  const handleCsv = async () => {
-    try {
-      setCsvLoading(true);
-      const params = {};
-
-      if (plans) params.plan = plans;
-      if (appliedFilters?.search) params.search = appliedFilters.search;
-      if (filterData?.startDate)
-        params.startDate = filterData.startDate.toISOString().split("T")[0];
-      if (filterData?.endDate)
-        params.endDate = filterData.endDate.toISOString().split("T")[0];
-      if (selectedTypes?.length) params.category = selectedTypes;
-      if (
-        filterData?.planType === "monthly" ||
-        filterData?.planType === "yearly"
-      )
-        params.planType = filterData.planType;
-
-      // Always send page
-      params.page = page || 1;
-      const response = await axios.get("/admin/download-plans-revenue", {
-        params,
-        responseType: "blob",
-      });
-
-      // Create a blob URL from the response
-      const url = window.URL.createObjectURL(
-        new Blob([response.data], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // 👈 MIME type for .xlsx
-        })
-      );
-
-      // Create a temporary anchor element
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "plans.xlsx"); // 👈 Updated file name
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      ErrorToast("Downloading Fail");
-      console.log("🚀 ~ handleXlsxDownload ~ error:", error);
-    } finally {
-      setCsvLoading(false);
-    }
-  };
-
-  const { data: totalCount } = useFetchData(
-    `/admin/total-dashboard-count`,
-    {},
-    1
-  );
-
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-sm">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <div className="flex items-center gap-7">
           <h1 className="text-[32px] font-[600] text-gray-900 mb-4 md:mb-0">
-            Revenue
+            Company Revenue
           </h1>
 
           <nav className="flex gap-6 items-center text-[16px] font-[500] text-gray-600">
@@ -195,12 +136,12 @@ const Revenue = () => {
             />
           </div>
           <div className="w-[122px]">
-            <Button
-              onClick={handleCsv}
-              disabled={csvLoading}
-              loading={csvLoading}
-              text={"Export CSV"}
-            />
+            {/* <Button
+                  onClick={handleCsv}
+                  disabled={csvLoading}
+                  loading={csvLoading}
+                  text={"Export CSV"}
+                /> */}
           </div>
           <div
             onClick={() => setFilterDropDown((prev) => !prev)}
@@ -227,9 +168,9 @@ const Revenue = () => {
           <span className="font-[500] text-[16px] text-[#565656] ">
             Total Revenue
           </span>
-          <h3 className="font-[600] text-[24px] text-[#212121] ">
-            {totalCount?.revenueCount}
-          </h3>
+          {/* <h3 className="font-[600] text-[24px] text-[#212121] ">
+                {totalCount?.revenueCount}
+              </h3> */}
         </div>
         <div>
           <img src={ChartImg} className="w-[60px]" alt="" />
@@ -239,7 +180,7 @@ const Revenue = () => {
         <TableLoader />
       ) : (
         <>
-          <RevenueTable data={data} role="user" />
+          <RevenueTable data={data} role="company" />
           <div className="flex justify-end">
             <Pagination
               currentPage={pagination?.currentPage}
@@ -254,4 +195,4 @@ const Revenue = () => {
   );
 };
 
-export default Revenue;
+export default CompanyRevenue;

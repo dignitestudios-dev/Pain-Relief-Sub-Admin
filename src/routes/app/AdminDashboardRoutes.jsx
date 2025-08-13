@@ -15,6 +15,7 @@ import SubAdmin from "../../pages/app/AdminDashboard/SubAdmin";
 import Profile from "../../pages/app/SubAdminDashboard/Profile";
 import UniqueReferral from "../../pages/app/AdminDashboard/UniqueReferral";
 import Appointments from "../../pages/app/AdminDashboard/Appointments";
+import CompanyRevenue from "../../pages/app/AdminDashboard/CompanyRevenue";
 
 export const AdminDashboardRoutes = [
   {
@@ -71,6 +72,10 @@ export const AdminDashboardRoutes = [
     url: "revenue",
     page: <Revenue />,
   },
+  // {
+  //   url: "company-revenue",
+  //   page: <CompanyRevenue />,
+  // },
   {
     url: "company-managment",
     page: <CompanyManagement />,

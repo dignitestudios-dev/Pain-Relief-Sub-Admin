@@ -1,28 +1,10 @@
 /* eslint-disable react/prop-types */
 
 import { CrossImag } from "../../../../assets/export";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import { useRef } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePDF from "../../AdminDashboard/companyManagement/InvoicePDF";
 
 const InvoiceModal = ({ onClose, invoiceData }) => {
-  const invoiceRef = useRef();
-
-  const handleDownload = async () => {
-    const element = invoiceRef.current;
-    const canvas = await html2canvas(element, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`invoice-${invoiceData?.invoiceId || "download"}.pdf`);
-  };
-
   return (
     <div className="fixed inset-0 bg-[#0A150F80] bg-opacity-10 z-50 flex items-center justify-center p-4">
       <div className="bg-white  w-[620px] rounded-[20px] shadow-lg p-6">
@@ -36,7 +18,7 @@ const InvoiceModal = ({ onClose, invoiceData }) => {
           />
         </div>
 
-        <div ref={invoiceRef} className=" p-6 rounded-md w-[580px]">
+        <div className=" p-6 rounded-md w-[580px]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[20px] font-[600] text-[#212121]">
               Invoice Detail
@@ -84,12 +66,20 @@ const InvoiceModal = ({ onClose, invoiceData }) => {
         </div>
         <div className="flex justify-between mt-6 gap-4">
           <div className="w-[205px]">
-            <button
-              onClick={handleDownload}
-              className="w-full border border-[#63CFAC] bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-white rounded-lg py-2 font-medium"
+            <PDFDownloadLink
+              document={<InvoicePDF invoiceData={invoiceData} />}
+              fileName="invoice.pdf"
             >
-              Download Invoice
-            </button>
+              {({ loading }) =>
+                loading ? (
+                  "Generating PDF..."
+                ) : (
+                  <button className="w-full border border-[#63CFAC] bg-gradient-to-l to-[#63CFAC] from-[#29ABE2] text-white rounded-lg py-2 font-medium">
+                    Download Invoice
+                  </button>
+                )
+              }
+            </PDFDownloadLink>
           </div>
         </div>
       </div>
