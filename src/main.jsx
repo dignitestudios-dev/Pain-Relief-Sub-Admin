@@ -8,11 +8,12 @@ import { AppProvider } from "./context/AppContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <div>App is under construction</div>
+    {/* <BrowserRouter>
       <ToasterContainer />
       <AppProvider>
         <App />
       </AppProvider>
-    </BrowserRouter>
+    </BrowserRouter> */}
   </React.StrictMode>
 );
