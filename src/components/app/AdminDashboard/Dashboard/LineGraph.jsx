@@ -37,40 +37,48 @@ const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
 
       const ctx = chartRef.current.getContext("2d");
 
+      // Build datasets dynamically based on available data
+      const datasets = [];
+
+      if (graphData[0]?.months) {
+        datasets.push({
+          label: "Standard Plan",
+          data: Object.values(graphData[0].months) || [],
+          borderColor: "#3B82F6",
+          backgroundColor: "#3B82F6",
+          borderWidth: 3,
+          fill: false,
+          tension: 0.4,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: "#3B82F6",
+          pointHoverBorderColor: "#ffffff",
+          pointHoverBorderWidth: 2,
+        });
+      }
+
+      if (graphData[1]?.months) {
+        datasets.push({
+          label: "Premium Plan",
+          data: Object.values(graphData[1].months) || [],
+          borderColor: "#EF4444",
+          backgroundColor: "#EF4444",
+          borderWidth: 3,
+          fill: false,
+          tension: 0.4,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: "#EF4444",
+          pointHoverBorderColor: "#ffffff",
+          pointHoverBorderWidth: 2,
+        });
+      }
+
       chartInstance.current = new ChartJS(ctx, {
         type: "line",
         data: {
-          labels: Object.keys(graphData[0]?.months) || [],
-          datasets: [
-            {
-              label: "Standard Plan",
-              data: Object.values(graphData[0]?.months) || [],
-              borderColor: "#3B82F6",
-              backgroundColor: "#3B82F6",
-              borderWidth: 3,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 4,
-              pointHoverRadius: 6,
-              pointHoverBackgroundColor: "#3B82F6",
-              pointHoverBorderColor: "#ffffff",
-              pointHoverBorderWidth: 2,
-            },
-            {
-              label: "Premium Plan",
-              data: Object.values(graphData[1]?.months) || [],
-              borderColor: "#EF4444",
-              backgroundColor: "#EF4444",
-              borderWidth: 3,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 4,
-              pointHoverRadius: 6,
-              pointHoverBackgroundColor: "#EF4444",
-              pointHoverBorderColor: "#ffffff",
-              pointHoverBorderWidth: 2,
-            },
-          ],
+          labels: Object.keys(graphData[0]?.months || {}) || [],
+          datasets: datasets,
         },
         options: {
           responsive: true,
@@ -227,18 +235,22 @@ const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
       <hr className="border-[#2121211C]" />
 
       <div className="flex items-center space-x-6 mb-8 mt-5">
-        <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span className="text-sm font-medium text-gray-700">
-            Standard Plan
-          </span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span className="text-sm font-medium text-gray-700">
-            Premium Plan
-          </span>
-        </div>
+        {graphData[0]?.months && (
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 bg-blue-500 rounded"></div>
+            <span className="text-sm font-medium text-gray-700">
+              Standard Plan
+            </span>
+          </div>
+        )}
+        {graphData[1]?.months && (
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 bg-red-500 rounded"></div>
+            <span className="text-sm font-medium text-gray-700">
+              Premium Plan
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="relative">
