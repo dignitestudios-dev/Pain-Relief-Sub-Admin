@@ -21,7 +21,7 @@ ChartJS.register(
   LinearScale,
   CategoryScale,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
@@ -40,11 +40,11 @@ const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
       chartInstance.current = new ChartJS(ctx, {
         type: "line",
         data: {
-          labels: Object.keys(graphData[0].months),
+          labels: Object.keys(graphData[0]?.months),
           datasets: [
             {
               label: "Standard Plan",
-              data: Object.values(graphData[0].months),
+              data: Object.values(graphData[0]?.months),
               borderColor: "#3B82F6",
               backgroundColor: "#3B82F6",
               borderWidth: 3,
@@ -58,7 +58,7 @@ const SubscriptionSalesChart = ({ year, setYear, graphData }) => {
             },
             {
               label: "Premium Plan",
-              data: Object.values(graphData[1].months),
+              data: Object.values(graphData[1]?.months),
               borderColor: "#EF4444",
               backgroundColor: "#EF4444",
               borderWidth: 3,
